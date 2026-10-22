@@ -31,6 +31,12 @@ Newest first.
 - Edge picking in 3D (today faces and points); the assistant maps a face to edge selectors.
 - A clip of the demo on the landing page once the recording is compressed and committed.
 
+**Hand-over (continue on another PC)**
+
+1. `git clone`, `npm install`, `node node_modules/electron/install.js` if `node_modules/electron/dist` is missing, then create `.env.local` with `ANTHROPIC_API_KEY=...` (never committed).
+2. Re-record the bearing-housing demo: `npm run build`, then `MP_DEMO=1 npx playwright test -c e2e/playwright.config.ts demo` (Windows: ffmpeg on the PATH records the window), then `node scripts/demo-video.mjs`, `npm run build:site`, commit `site/` and push. The site still shows the plate recording until then; its last run reached the drawing step, which now splits big proposals after the fix in this commit.
+3. Watch CI on the last push: the perf budget test runs again without the software-GL flags.
+
 **For the owner to do by hand**
 
 - Nothing for the assistant. For the launch: see `docs/launch.md` (CI green, first release with
