@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { onLanguage, t } from '@shared/i18n';
 import { useStore } from './state/store';
 import { TopBar } from './components/TopBar';
+import { SheetTabs } from './components/SheetTabs';
 import { ToolPalette } from './components/ToolPalette';
 import { Canvas2D } from './components/Canvas2D';
 import { RightPanel } from './components/RightPanel';
@@ -38,6 +39,7 @@ export function App() {
           </button>
         </div>
       )}
+      <SheetTabs />
       <div className="middle">
         <ToolPalette />
         <Canvas2D />

@@ -172,5 +172,38 @@ export function transformEntity(e: Entity, m: Matrix): Entity {
     case 'text':
       requireSimilarity(m, 'a text');
       return { ...e, position: P(e.position), height: e.height * uniformScale(m), rotation: ang(e.rotation) };
+    // Annotations (M2): their reference points move with the geometry; lettering sizes come from
+    // the document's dimension style, so only the note's own height scales.
+    case 'dimension': {
+      requireSimilarity(m, 'a dimension');
+      const out = { ...e, a: P(e.a), b: P(e.b), position: P(e.position), rotation: ang(e.rotation) };
+      if (e.center) out.center = P(e.center);
+      // Under a mirror an angular dimension's legs swap so the arc still runs counter-clockwise.
+      if (mir && e.kind === 'angular') return { ...out, a: out.b, b: out.a };
+      return out;
+    }
+    case 'note': {
+      requireSimilarity(m, 'a note');
+      const out = { ...e, position: P(e.position), height: e.height * uniformScale(m), rotation: ang(e.rotation) };
+      if (e.leader) out.leader = e.leader.map(P);
+      return out;
+    }
+    case 'balloon':
+      return { ...e, position: P(e.position), leader: P(e.leader) };
+    case 'surface': {
+      requireSimilarity(m, 'a surface symbol');
+      const out = { ...e, position: P(e.position), rotation: ang(e.rotation) };
+      if (e.leader) out.leader = P(e.leader);
+      return out;
+    }
+    case 'gdt': {
+      requireSimilarity(m, 'a tolerance frame');
+      const out = { ...e, position: P(e.position), rotation: ang(e.rotation) };
+      if (e.leader) out.leader = P(e.leader);
+      return out;
+    }
+    case 'datum':
+      requireSimilarity(m, 'a datum');
+      return { ...e, position: P(e.position), rotation: ang(e.rotation) };
   }
 }

@@ -88,6 +88,9 @@ export function entityPrims(e: Entity, extend = false): Prim[] {
       for (const poly of flattenEntity(e, 0.001)) for (let i = 0; i + 1 < poly.length; i++) out.push(seg(poly[i], poly[i + 1]));
       return out;
     }
+    default:
+      // Annotations (dimensions, symbols) take part in no intersections.
+      return [];
   }
 }
 
@@ -467,6 +470,9 @@ export function closestPointOnEntity(p: Vec2, e: Entity): { point: Vec2; t?: num
       }
       return { point: best.point };
     }
+    default:
+      // Annotations: their insertion point.
+      return { point: e.position };
   }
 }
 
@@ -501,6 +507,8 @@ export function perpendicularFoot(p: Vec2, e: Entity): Vec2[] {
     case 'spline':
       return stationaryPoints(p, curveOf(e));
     case 'text':
+      return [];
+    default:
       return [];
   }
 }

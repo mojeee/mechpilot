@@ -1,0 +1,62 @@
+{
+  "id": "iso-3098",
+  "name": "ISO 3098 lettering",
+  "source": "ISO 3098-1:2015 Technical product documentation - Lettering - Part 1: General requirements (replaces ISO 3098-0:1997; same clause structure). Values below read from ISO 3098-0:1997.",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://law.resource.org/pub/in/bis/S01/is.9609.0.2001.pdf (IS 9609 (Part 0):2001, identical with ISO 3098-0:1997: clauses 4 to 6, Tables 1 and 2)",
+    "https://cdn.standards.iteh.ai/samples/41378/68ad6243f3454770a6c125cd67de86c0/SIST-EN-ISO-3098-1-2015.pdf (ISO 3098-1:2015 preview: contents only, same clauses 4 to 6)"
+  ],
+  "heights": [1.8, 2.5, 3.5, 5, 7, 10, 14, 20],
+  "heightsSource": "ISO 3098-0:1997, 5.3 Range of nominal sizes: '1,8 mm; 2,5 mm; 3,5 mm; 5 mm; 7 mm; 10 mm; 14 mm; 20 mm' (ratio sqrt(2), from ISO 216). The nominal size h is the height of the upper-case letters (5.1).",
+  "typesSource": "ISO 3098-0:1997, 5.5, Table 1 (type A) and Table 2 (type B). Values are multiples of h. b1: lettering with diacritical marks; b2: upper and lower case without diacritical marks; b3: upper case only.",
+  "types": {
+    "A": {
+      "lineWidth": "1/14",
+      "lowercaseHeight": "10/14",
+      "tail": "4/14",
+      "stem": "4/14",
+      "diacriticalArea": "5/14",
+      "characterSpacing": "2/14",
+      "minBaselineSpacing": { "b1": "25/14", "b2": "21/14", "b3": "17/14" },
+      "wordSpacing": "6/14"
+    },
+    "B": {
+      "lineWidth": "1/10",
+      "lowercaseHeight": "7/10",
+      "tail": "3/10",
+      "stem": "3/10",
+      "diacriticalArea": "4/10",
+      "characterSpacing": "2/10",
+      "minBaselineSpacing": { "b1": "19/10", "b2": "15/10", "b3": "13/10" },
+      "wordSpacing": "6/10",
+      "preferred": "Type B vertical is marked 'preferred application' in 5.5."
+    }
+  },
+  "spacingRule": "Space between characters = twice the line width; may be reduced to one line width for combinations such as LA, TV or Tr (ISO 3098-0:1997, 4.1).",
+  "slope": "Vertical, or inclined to the right at 75 degrees from the horizontal (ISO 3098-0:1997, 5.4).",
+  "lineWidthRule": "Line widths per ISO 128-20 (now ISO 128-2); the same line width for upper and lower case (5.3). Type B: d = h/10, so 3.5 mm lettering uses 0.35 mm, a width of the ISO 128-2 series.",
+  "designation": {
+    "format": "Lettering ISO 3098 - {type}{V|S}{L|G|C} - {h}",
+    "example": "Lettering ISO 3098 - BVL - 5 (type B, vertical, Latin, 5 mm)",
+    "source": "ISO 3098-0:1997, 6.1"
+  },
+  "default": {
+    "origin": "MechPilot's choice, not from the standard",
+    "type": "B",
+    "slope": "vertical",
+    "alphabet": "L",
+    "dimensions": 3.5,
+    "titleBlockLabels": 2.5,
+    "titleBlockValues": 3.5,
+    "titleBlockIdentificationNumber": 5,
+    "gridReference": 3.5,
+    "gridReferenceSource": "ISO 5457:1999, 4.4 (letters and numerals of the grid reference are 3,5 mm)",
+    "notes": "ISO 129-1:2018, 4.1.7 requires one character height for all dimensions and tolerances on a drawing."
+  },
+  "notes": [
+    "The multiples are stored as fractions; the app computes h * fraction. The tabulated millimetre values in Tables 1 and 2 are those products (some rounded, e.g. type A line width 0,13 for h = 1,8).",
+    "Types CA and CB (for numerically controlled lettering, ISO 3098-5) are not used by MechPilot."
+  ]
+}

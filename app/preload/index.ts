@@ -28,6 +28,7 @@ const api: MechPilotApi = {
     save: call('files:save'),
     openDxf: call('files:openDxf'),
     saveDxf: call('files:saveDxf'),
+    savePdf: call('files:savePdf'),
     autosave: call('files:autosave'),
     autosaveInfo: call('files:autosaveInfo'),
     readAutosave: call('files:readAutosave'),

@@ -5,6 +5,31 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## 0.3.0 — 2026-10-22 — M2 Dimensions and sheets
+
+### Added
+
+- Dimensions to ISO 129-1: linear (`DLI`), aligned (`DAL`), angular (`DAN`), radius (`DRA`),
+  diameter (`DDI`), ordinate (`DOR`). The value is measured from the geometry when drawn, never
+  stored; decimal comma on ISO drawings, ⌀ and R prefixes, override text with `<>`.
+- Tolerances: deviations, symmetric, limits, and ISO 286 classes (H7, g6 …) whose deviations come
+  from the library (`shared/fits.ts`); the Properties panel edits them.
+- Notes with leaders (`LE`), balloons (`BAL`), ISO 21920-1 surface texture symbols (`SURF`),
+  ISO 1101 geometrical tolerance frames (`TOL`, symbols drawn as lines) and datums (`DAT`).
+- Dimension style (ISO 3098 3.5 mm lettering, 30° closed filled arrowheads of length h, 8 × line
+  width extension overshoot, annotation scale) in the Properties panel.
+- Sheets: A0 to A4 to ISO 5457 (frame, zones, centring and trimming marks), ISO 7200 title block
+  with all 19 data fields, views at ISO 5455 scales; a Model / Sheet tab strip and a Sheets panel.
+- Vector PDF export at true scale (pdf-lib, Helvetica, black, 0.13 mm minimum line width), one
+  page per sheet, with ISO line widths printed as they are whatever the view scale.
+- Library data verified on the standards' own text: `sheets/iso-5457`, `title-blocks/iso-7200`,
+  `scales/iso-5455`, `lettering/iso-3098`, `dimensioning/iso-129-1`, `fits/iso-286` (IT01–IT18,
+  fundamental deviations, Δ), `gdt/iso-1101`, `surface/iso-21920-1`; `docs/standards.md`.
+- File format 3 (annotations, dimension style, sheets) with a migration from format 2.
+- Annotations are exploded into lines, arcs and text on DXF export.
+- Sample: the mounting bracket now carries dimensions with ±, deviations and an H7 fit, a
+  surface symbol, flatness and position frames, datums, a note, a balloon and an A3 sheet.
+
 ## 0.2.0 — 2026-10-22 — M1 2D drafting
 
 ### Added

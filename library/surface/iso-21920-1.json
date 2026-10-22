@@ -1,0 +1,52 @@
+{
+  "id": "iso-21920-1",
+  "name": "ISO 21920-1 surface texture indication",
+  "source": "ISO 21920-1:2021 Geometrical product specifications (GPS) - Surface texture: Profile - Part 1: Indication of surface texture (replaces ISO 1302:2002). Legacy proportions and the Ra series from ISO 1302:1978.",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://cdn.standards.iteh.ai/samples/72196/5012ce84af1a4629a79764a48401a1db/ISO-21920-1-2021.pdf (ISO 21920-1:2021 preview: clauses 5 to 6.4, Figures 4 and 5)",
+    "https://law.resource.org/pub/in/bis/S01/is.10719.1983.pdf (IS 10719:1983, identical with ISO 1302:1978: clauses 3 and 4, Table 1, Annex B)"
+  ],
+  "symbol": {
+    "source": "ISO 21920-1:2021, 6.2 and Figure 4",
+    "forms": [
+      { "id": "any", "meaning": "Any manufacturing process permitted", "meaningIt": "Qualsiasi processo ammesso", "figure": "Figure 4 a)" },
+      { "id": "removal-required", "meaning": "Material shall be removed", "meaningIt": "Asportazione di materiale richiesta", "figure": "Figure 4 b)", "addition": "a line closing the two legs into a triangle" },
+      { "id": "removal-not-permitted", "meaning": "Material removal is not permitted", "meaningIt": "Asportazione di materiale non ammessa", "figure": "Figure 4 c)", "addition": "a circle inscribed between the two legs" }
+    ],
+    "basicShape": "Two legs of unequal length, inclined at about 60 degrees to the line of the surface, the longer leg continuing in a horizontal line on top (ISO 1302:1978, 3.1 describes the legs; ISO 21920-1:2021 Figure 4 shows the shapes).",
+    "barAbove": "ISO 21920-1 symbols carry a short horizontal bar above the short leg, which distinguishes them from the ISO 1302 symbols and from areal surface texture symbols (ISO 21920-1:2021, 6.2, NOTE 2).",
+    "proportions": null,
+    "proportionsNote": "ISO 21920-1:2021 gives the proportions in Annex A (normative), which was not in the preview. Until it is seen, MechPilot draws the symbol with legacyProportions below and marks it as such.",
+    "legacyProportions": {
+      "source": "ISO 1302:1978, Annex B, B.1.1 and B.3 (withdrawn edition)",
+      "lineWidthInH": 0.1,
+      "lineWidthNote": "Symbol line thickness d' = h/10, h = height of the dimension lettering on the drawing (B.1.1).",
+      "table": [
+        { "h": 3.5, "lineWidth": 0.35, "H1": 5, "H2": 10 },
+        { "h": 5, "lineWidth": 0.5, "H1": 7, "H2": 14 },
+        { "h": 7, "lineWidth": 0.7, "H1": 10, "H2": 20 },
+        { "h": 10, "lineWidth": 1, "H1": 14, "H2": 28 },
+        { "h": 14, "lineWidth": 1.4, "H1": 20, "H2": 40 },
+        { "h": 20, "lineWidth": 2, "H1": 28, "H2": 56 }
+      ],
+      "meaning": "H1 = height of the short leg, H2 = height of the long leg (ISO 1302:1978, Figures 27 to 30)"
+    }
+  },
+  "indication": {
+    "minimal": "Graphical symbol, then the parameter symbol and its tolerance limit value, separated by a single blank, e.g. Ra 1,6 written under the horizontal line of the long leg (ISO 21920-1:2021, 6.1, 6.3.2 and Figure 5).",
+    "parametersWithDefaults": ["Rz", "Ra", "Rp", "Rv", "Rq", "Rmax", "Rt", "Pt"],
+    "parametersWithDefaultsSource": "ISO 21920-1:2021, 6.3.2, NOTE 1 (defaults in ISO 21920-3:2021, Tables 3 to 6)",
+    "orientation": "Symbol and text oriented to be read from the bottom or the right-hand side of the drawing; the symbol points to the surface from outside the material (ISO 1302:1978, 5.1; to confirm for ISO 21920-1 clause 9)."
+  },
+  "raSeries": [0.025, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.3, 12.5, 25, 50],
+  "raSeriesUnit": "µm",
+  "raSeriesSource": "ISO 1302:1978, 4.1.5, Table 1: Ra values with roughness grade numbers N1 (0,025) to N12 (50). Kept as the list of values MechPilot offers first; any value may be typed.",
+  "raGradeNumbers": ["N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10", "N11", "N12"],
+  "notes": [
+    "Ra values are micrometres by convention of the standard; raSeriesUnit says so explicitly. Every length on the symbol is in mm.",
+    "Whether the N grade numbers survive in ISO 1302:2002 or ISO 21920 was not checked; MechPilot does not write N numbers on drawings.",
+    "Complete indications (tolerance type, acceptance rule 16 % / max, filter types and nesting indices, evaluation length, manufacturing process, lay) follow ISO 21920-1:2021, 6.4 and Figures 7 to 9; MechPilot's first version writes only the minimal indication plus an optional process text."
+  ]
+}

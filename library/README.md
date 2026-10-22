@@ -9,10 +9,20 @@ Never add a table value you cannot verify against the standard: list it in `docs
 | Folder | What | Since |
 | --- | --- | --- |
 | `line-types/` | ISO 128-2 line types and the line-width series | M0 |
-| `title-blocks/` | ISO 7200 title block layouts | M2 |
-| `fits/` | ISO 286 deviations for the common fits | M2 |
+| `sheets/` | ISO 5457 sheet sizes, borders, grid reference zones, centring and trimming marks | M2 |
+| `title-blocks/` | ISO 7200 title block data fields (and MechPilot's own cell layout) | M2 |
+| `scales/` | ISO 5455 recommended scales and their designation | M2 |
+| `lettering/` | ISO 3098 lettering heights and proportions | M2 |
+| `dimensioning/` | ISO 129-1 arrowheads, extension lines, text placement, symbols | M2 |
+| `fits/` | ISO 286 standard tolerance grades, fundamental deviations and Δ values | M2 |
+| `gdt/` | ISO 1101 geometrical characteristics, symbols, frame proportions | M2 |
+| `surface/` | ISO 21920-1 surface texture symbols and the Ra series | M2 |
 | `materials/` | density and properties with their source | M4 |
 | `parts/` | ISO 4762 screws, ISO 4032 nuts, ISO 7089 washers, ISO 15 bearings, aluminium profiles | M6 |
+
+Standards data files (M2 on) carry `verification` ("primary" = the standard's own text was seen,
+"secondary" = two independent sources agree, listed in `docs/to-verify.md`) and `verifiedFrom`
+(the documents used). `docs/standards.md` summarizes what comes from each standard.
 
 ## line-types/*.json
 

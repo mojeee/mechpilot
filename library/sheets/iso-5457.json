@@ -1,0 +1,118 @@
+{
+  "id": "iso-5457",
+  "name": "ISO 5457 drawing sheet sizes and layout",
+  "source": "ISO 5457:1999 Technical product documentation - Sizes and layout of drawing sheets (with ISO 5457:1999/Amd 1:2010, whose text was not seen); A-series sizes from ISO 216",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://law.resource.org/pub/in/bis/S01/is.10711.2001.pdf (IS 10711:2001, identical with ISO 5457:1999: clauses 3 to 5, Tables 1 and 2, Figures 1 to 6)",
+    "https://cdn.standards.iteh.ai/samples/29944/551fb150d81042f69dd5d8f9961342c7/SIST-EN-ISO-5457-2002-Amd1-2010.pdf (Amd 1:2010 preview: front matter only)",
+    "https://www.dinmedia.de/en/standard/din-en-iso-5457/127423811 (DIN summary of Amd 1:2010, secondary)"
+  ],
+  "sizesSource": "ISO 5457:1999, 3.1 and Table 1 (trimmed sheet a1 x b1, drawing space a2 x b2 with tolerance +-0.5, untrimmed sheet a3 x b3 with tolerance +-2); orientation from 4.1; fields from 4.4 and Table 2. width and height are given as the sheet is used (A0 to A3 landscape, A4 portrait).",
+  "sizes": [
+    {
+      "id": "A0",
+      "width": 1189,
+      "height": 841,
+      "trimmed": { "a1": 841, "b1": 1189 },
+      "drawingSpace": { "a2": 821, "b2": 1159, "tolerance": 0.5 },
+      "untrimmed": { "a3": 880, "b3": 1230, "tolerance": 2 },
+      "frameMargins": { "left": 20, "top": 10, "right": 10, "bottom": 10 },
+      "zonesX": 24,
+      "zonesY": 16,
+      "orientation": "landscape"
+    },
+    {
+      "id": "A1",
+      "width": 841,
+      "height": 594,
+      "trimmed": { "a1": 594, "b1": 841 },
+      "drawingSpace": { "a2": 574, "b2": 811, "tolerance": 0.5 },
+      "untrimmed": { "a3": 625, "b3": 880, "tolerance": 2 },
+      "frameMargins": { "left": 20, "top": 10, "right": 10, "bottom": 10 },
+      "zonesX": 16,
+      "zonesY": 12,
+      "orientation": "landscape"
+    },
+    {
+      "id": "A2",
+      "width": 594,
+      "height": 420,
+      "trimmed": { "a1": 420, "b1": 594 },
+      "drawingSpace": { "a2": 400, "b2": 564, "tolerance": 0.5 },
+      "untrimmed": { "a3": 450, "b3": 625, "tolerance": 2 },
+      "frameMargins": { "left": 20, "top": 10, "right": 10, "bottom": 10 },
+      "zonesX": 12,
+      "zonesY": 8,
+      "orientation": "landscape"
+    },
+    {
+      "id": "A3",
+      "width": 420,
+      "height": 297,
+      "trimmed": { "a1": 297, "b1": 420 },
+      "drawingSpace": { "a2": 277, "b2": 390, "tolerance": 0.5 },
+      "untrimmed": { "a3": 330, "b3": 450, "tolerance": 2 },
+      "frameMargins": { "left": 20, "top": 10, "right": 10, "bottom": 10 },
+      "zonesX": 8,
+      "zonesY": 6,
+      "orientation": "landscape"
+    },
+    {
+      "id": "A4",
+      "width": 210,
+      "height": 297,
+      "trimmed": { "a1": 210, "b1": 297 },
+      "drawingSpace": { "a2": 180, "b2": 277, "tolerance": 0.5 },
+      "untrimmed": { "a3": 240, "b3": 330, "tolerance": 2 },
+      "frameMargins": { "left": 20, "top": 10, "right": 10, "bottom": 10 },
+      "zonesX": 4,
+      "zonesY": 6,
+      "orientation": "portrait",
+      "gridLabelsOnlyTopAndRight": true
+    }
+  ],
+  "frameMarginsSource": "ISO 5457:1999, 4.2: 'The border shall be 20 mm wide on the left edge, including the frame. It can be used as a filing margin. All other borders are 10 mm wide.' Table 1 drawing-space sizes agree (trimmed - 30 by trimmed - 20).",
+  "frameLineWidth": 0.7,
+  "frameLineWidthSource": "ISO 5457:1999, 4.2: the frame limiting the drawing space shall be continuous lines of 0,7 mm width.",
+  "zoneField": {
+    "length": 50,
+    "from": "the axes of symmetry of the trimmed sheet (the centring marks); the remainder of the division is added to the fields at the corners",
+    "rows": "capital letters from the top downwards, I and O not used",
+    "columns": "numerals from left to right",
+    "labelsOn": "both sides of the sheet; for A4 only at the top and the right side",
+    "labelHeight": 3.5,
+    "labelLettering": "vertical characters according to ISO 3098 (MechPilot uses type B vertical)",
+    "gridLineWidth": 0.35,
+    "source": "ISO 5457:1999, 4.4 and Table 2 (number of fields: A0 24 x 16, A1 16 x 12, A2 12 x 8, A3 8 x 6, A4 6 x 4, long side x short side)"
+  },
+  "centringMarks": {
+    "count": 4,
+    "position": "at the ends of the two axes of symmetry of the trimmed sheet, symmetry tolerance 1 mm",
+    "recommendedLineWidth": 0.7,
+    "recommendedExtentBeyondFrame": 10,
+    "recommendation": "continuous lines starting at the grid reference border and extending 10 mm beyond the drawing frame (into the drawing space); the form may be chosen freely",
+    "source": "ISO 5457:1999, 4.3 and Figure 5"
+  },
+  "trimmingMarks": {
+    "form": "two overlapping rectangles, 10 mm x 5 mm, in the borders at the four corners of the trimmed sheet",
+    "width": 10,
+    "height": 5,
+    "source": "ISO 5457:1999, 4.5 and Figure 6"
+  },
+  "titleBlock": {
+    "position": "A0 to A3: bottom right-hand corner of the drawing space; A4: the shorter (lower) part of the drawing space. The drawing reads in the direction of the title block.",
+    "source": "ISO 5457:1999, 4.1 (layout of the title block itself: ISO 7200, see library/title-blocks/iso-7200.json)"
+  },
+  "sizeDesignation": {
+    "position": "in the bottom border at the right corner",
+    "source": "ISO 5457:1999, 3.1 (see Figure 5)"
+  },
+  "notes": [
+    "Elongated sizes (e.g. A3.1 = short side of A3 with the long side of A1) should be avoided (ISO 5457:1999, 3.2, Figure 3); MechPilot does not offer them.",
+    "ISO 5457:1999/Amd 1:2010 allows A4 in both horizontal and vertical position according to DIN Media's summary of DIN EN ISO 5457 (changes Table 1, Figure 1 and 4.1 per Austrian Standards). The amendment's text was not seen, so A4 landscape is not in `sizes`; see docs/to-verify.md.",
+    "The width of the grid reference border (the strip between the frame and the trimmed edge that carries the letters and numerals) is drawn in Figure 4 but not stated in the text; it is left out (docs/to-verify.md).",
+    "Sheets larger than A0 need extra centring marks at the mid-point of each section to be filmed (4.3); MechPilot offers A0 to A4 only."
+  ]
+}

@@ -28,7 +28,18 @@ export type ToolId =
   | 'extend'
   | 'fillet'
   | 'chamfer'
-  | 'array';
+  | 'array'
+  | 'dim-linear'
+  | 'dim-aligned'
+  | 'dim-angular'
+  | 'dim-radius'
+  | 'dim-diameter'
+  | 'dim-ordinate'
+  | 'note'
+  | 'balloon'
+  | 'surface'
+  | 'gdt'
+  | 'datum';
 
 export interface ToolCtx {
   doc: Document;

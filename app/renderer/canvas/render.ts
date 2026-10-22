@@ -4,7 +4,11 @@
 // Entities are drawn in drawing order but batched by style (one stroke per run of equal style),
 // and only the entities whose box meets the view are drawn (the spatial index culls them).
 
-import type { Document, Entity, Id, Layer } from '@shared/doc/types';
+import type { Document, Entity, Id, Layer, Sheet } from '@shared/doc/types';
+import { annotationCtx, isAnnotation } from '@shared/doc/document';
+import { annotationPrims } from '@shared/draw/annotations';
+import { sheetPaper, sheetPrims, viewRect } from '@shared/draw/sheet';
+import { textWidth, type Prim } from '@shared/draw/primitives';
 import { arcPoints, bulgeToArc, ellipsePoints, polylineSegments, splinePoints } from '@shared/geometry/flatten';
 import { lineType } from '@shared/library';
 import type { Vec2 } from '@shared/geometry/vec2';
@@ -164,6 +168,80 @@ function drawText(ctx: CanvasRenderingContext2D, e: Entity & { type: 'text' }, v
   ctx.restore();
 }
 
+/** Draw display primitives (dimensions, symbols, sheet frames) in the given colour. */
+export function drawPrims(ctx: CanvasRenderingContext2D, prims: Prim[], view: ViewState, color: string, widthPx?: number): void {
+  const S = (p: Vec2) => worldToScreen(view, p);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.setLineDash([]);
+  for (const p of prims) {
+    switch (p.kind) {
+      case 'polyline': {
+        if (p.points.length < 2) break;
+        ctx.lineWidth = widthPx ?? Math.max(1, p.width * view.scale);
+        ctx.setLineDash(p.dash ? p.dash.map((d) => d * view.scale) : []);
+        ctx.beginPath();
+        polyPath(ctx, p.points.map(S), p.closed);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        break;
+      }
+      case 'polygon': {
+        ctx.beginPath();
+        polyPath(ctx, p.points.map(S), true);
+        ctx.fill();
+        break;
+      }
+      case 'arc': {
+        const c = S(p.center);
+        ctx.lineWidth = widthPx ?? Math.max(1, p.width * view.scale);
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, p.radius * view.scale, -p.start, -p.end, true);
+        ctx.stroke();
+        break;
+      }
+      case 'circle': {
+        const c = S(p.center);
+        ctx.lineWidth = widthPx ?? Math.max(1, p.width * view.scale);
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, p.radius * view.scale, 0, Math.PI * 2);
+        ctx.stroke();
+        break;
+      }
+      case 'ellipse': {
+        ctx.lineWidth = widthPx ?? Math.max(1, p.width * view.scale);
+        ctx.beginPath();
+        polyPath(ctx, ellipsePoints({ id: '', layer: '', type: 'ellipse', center: p.center, major: p.major, ratio: p.ratio, start: p.start, end: p.end }, Math.max(0.002, 0.25 / view.scale)).map(S), false);
+        ctx.stroke();
+        break;
+      }
+      case 'text': {
+        const px = p.height * view.scale;
+        const w = textWidth(p.text, p.height);
+        const shift = p.align === 'center' ? -w / 2 : p.align === 'right' ? -w : 0;
+        const pos = S({ x: p.position.x + shift * Math.cos(p.rotation), y: p.position.y + shift * Math.sin(p.rotation) });
+        if (px < 2) {
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(pos.x, pos.y);
+          ctx.lineTo(pos.x + w * view.scale * Math.cos(p.rotation), pos.y - w * view.scale * Math.sin(p.rotation));
+          ctx.stroke();
+          break;
+        }
+        ctx.save();
+        ctx.translate(pos.x, pos.y);
+        ctx.rotate(-p.rotation);
+        ctx.font = `${px / 0.72}px ${getComputedStyle(ctx.canvas).getPropertyValue('--font-ui') || 'sans-serif'}`;
+        ctx.textBaseline = 'alphabetic';
+        ctx.textAlign = 'left';
+        ctx.fillText(p.text, 0, 0);
+        ctx.restore();
+        break;
+      }
+    }
+  }
+}
+
 function dashFor(layer: Layer, scale: number): number[] {
   const lt = lineType(layer.lineType);
   if (!lt?.pattern) return [];
@@ -233,6 +311,12 @@ function drawEntities(ctx: CanvasRenderingContext2D, doc: Document, ids: Iterabl
       flush();
       key = '';
       drawText(ctx, e, view, color);
+      continue;
+    }
+    if (isAnnotation(e)) {
+      flush();
+      key = '';
+      drawPrims(ctx, annotationPrims(e, annotationCtx(doc)), view, color, override?.widthPx);
       continue;
     }
     const widthPx = override?.widthPx ?? Math.max(1, layer.lineWidth * view.scale);
@@ -410,6 +494,101 @@ export function renderOverlay(ctx: CanvasRenderingContext2D, s: Scene): void {
 export function render(ctx: CanvasRenderingContext2D, s: Scene): void {
   renderBase(ctx, s);
   renderOverlay(ctx, s);
+}
+
+/**
+ * A sheet: white paper with the frame, zones, title block and every view's content (the model
+ * drawn at the view's scale, clipped to the viewport). The view transform is in paper mm.
+ * Print preview is always white (CLAUDE.md, Theme).
+ */
+export function renderSheetBase(ctx: CanvasRenderingContext2D, s: Scene, sheet: Sheet, lang: 'en' | 'it'): void {
+  const { doc, view, size, dpr } = s;
+  const paper = sheetPaper(sheet);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // Desk around the paper, then the paper itself with a shadow.
+  ctx.fillStyle = '#5c646e';
+  ctx.fillRect(0, 0, size.w, size.h);
+  const tl = worldToScreen(view, { x: 0, y: paper.height });
+  const br = worldToScreen(view, { x: paper.width, y: 0 });
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.fillRect(tl.x + 4, tl.y + 4, br.x - tl.x, br.y - tl.y);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
+  ctx.lineCap = 'butt';
+  ctx.lineJoin = 'round';
+  // Sheet furniture in black.
+  drawPrims(ctx, sheetPrims(sheet, lang), view, '#000000');
+  // Each view: the model through a composed transform, clipped to the viewport.
+  for (const v of sheet.views) {
+    const r = viewRect(v);
+    const a = worldToScreen(view, { x: r.x, y: r.y + r.height });
+    const b = worldToScreen(view, { x: r.x + r.width, y: r.y });
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(a.x, a.y, b.x - a.x, b.y - a.y);
+    ctx.clip();
+    // model → paper: paper = v.position + (model − v.center) · v.scale; paper → screen: the view.
+    const scale = view.scale * v.scale;
+    const origin = {
+      x: view.origin.x + (v.position.x - v.center.x * v.scale) * view.scale,
+      y: view.origin.y - (v.position.y - v.center.y * v.scale) * view.scale,
+    };
+    const modelView: ViewState = { scale, origin };
+    const palette: Palette = { ...s.palette, foreground: '#000000', background: '#ffffff' };
+    // Layer widths are paper widths: draw with the paper scale, not the model scale.
+    drawEntitiesPaper(ctx, doc, doc.entityOrder, modelView, view.scale, palette);
+    ctx.restore();
+    // Viewport border as a faint guide (not printed).
+    ctx.strokeStyle = 'rgba(77,163,255,0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.strokeRect(a.x + 0.5, a.y + 0.5, b.x - a.x, b.y - a.y);
+    ctx.setLineDash([]);
+  }
+}
+
+/** drawEntities for a sheet view: geometry widths and dashes follow the paper scale. */
+function drawEntitiesPaper(ctx: CanvasRenderingContext2D, doc: Document, ids: Iterable<Id>, modelView: ViewState, paperScale: number, palette: Palette): void {
+  let open = false;
+  let key = '';
+  const flush = () => {
+    if (open) ctx.stroke();
+    open = false;
+  };
+  for (const id of ids) {
+    const e = doc.entities[id];
+    if (!e) continue;
+    const layer = doc.layers[e.layer];
+    if (!layer || !layer.visible) continue;
+    const color = layer.color === 'auto' ? palette.foreground : layer.color === '#e8ecf0' ? '#000000' : layer.color;
+    if (e.type === 'text') {
+      flush();
+      key = '';
+      drawText(ctx, e, modelView, color);
+      continue;
+    }
+    if (isAnnotation(e)) {
+      flush();
+      key = '';
+      drawPrims(ctx, annotationPrims(e, annotationCtx(doc)), modelView, color);
+      continue;
+    }
+    const widthPx = Math.max(1, layer.lineWidth * paperScale);
+    const dash = dashFor(layer, paperScale);
+    const k = `${color}|${widthPx}|${dash.join(',')}`;
+    if (k !== key) {
+      flush();
+      key = k;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = widthPx;
+      ctx.setLineDash(dash);
+      ctx.beginPath();
+      open = true;
+    }
+    tracePath(ctx, e, modelView);
+  }
+  flush();
+  ctx.setLineDash([]);
 }
 
 /** Points along an arc for the renderer's own use (exported for tests). */

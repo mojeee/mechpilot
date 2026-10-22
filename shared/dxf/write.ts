@@ -4,7 +4,9 @@
 // radians in MechPilot; ellipse parameters and everything else are written as they are.
 // Group codes: DXF Reference (Autodesk), sections HEADER, TABLES, BLOCKS, ENTITIES, OBJECTS.
 
-import { documentBox, entitiesInOrder, layersInOrder } from '../doc/document';
+import { annotationCtx as ctxOf, documentBox, entitiesInOrder, layersInOrder } from '../doc/document';
+import { annotationPrims } from '../draw/annotations';
+import { textWidth, type Prim } from '../draw/primitives';
 import type { Document, EllipseEntity, Entity, Layer, SplineEntity } from '../doc/types';
 import { ellipsePoints, splinePoints } from '../geometry/flatten';
 import { eq, normAngle, type Vec2 } from '../geometry/vec2';
@@ -428,6 +430,76 @@ export function writeDxf(doc: Document, opts: { version: DxfVersion }): string {
         o.pair(7, styleName);
         if (v2000) o.pair(100, 'AcDbText');
         return;
+      default:
+        // Annotations (dimensions, notes, symbols) are exploded into their drawn primitives:
+        // other programs then see exactly what the sheet shows (docs/dxf.md).
+        for (const p of annotationPrims(e, ctxOf(doc))) writePrim(p, layer);
+        return;
+    }
+  }
+
+  /** A display primitive as plain DXF entities (lines, arcs, circles, polylines, text). */
+  function writePrim(p: Prim, layer: string): void {
+    switch (p.kind) {
+      case 'polyline':
+        if (p.points.length < 2) return;
+        if (v2000) {
+          begin('LWPOLYLINE', layer, 'AcDbPolyline');
+          o.pair(90, p.points.length);
+          o.pair(70, p.closed ? 1 : 0);
+          o.pair(43, 0);
+          for (const q of p.points) {
+            o.pair(10, q.x);
+            o.pair(20, q.y);
+          }
+        } else r12Polyline(layer, p.points, p.closed);
+        return;
+      case 'polygon':
+        // Filled shapes (arrowheads) as closed polylines; DXF SOLID fills are not written.
+        writePrim({ kind: 'polyline', points: p.points, closed: true, width: 0 }, layer);
+        return;
+      case 'arc':
+        begin('ARC', layer, 'AcDbCircle');
+        o.point(10, p.center);
+        o.pair(40, p.radius);
+        if (v2000) o.pair(100, 'AcDbArc');
+        o.pair(50, deg(p.start));
+        o.pair(51, deg(p.end));
+        return;
+      case 'circle':
+        begin('CIRCLE', layer, 'AcDbCircle');
+        o.point(10, p.center);
+        o.pair(40, p.radius);
+        return;
+      case 'ellipse': {
+        const el: EllipseEntity = { id: '', layer: '', type: 'ellipse', center: p.center, major: p.major, ratio: p.ratio, start: p.start, end: p.end };
+        if (!v2000) {
+          const f = flattenForR12(el);
+          r12Polyline(layer, f.points, f.closed);
+          return;
+        }
+        begin('ELLIPSE', layer, 'AcDbEllipse');
+        o.point(10, el.center);
+        o.point(11, el.major);
+        o.pair(40, el.ratio);
+        o.pair(41, el.start);
+        o.pair(42, el.end);
+        return;
+      }
+      case 'text': {
+        // Left-aligned at the baseline point; centre/right alignments use the estimated width.
+        const w = textWidth(p.text, p.height);
+        const shift = p.align === 'center' ? -w / 2 : p.align === 'right' ? -w : 0;
+        const pos = { x: p.position.x + shift * Math.cos(p.rotation), y: p.position.y + shift * Math.sin(p.rotation) };
+        begin('TEXT', layer, 'AcDbText');
+        o.point(10, pos);
+        o.pair(40, p.height);
+        o.pair(1, encodeDxfText(p.text));
+        o.pair(50, deg(p.rotation));
+        o.pair(7, styleName);
+        if (v2000) o.pair(100, 'AcDbText');
+        return;
+      }
     }
   }
   o.pair(0, 'ENDSEC');

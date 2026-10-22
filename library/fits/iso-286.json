@@ -1,0 +1,368 @@
+{
+  "id": "iso-286",
+  "name": "ISO 286 standard tolerance grades and fundamental deviations",
+  "source": "ISO 286-1:2010 Geometrical product specifications (GPS) - ISO code system for tolerances on linear sizes - Part 1: Basis of tolerances, deviations and fits; ISO 286-2:2010 Part 2: Tables of standard tolerance classes and limit deviations for holes and shafts",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://cdn.standards.iteh.ai/samples/54915/7d6147c29fed4e31af36b60561e88752/ISO-286-2-2010.pdf (ISO 286-2:2010 preview: Table 1; Tables 2 and 3 for holes A to E)",
+    "https://law.resource.org/pub/in/bis/S01/is.919.1.1993.pdf (IS 919 (Part 1):1993, identical with ISO 286-1:1988: clause 9, Tables 2 and 3, Annex A)",
+    "https://cdn.standards.iteh.ai/samples/45975/c0a5df14167f48eebc6c17dc4da5f9c4/ISO-286-1-2010.pdf (ISO 286-1:2010 preview: terms and definitions only, no tables)"
+  ],
+  "verificationNotes": [
+    "itGrades: ISO 286-2:2010 Table 1 (reproduced there from ISO 286-1:2010), read from the standard's own preview on 2026-10-22. IT01 and IT0 are not given above 500 mm (null).",
+    "fundamentalDeviations: read from ISO 286-1:1988 Tables 2 (shafts) and 3 (holes) in the identical Indian adoption IS 919 (Part 1):1993. The 2010 edition's Tables 2 and 3 were not seen. Holes A, B, C, D and E were cross-checked against ISO 286-2:2010 Tables 2 and 3 (lower limit deviations EI) and agree for every size step up to 500 mm. The other letters come from the 1988 edition only (see docs/to-verify.md).",
+    "The Delta values equal IT(n) - IT(n-1) of itGrades for every step above 3 mm; scripts/check-library.mjs checks this."
+  ],
+  "sizeStepsSource": "ISO 286-1:1988, Annex A, Table 4 (main and intermediate size steps). Table 1 uses the main steps; Tables 2 and 3 use the intermediate steps for a, b, c and r to zc (A, B, C and R to ZC). Each step is \"above `over` up to and including `upTo`\" (the first step starts at 0 exclusive).",
+  "sizeSteps": [
+    {
+      "over": 0,
+      "upTo": 3
+    },
+    {
+      "over": 3,
+      "upTo": 6
+    },
+    {
+      "over": 6,
+      "upTo": 10
+    },
+    {
+      "over": 10,
+      "upTo": 14
+    },
+    {
+      "over": 14,
+      "upTo": 18
+    },
+    {
+      "over": 18,
+      "upTo": 24
+    },
+    {
+      "over": 24,
+      "upTo": 30
+    },
+    {
+      "over": 30,
+      "upTo": 40
+    },
+    {
+      "over": 40,
+      "upTo": 50
+    },
+    {
+      "over": 50,
+      "upTo": 65
+    },
+    {
+      "over": 65,
+      "upTo": 80
+    },
+    {
+      "over": 80,
+      "upTo": 100
+    },
+    {
+      "over": 100,
+      "upTo": 120
+    },
+    {
+      "over": 120,
+      "upTo": 140
+    },
+    {
+      "over": 140,
+      "upTo": 160
+    },
+    {
+      "over": 160,
+      "upTo": 180
+    },
+    {
+      "over": 180,
+      "upTo": 200
+    },
+    {
+      "over": 200,
+      "upTo": 225
+    },
+    {
+      "over": 225,
+      "upTo": 250
+    },
+    {
+      "over": 250,
+      "upTo": 280
+    },
+    {
+      "over": 280,
+      "upTo": 315
+    },
+    {
+      "over": 315,
+      "upTo": 355
+    },
+    {
+      "over": 355,
+      "upTo": 400
+    },
+    {
+      "over": 400,
+      "upTo": 450
+    },
+    {
+      "over": 450,
+      "upTo": 500
+    },
+    {
+      "over": 500,
+      "upTo": 560
+    },
+    {
+      "over": 560,
+      "upTo": 630
+    },
+    {
+      "over": 630,
+      "upTo": 710
+    },
+    {
+      "over": 710,
+      "upTo": 800
+    },
+    {
+      "over": 800,
+      "upTo": 900
+    },
+    {
+      "over": 900,
+      "upTo": 1000
+    },
+    {
+      "over": 1000,
+      "upTo": 1120
+    },
+    {
+      "over": 1120,
+      "upTo": 1250
+    },
+    {
+      "over": 1250,
+      "upTo": 1400
+    },
+    {
+      "over": 1400,
+      "upTo": 1600
+    },
+    {
+      "over": 1600,
+      "upTo": 1800
+    },
+    {
+      "over": 1800,
+      "upTo": 2000
+    },
+    {
+      "over": 2000,
+      "upTo": 2240
+    },
+    {
+      "over": 2240,
+      "upTo": 2500
+    },
+    {
+      "over": 2500,
+      "upTo": 2800
+    },
+    {
+      "over": 2800,
+      "upTo": 3150
+    }
+  ],
+  "itGradesSource": "ISO 286-2:2010, Table 1 \"Values of standard tolerance grades for nominal sizes up to 3 150 mm\" (from ISO 286-1:2010, Table 1). Converted to mm; one value per entry of sizeSteps (main-step values repeated over their intermediate steps).",
+  "itGrades": {
+    "IT01": [0.0003, 0.0004, 0.0004, 0.0005, 0.0005, 0.0006, 0.0006, 0.0006, 0.0006, 0.0008, 0.0008, 0.001, 0.001, 0.0012, 0.0012, 0.0012, 0.002, 0.002, 0.002, 0.0025, 0.0025, 0.003, 0.003, 0.004, 0.004, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    "IT0": [0.0005, 0.0006, 0.0006, 0.0008, 0.0008, 0.001, 0.001, 0.001, 0.001, 0.0012, 0.0012, 0.0015, 0.0015, 0.002, 0.002, 0.002, 0.003, 0.003, 0.003, 0.004, 0.004, 0.005, 0.005, 0.006, 0.006, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+    "IT1": [0.0008, 0.001, 0.001, 0.0012, 0.0012, 0.0015, 0.0015, 0.0015, 0.0015, 0.002, 0.002, 0.0025, 0.0025, 0.0035, 0.0035, 0.0035, 0.0045, 0.0045, 0.0045, 0.006, 0.006, 0.007, 0.007, 0.008, 0.008, 0.009, 0.009, 0.01, 0.01, 0.011, 0.011, 0.013, 0.013, 0.015, 0.015, 0.018, 0.018, 0.022, 0.022, 0.026, 0.026],
+    "IT2": [0.0012, 0.0015, 0.0015, 0.002, 0.002, 0.0025, 0.0025, 0.0025, 0.0025, 0.003, 0.003, 0.004, 0.004, 0.005, 0.005, 0.005, 0.007, 0.007, 0.007, 0.008, 0.008, 0.009, 0.009, 0.01, 0.01, 0.011, 0.011, 0.013, 0.013, 0.015, 0.015, 0.018, 0.018, 0.021, 0.021, 0.025, 0.025, 0.03, 0.03, 0.036, 0.036],
+    "IT3": [0.002, 0.0025, 0.0025, 0.003, 0.003, 0.004, 0.004, 0.004, 0.004, 0.005, 0.005, 0.006, 0.006, 0.008, 0.008, 0.008, 0.01, 0.01, 0.01, 0.012, 0.012, 0.013, 0.013, 0.015, 0.015, 0.016, 0.016, 0.018, 0.018, 0.021, 0.021, 0.024, 0.024, 0.029, 0.029, 0.035, 0.035, 0.041, 0.041, 0.05, 0.05],
+    "IT4": [0.003, 0.004, 0.004, 0.005, 0.005, 0.006, 0.006, 0.007, 0.007, 0.008, 0.008, 0.01, 0.01, 0.012, 0.012, 0.012, 0.014, 0.014, 0.014, 0.016, 0.016, 0.018, 0.018, 0.02, 0.02, 0.022, 0.022, 0.025, 0.025, 0.028, 0.028, 0.033, 0.033, 0.039, 0.039, 0.046, 0.046, 0.055, 0.055, 0.068, 0.068],
+    "IT5": [0.004, 0.005, 0.006, 0.008, 0.008, 0.009, 0.009, 0.011, 0.011, 0.013, 0.013, 0.015, 0.015, 0.018, 0.018, 0.018, 0.02, 0.02, 0.02, 0.023, 0.023, 0.025, 0.025, 0.027, 0.027, 0.032, 0.032, 0.036, 0.036, 0.04, 0.04, 0.047, 0.047, 0.055, 0.055, 0.065, 0.065, 0.078, 0.078, 0.096, 0.096],
+    "IT6": [0.006, 0.008, 0.009, 0.011, 0.011, 0.013, 0.013, 0.016, 0.016, 0.019, 0.019, 0.022, 0.022, 0.025, 0.025, 0.025, 0.029, 0.029, 0.029, 0.032, 0.032, 0.036, 0.036, 0.04, 0.04, 0.044, 0.044, 0.05, 0.05, 0.056, 0.056, 0.066, 0.066, 0.078, 0.078, 0.092, 0.092, 0.11, 0.11, 0.135, 0.135],
+    "IT7": [0.01, 0.012, 0.015, 0.018, 0.018, 0.021, 0.021, 0.025, 0.025, 0.03, 0.03, 0.035, 0.035, 0.04, 0.04, 0.04, 0.046, 0.046, 0.046, 0.052, 0.052, 0.057, 0.057, 0.063, 0.063, 0.07, 0.07, 0.08, 0.08, 0.09, 0.09, 0.105, 0.105, 0.125, 0.125, 0.15, 0.15, 0.175, 0.175, 0.21, 0.21],
+    "IT8": [0.014, 0.018, 0.022, 0.027, 0.027, 0.033, 0.033, 0.039, 0.039, 0.046, 0.046, 0.054, 0.054, 0.063, 0.063, 0.063, 0.072, 0.072, 0.072, 0.081, 0.081, 0.089, 0.089, 0.097, 0.097, 0.11, 0.11, 0.125, 0.125, 0.14, 0.14, 0.165, 0.165, 0.195, 0.195, 0.23, 0.23, 0.28, 0.28, 0.33, 0.33],
+    "IT9": [0.025, 0.03, 0.036, 0.043, 0.043, 0.052, 0.052, 0.062, 0.062, 0.074, 0.074, 0.087, 0.087, 0.1, 0.1, 0.1, 0.115, 0.115, 0.115, 0.13, 0.13, 0.14, 0.14, 0.155, 0.155, 0.175, 0.175, 0.2, 0.2, 0.23, 0.23, 0.26, 0.26, 0.31, 0.31, 0.37, 0.37, 0.44, 0.44, 0.54, 0.54],
+    "IT10": [0.04, 0.048, 0.058, 0.07, 0.07, 0.084, 0.084, 0.1, 0.1, 0.12, 0.12, 0.14, 0.14, 0.16, 0.16, 0.16, 0.185, 0.185, 0.185, 0.21, 0.21, 0.23, 0.23, 0.25, 0.25, 0.28, 0.28, 0.32, 0.32, 0.36, 0.36, 0.42, 0.42, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.86, 0.86],
+    "IT11": [0.06, 0.075, 0.09, 0.11, 0.11, 0.13, 0.13, 0.16, 0.16, 0.19, 0.19, 0.22, 0.22, 0.25, 0.25, 0.25, 0.29, 0.29, 0.29, 0.32, 0.32, 0.36, 0.36, 0.4, 0.4, 0.44, 0.44, 0.5, 0.5, 0.56, 0.56, 0.66, 0.66, 0.78, 0.78, 0.92, 0.92, 1.1, 1.1, 1.35, 1.35],
+    "IT12": [0.1, 0.12, 0.15, 0.18, 0.18, 0.21, 0.21, 0.25, 0.25, 0.3, 0.3, 0.35, 0.35, 0.4, 0.4, 0.4, 0.46, 0.46, 0.46, 0.52, 0.52, 0.57, 0.57, 0.63, 0.63, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.05, 1.05, 1.25, 1.25, 1.5, 1.5, 1.75, 1.75, 2.1, 2.1],
+    "IT13": [0.14, 0.18, 0.22, 0.27, 0.27, 0.33, 0.33, 0.39, 0.39, 0.46, 0.46, 0.54, 0.54, 0.63, 0.63, 0.63, 0.72, 0.72, 0.72, 0.81, 0.81, 0.89, 0.89, 0.97, 0.97, 1.1, 1.1, 1.25, 1.25, 1.4, 1.4, 1.65, 1.65, 1.95, 1.95, 2.3, 2.3, 2.8, 2.8, 3.3, 3.3],
+    "IT14": [0.25, 0.3, 0.36, 0.43, 0.43, 0.52, 0.52, 0.62, 0.62, 0.74, 0.74, 0.87, 0.87, 1, 1, 1, 1.15, 1.15, 1.15, 1.3, 1.3, 1.4, 1.4, 1.55, 1.55, 1.75, 1.75, 2, 2, 2.3, 2.3, 2.6, 2.6, 3.1, 3.1, 3.7, 3.7, 4.4, 4.4, 5.4, 5.4],
+    "IT15": [0.4, 0.48, 0.58, 0.7, 0.7, 0.84, 0.84, 1, 1, 1.2, 1.2, 1.4, 1.4, 1.6, 1.6, 1.6, 1.85, 1.85, 1.85, 2.1, 2.1, 2.3, 2.3, 2.5, 2.5, 2.8, 2.8, 3.2, 3.2, 3.6, 3.6, 4.2, 4.2, 5, 5, 6, 6, 7, 7, 8.6, 8.6],
+    "IT16": [0.6, 0.75, 0.9, 1.1, 1.1, 1.3, 1.3, 1.6, 1.6, 1.9, 1.9, 2.2, 2.2, 2.5, 2.5, 2.5, 2.9, 2.9, 2.9, 3.2, 3.2, 3.6, 3.6, 4, 4, 4.4, 4.4, 5, 5, 5.6, 5.6, 6.6, 6.6, 7.8, 7.8, 9.2, 9.2, 11, 11, 13.5, 13.5],
+    "IT17": [1, 1.2, 1.5, 1.8, 1.8, 2.1, 2.1, 2.5, 2.5, 3, 3, 3.5, 3.5, 4, 4, 4, 4.6, 4.6, 4.6, 5.2, 5.2, 5.7, 5.7, 6.3, 6.3, 7, 7, 8, 8, 9, 9, 10.5, 10.5, 12.5, 12.5, 15, 15, 17.5, 17.5, 21, 21],
+    "IT18": [1.4, 1.8, 2.2, 2.7, 2.7, 3.3, 3.3, 3.9, 3.9, 4.6, 4.6, 5.4, 5.4, 6.3, 6.3, 6.3, 7.2, 7.2, 7.2, 8.1, 8.1, 8.9, 8.9, 9.7, 9.7, 11, 11, 12.5, 12.5, 14, 14, 16.5, 16.5, 19.5, 19.5, 23, 23, 28, 28, 33, 33]
+  },
+  "fundamentalDeviationsSource": "ISO 286-1:1988, Table 2 (shafts: upper deviation es for a to h, lower deviation ei for k to zc) and Table 3 (holes: lower deviation EI for A to H, upper deviation ES for K to ZC), in mm with sign. Arrays follow sizeSteps; null = blank in the table, or not stored (every value above 500 mm is left out here).",
+  "fundamentalDeviations": {
+    "shaft": {
+      "a": [-0.27, -0.27, -0.28, -0.29, -0.29, -0.3, -0.3, -0.31, -0.32, -0.34, -0.36, -0.38, -0.41, -0.46, -0.52, -0.58, -0.66, -0.74, -0.82, -0.92, -1.05, -1.2, -1.35, -1.5, -1.65, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "b": [-0.14, -0.14, -0.15, -0.15, -0.15, -0.16, -0.16, -0.17, -0.18, -0.19, -0.2, -0.22, -0.24, -0.26, -0.28, -0.31, -0.34, -0.38, -0.42, -0.48, -0.54, -0.6, -0.68, -0.76, -0.84, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "c": [-0.06, -0.07, -0.08, -0.095, -0.095, -0.11, -0.11, -0.12, -0.13, -0.14, -0.15, -0.17, -0.18, -0.2, -0.21, -0.23, -0.24, -0.26, -0.28, -0.3, -0.33, -0.36, -0.4, -0.44, -0.48, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "d": [-0.02, -0.03, -0.04, -0.05, -0.05, -0.065, -0.065, -0.08, -0.08, -0.1, -0.1, -0.12, -0.12, -0.145, -0.145, -0.145, -0.17, -0.17, -0.17, -0.19, -0.19, -0.21, -0.21, -0.23, -0.23, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "e": [-0.014, -0.02, -0.025, -0.032, -0.032, -0.04, -0.04, -0.05, -0.05, -0.06, -0.06, -0.072, -0.072, -0.085, -0.085, -0.085, -0.1, -0.1, -0.1, -0.11, -0.11, -0.125, -0.125, -0.135, -0.135, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "f": [-0.006, -0.01, -0.013, -0.016, -0.016, -0.02, -0.02, -0.025, -0.025, -0.03, -0.03, -0.036, -0.036, -0.043, -0.043, -0.043, -0.05, -0.05, -0.05, -0.056, -0.056, -0.062, -0.062, -0.068, -0.068, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "g": [-0.002, -0.004, -0.005, -0.006, -0.006, -0.007, -0.007, -0.009, -0.009, -0.01, -0.01, -0.012, -0.012, -0.014, -0.014, -0.014, -0.015, -0.015, -0.015, -0.017, -0.017, -0.018, -0.018, -0.02, -0.02, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "h": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "k": {
+        "IT4-IT7": [0, 0.001, 0.001, 0.001, 0.001, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.003, 0.003, 0.003, 0.003, 0.003, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.005, 0.005, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT3-aboveIT7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+      },
+      "m": [0.002, 0.004, 0.006, 0.007, 0.007, 0.008, 0.008, 0.009, 0.009, 0.011, 0.011, 0.013, 0.013, 0.015, 0.015, 0.015, 0.017, 0.017, 0.017, 0.02, 0.02, 0.021, 0.021, 0.023, 0.023, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "n": [0.004, 0.008, 0.01, 0.012, 0.012, 0.015, 0.015, 0.017, 0.017, 0.02, 0.02, 0.023, 0.023, 0.027, 0.027, 0.027, 0.031, 0.031, 0.031, 0.034, 0.034, 0.037, 0.037, 0.04, 0.04, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "p": [0.006, 0.012, 0.015, 0.018, 0.018, 0.022, 0.022, 0.026, 0.026, 0.032, 0.032, 0.037, 0.037, 0.043, 0.043, 0.043, 0.05, 0.05, 0.05, 0.056, 0.056, 0.062, 0.062, 0.068, 0.068, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "r": [0.01, 0.015, 0.019, 0.023, 0.023, 0.028, 0.028, 0.034, 0.034, 0.041, 0.043, 0.051, 0.054, 0.063, 0.065, 0.068, 0.077, 0.08, 0.084, 0.094, 0.098, 0.108, 0.114, 0.126, 0.132, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "s": [0.014, 0.019, 0.023, 0.028, 0.028, 0.035, 0.035, 0.043, 0.043, 0.053, 0.059, 0.071, 0.079, 0.092, 0.1, 0.108, 0.122, 0.13, 0.14, 0.158, 0.17, 0.19, 0.208, 0.232, 0.252, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "t": [null, null, null, null, null, null, 0.041, 0.048, 0.054, 0.066, 0.075, 0.091, 0.104, 0.122, 0.134, 0.146, 0.166, 0.18, 0.196, 0.218, 0.24, 0.268, 0.294, 0.33, 0.36, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "u": [0.018, 0.023, 0.028, 0.033, 0.033, 0.041, 0.048, 0.06, 0.07, 0.087, 0.102, 0.124, 0.144, 0.17, 0.19, 0.21, 0.236, 0.258, 0.284, 0.315, 0.35, 0.39, 0.435, 0.49, 0.54, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "v": [null, null, null, null, 0.039, 0.047, 0.055, 0.068, 0.081, 0.102, 0.12, 0.146, 0.172, 0.202, 0.228, 0.252, 0.284, 0.31, 0.34, 0.385, 0.425, 0.475, 0.53, 0.595, 0.66, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "x": [0.02, 0.028, 0.034, 0.04, 0.045, 0.054, 0.064, 0.08, 0.097, 0.122, 0.146, 0.178, 0.21, 0.248, 0.28, 0.31, 0.35, 0.385, 0.425, 0.475, 0.525, 0.59, 0.66, 0.74, 0.82, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "y": [null, null, null, null, null, 0.063, 0.075, 0.094, 0.114, 0.144, 0.174, 0.214, 0.254, 0.3, 0.34, 0.38, 0.425, 0.47, 0.52, 0.58, 0.65, 0.73, 0.82, 0.92, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "z": [0.026, 0.035, 0.042, 0.05, 0.06, 0.073, 0.088, 0.112, 0.136, 0.172, 0.21, 0.258, 0.31, 0.365, 0.415, 0.465, 0.52, 0.575, 0.64, 0.71, 0.79, 0.9, 1, 1.1, 1.25, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "za": [0.032, 0.042, 0.052, 0.064, 0.077, 0.098, 0.118, 0.148, 0.18, 0.226, 0.274, 0.335, 0.4, 0.47, 0.535, 0.6, 0.67, 0.74, 0.82, 0.92, 1, 1.15, 1.3, 1.45, 1.6, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "zb": [0.04, 0.05, 0.067, 0.09, 0.108, 0.136, 0.16, 0.2, 0.242, 0.3, 0.36, 0.445, 0.525, 0.62, 0.7, 0.78, 0.88, 0.96, 1.05, 1.2, 1.3, 1.5, 1.65, 1.85, 2.1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "zc": [0.06, 0.08, 0.097, 0.13, 0.15, 0.188, 0.218, 0.274, 0.325, 0.405, 0.48, 0.585, 0.69, 0.8, 0.9, 1, 1.15, 1.25, 1.35, 1.55, 1.7, 1.9, 2.1, 2.4, 2.6, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    },
+    "hole": {
+      "A": [0.27, 0.27, 0.28, 0.29, 0.29, 0.3, 0.3, 0.31, 0.32, 0.34, 0.36, 0.38, 0.41, 0.46, 0.52, 0.58, 0.66, 0.74, 0.82, 0.92, 1.05, 1.2, 1.35, 1.5, 1.65, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "B": [0.14, 0.14, 0.15, 0.15, 0.15, 0.16, 0.16, 0.17, 0.18, 0.19, 0.2, 0.22, 0.24, 0.26, 0.28, 0.31, 0.34, 0.38, 0.42, 0.48, 0.54, 0.6, 0.68, 0.76, 0.84, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "C": [0.06, 0.07, 0.08, 0.095, 0.095, 0.11, 0.11, 0.12, 0.13, 0.14, 0.15, 0.17, 0.18, 0.2, 0.21, 0.23, 0.24, 0.26, 0.28, 0.3, 0.33, 0.36, 0.4, 0.44, 0.48, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "D": [0.02, 0.03, 0.04, 0.05, 0.05, 0.065, 0.065, 0.08, 0.08, 0.1, 0.1, 0.12, 0.12, 0.145, 0.145, 0.145, 0.17, 0.17, 0.17, 0.19, 0.19, 0.21, 0.21, 0.23, 0.23, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "E": [0.014, 0.02, 0.025, 0.032, 0.032, 0.04, 0.04, 0.05, 0.05, 0.06, 0.06, 0.072, 0.072, 0.085, 0.085, 0.085, 0.1, 0.1, 0.1, 0.11, 0.11, 0.125, 0.125, 0.135, 0.135, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "F": [0.006, 0.01, 0.013, 0.016, 0.016, 0.02, 0.02, 0.025, 0.025, 0.03, 0.03, 0.036, 0.036, 0.043, 0.043, 0.043, 0.05, 0.05, 0.05, 0.056, 0.056, 0.062, 0.062, 0.068, 0.068, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "G": [0.002, 0.004, 0.005, 0.006, 0.006, 0.007, 0.007, 0.009, 0.009, 0.01, 0.01, 0.012, 0.012, 0.014, 0.014, 0.014, 0.015, 0.015, 0.015, 0.017, 0.017, 0.018, 0.018, 0.02, 0.02, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "H": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "K": {
+        "upToIT8": [0, -0.001, -0.001, -0.001, -0.001, -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, -0.003, -0.003, -0.003, -0.003, -0.003, -0.004, -0.004, -0.004, -0.004, -0.004, -0.004, -0.004, -0.005, -0.005, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT8PlusDelta": true,
+        "aboveIT8": [0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+      },
+      "M": {
+        "upToIT8": [-0.002, -0.004, -0.006, -0.007, -0.007, -0.008, -0.008, -0.009, -0.009, -0.011, -0.011, -0.013, -0.013, -0.015, -0.015, -0.015, -0.017, -0.017, -0.017, -0.02, -0.02, -0.021, -0.021, -0.023, -0.023, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT8PlusDelta": true,
+        "aboveIT8": [-0.002, -0.004, -0.006, -0.007, -0.007, -0.008, -0.008, -0.009, -0.009, -0.011, -0.011, -0.013, -0.013, -0.015, -0.015, -0.015, -0.017, -0.017, -0.017, -0.02, -0.02, -0.021, -0.021, -0.023, -0.023, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+      },
+      "N": {
+        "upToIT8": [-0.004, -0.008, -0.01, -0.012, -0.012, -0.015, -0.015, -0.017, -0.017, -0.02, -0.02, -0.023, -0.023, -0.027, -0.027, -0.027, -0.031, -0.031, -0.031, -0.034, -0.034, -0.037, -0.037, -0.04, -0.04, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT8PlusDelta": true,
+        "aboveIT8": [-0.004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+      },
+      "P": {
+        "aboveIT7": [-0.006, -0.012, -0.015, -0.018, -0.018, -0.022, -0.022, -0.026, -0.026, -0.032, -0.032, -0.037, -0.037, -0.043, -0.043, -0.043, -0.05, -0.05, -0.05, -0.056, -0.056, -0.062, -0.062, -0.068, -0.068, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "R": {
+        "aboveIT7": [-0.01, -0.015, -0.019, -0.023, -0.023, -0.028, -0.028, -0.034, -0.034, -0.041, -0.043, -0.051, -0.054, -0.063, -0.065, -0.068, -0.077, -0.08, -0.084, -0.094, -0.098, -0.108, -0.114, -0.126, -0.132, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "S": {
+        "aboveIT7": [-0.014, -0.019, -0.023, -0.028, -0.028, -0.035, -0.035, -0.043, -0.043, -0.053, -0.059, -0.071, -0.079, -0.092, -0.1, -0.108, -0.122, -0.13, -0.14, -0.158, -0.17, -0.19, -0.208, -0.232, -0.252, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "T": {
+        "aboveIT7": [null, null, null, null, null, null, -0.041, -0.048, -0.054, -0.066, -0.075, -0.091, -0.104, -0.122, -0.134, -0.146, -0.166, -0.18, -0.196, -0.218, -0.24, -0.268, -0.294, -0.33, -0.36, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "U": {
+        "aboveIT7": [-0.018, -0.023, -0.028, -0.033, -0.033, -0.041, -0.048, -0.06, -0.07, -0.087, -0.102, -0.124, -0.144, -0.17, -0.19, -0.21, -0.236, -0.258, -0.284, -0.315, -0.35, -0.39, -0.435, -0.49, -0.54, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "V": {
+        "aboveIT7": [null, null, null, null, -0.039, -0.047, -0.055, -0.068, -0.081, -0.102, -0.12, -0.146, -0.172, -0.202, -0.228, -0.252, -0.284, -0.31, -0.34, -0.385, -0.425, -0.475, -0.53, -0.595, -0.66, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "X": {
+        "aboveIT7": [-0.02, -0.028, -0.034, -0.04, -0.045, -0.054, -0.064, -0.08, -0.097, -0.122, -0.146, -0.178, -0.21, -0.248, -0.28, -0.31, -0.35, -0.385, -0.425, -0.475, -0.525, -0.59, -0.66, -0.74, -0.82, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "Y": {
+        "aboveIT7": [null, null, null, null, null, -0.063, -0.075, -0.094, -0.114, -0.144, -0.174, -0.214, -0.254, -0.3, -0.34, -0.38, -0.425, -0.47, -0.52, -0.58, -0.65, -0.73, -0.82, -0.92, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "Z": {
+        "aboveIT7": [-0.026, -0.035, -0.042, -0.05, -0.06, -0.073, -0.088, -0.112, -0.136, -0.172, -0.21, -0.258, -0.31, -0.365, -0.415, -0.465, -0.52, -0.575, -0.64, -0.71, -0.79, -0.9, -1, -1.1, -1.25, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "ZA": {
+        "aboveIT7": [-0.032, -0.042, -0.052, -0.064, -0.077, -0.098, -0.118, -0.148, -0.18, -0.226, -0.274, -0.335, -0.4, -0.47, -0.535, -0.6, -0.67, -0.74, -0.82, -0.92, -1, -1.15, -1.3, -1.45, -1.6, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "ZB": {
+        "aboveIT7": [-0.04, -0.05, -0.067, -0.09, -0.108, -0.136, -0.16, -0.2, -0.242, -0.3, -0.36, -0.445, -0.525, -0.62, -0.7, -0.78, -0.88, -0.96, -1.05, -1.2, -1.3, -1.5, -1.65, -1.85, -2.1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      },
+      "ZC": {
+        "aboveIT7": [-0.06, -0.08, -0.097, -0.13, -0.15, -0.188, -0.218, -0.274, -0.325, -0.405, -0.48, -0.585, -0.69, -0.8, -0.9, -1, -1.15, -1.25, -1.35, -1.55, -1.7, -1.9, -2.1, -2.4, -2.6, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "upToIT7PlusDelta": true
+      }
+    },
+    "delta": {
+      "IT3": [0, 0.001, 0.001, 0.001, 0.001, 0.0015, 0.0015, 0.0015, 0.0015, 0.002, 0.002, 0.002, 0.002, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.004, 0.004, 0.004, 0.004, 0.005, 0.005, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "IT4": [0, 0.0015, 0.0015, 0.002, 0.002, 0.002, 0.002, 0.003, 0.003, 0.003, 0.003, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.005, 0.005, 0.005, 0.005, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "IT5": [0, 0.001, 0.002, 0.003, 0.003, 0.003, 0.003, 0.004, 0.004, 0.005, 0.005, 0.005, 0.005, 0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "IT6": [0, 0.003, 0.003, 0.003, 0.003, 0.004, 0.004, 0.005, 0.005, 0.006, 0.006, 0.007, 0.007, 0.007, 0.007, 0.007, 0.009, 0.009, 0.009, 0.009, 0.009, 0.011, 0.011, 0.013, 0.013, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "IT7": [0, 0.004, 0.006, 0.007, 0.007, 0.008, 0.008, 0.009, 0.009, 0.011, 0.011, 0.013, 0.013, 0.015, 0.015, 0.015, 0.017, 0.017, 0.017, 0.02, 0.02, 0.021, 0.021, 0.023, 0.023, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "IT8": [0, 0.006, 0.007, 0.009, 0.009, 0.012, 0.012, 0.014, 0.014, 0.016, 0.016, 0.019, 0.019, 0.023, 0.023, 0.023, 0.026, 0.026, 0.026, 0.029, 0.029, 0.032, 0.032, 0.034, 0.034, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    },
+    "deltaSource": "ISO 286-1:1988, Table 3, columns \"Values for Delta\", grades IT3 to IT8, in mm; null above 500 mm."
+  },
+  "formula": {
+    "source": "ISO 286-1:1988, Annex A, A.3.2.2 and Table 7; A.3.3 for 500 mm to 3 150 mm (ISO 286-1:2010 keeps the same bases in its Annex A; not seen)",
+    "note": "For information only: the tabulated values are definitive and shall be used when applying the system (ISO 286-1:1988, A.1). MechPilot uses itGrades, never the formula.",
+    "upTo500": "i = 0.45 * cbrt(D) + 0.001 * D (i in micrometres; D = geometric mean of the size step in mm, D = sqrt(1 * 3) for the first step)",
+    "above500": "I = 0.004 * D + 2.1 (micrometres)",
+    "multipliers": {
+      "IT5": 7,
+      "IT6": 10,
+      "IT7": 16,
+      "IT8": 25,
+      "IT9": 40,
+      "IT10": 64,
+      "IT11": 100,
+      "IT12": 160,
+      "IT13": 250,
+      "IT14": 400,
+      "IT15": 640,
+      "IT16": 1000,
+      "IT17": 1600,
+      "IT18": 2500
+    },
+    "multipliersAbove500IT1toIT4": {
+      "IT1": 2,
+      "IT2": 2.7,
+      "IT3": 3.7,
+      "IT4": 5
+    },
+    "rounding": "Values up to IT11 are rounded per ISO 286-1:1988 Table 8; above IT11 they follow from IT7 to IT11 by the factor 10 at every fifth grade (A.3.2.2), except IT6 for 3 to 6 mm."
+  },
+  "rules": {
+    "shaftAtoH": "Shafts a to h: the fundamental deviation is the upper deviation es (negative or zero); ei = es - IT. ISO 286-1:1988, 9.1 and Figure 17.",
+    "shaftKtoZC": "Shafts k to zc: the fundamental deviation is the lower deviation ei (positive or zero); es = ei + IT. ISO 286-1:1988, 9.1 and Figure 17.",
+    "shaftK": "Shaft k: ei = the \"IT4-IT7\" value for grades IT4 to IT7, and the \"upToIT3-aboveIT7\" value (0) otherwise. ISO 286-1:1988, Table 2.",
+    "holeAtoH": "Holes A to H: the fundamental deviation is the lower deviation EI (positive or zero); ES = EI + IT. ISO 286-1:1988, 9.2 and Figure 18.",
+    "holeKtoZC": "Holes K to ZC: the fundamental deviation is the upper deviation ES; EI = ES - IT. ISO 286-1:1988, 9.2 and Figure 18.",
+    "holeDelta": "K, M and N in grades up to IT8 (incl.) and P to ZC in grades up to IT7 (incl.): ES = tabulated value + Delta of that grade (fundamentalDeviations.delta). The standard's examples: K7 at 18 to 30 mm, ES = -2 + 8 = +6 um; S6 at 18 to 30 mm, ES = -35 + 4 = -31 um. ISO 286-1:1988, Table 3, footnote 3.",
+    "holeKAboveIT8": "Hole K above IT8: the table gives 0 for sizes up to 3 mm only; the other steps are blank (null).",
+    "holeNAboveIT8": "Hole N above IT8 shall not be used for sizes up to 1 mm. ISO 286-1:1988, Table 3, footnote 5.",
+    "specialM6": "Special case: tolerance class M6, 250 to 315 mm: ES = -9 um (instead of -11 um). ISO 286-1:1988, Table 3, footnote 4.",
+    "jsJS": "js and JS: symmetric, es = +IT/2 and ei = -IT/2 (ES and EI likewise). For js7 to js11 and JS7 to JS11 an odd IT value in micrometres may be rounded to the even number immediately below. ISO 286-1:1988, 9.3; Tables 2 and 3, footnote 2.",
+    "aAndB": "Fundamental deviations a, b, A and B shall not be used for sizes up to 1 mm. ISO 286-1:1988, Tables 2 and 3, footnote 1; ISO 286-2:2010, Table 2, footnote b.",
+    "abcAbove500": "Fundamental deviations A, B and C are not provided for nominal sizes above 500 mm. ISO 286-2:2010, Table 2, footnote a.",
+    "notStored": "Not stored: j and J (asymmetric; ISO 286-2 tables), cd, ef, fg, CD, EF, FG, and every deviation above 500 mm. A fit using them is reported as \"not in MechPilot's ISO 286 data\", never computed."
+  },
+  "notes": [
+    "Worked example: H7/g6 at 25 mm (step 24 to 30): hole EI = 0, ES = 0 + IT7 (0.021) = +0.021; shaft es = -0.007, ei = -0.007 - IT6 (0.013) = -0.020.",
+    "Reference temperature 20 degrees C (ISO 286-1:1988, clause 7, citing ISO 1)."
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "mechpilot",
   "productName": "MechPilot",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Open-source 2D/3D mechanical design: production drawings to ISO standards, with 3D parts built in. Local, no account, your files stay yours.",
   "private": true,
   "license": "Apache-2.0",
@@ -132,5 +132,8 @@
   },
   "allowScripts": {
     "electron-winstaller@5.4.0": true
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
   }
 }

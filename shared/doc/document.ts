@@ -1,8 +1,13 @@
 // Creating documents and reading them: bounds, lookups, hit tests. Nothing here mutates.
 
 import { boxOf, boxUnion, dist, distToSegment, fromAngle, add, angleInArc, angleOf, sub, type Box, type Vec2 } from '../geometry/vec2';
-import { flattenEntity } from '../geometry/flatten';
-import { FORMAT_NAME, FORMAT_VERSION, type Document, type Entity, type Id, type Layer } from './types';
+import { arcPoints, ellipsePoints, flattenEntity } from '../geometry/flatten';
+import { annotationPrims, DEFAULT_DIM_STYLE, type AnnotationCtx } from '../draw/annotations';
+import type { Prim } from '../draw/primitives';
+import { textWidth } from '../draw/primitives';
+import { ANNOTATION_TYPES, FORMAT_NAME, FORMAT_VERSION, type AnnotationEntity, type Document, type Entity, type Id, type Layer } from './types';
+
+export { DEFAULT_DIM_STYLE };
 
 /** The default layers of a new drawing. Line types and widths from library/line-types/iso-128-2.json. */
 export function defaultLayers(): Layer[] {
@@ -32,13 +37,63 @@ export function newDocument(name = 'Untitled'): Document {
     activeLayer: '0',
     entities: {},
     entityOrder: [],
+    dimStyle: { ...DEFAULT_DIM_STYLE },
+    sheets: {},
+    sheetOrder: [],
   };
 }
 
 export const entitiesInOrder = (doc: Document): Entity[] => doc.entityOrder.map((id) => doc.entities[id]).filter((e): e is Entity => e !== undefined);
 export const layersInOrder = (doc: Document): Layer[] => doc.layerOrder.map((id) => doc.layers[id]).filter((l): l is Layer => l !== undefined);
 
-export function entityBox(e: Entity): Box {
+export const isAnnotation = (e: Entity): e is AnnotationEntity => ANNOTATION_TYPES.has(e.type);
+
+/** The annotation context for a document (dimension style; fits come from the library when loaded). */
+export function annotationCtx(doc: Document, fit?: AnnotationCtx['fit']): AnnotationCtx {
+  return { style: doc.dimStyle, fit, standard: doc.standard };
+}
+
+/** Every primitive of an annotation flattened to point lists (for bounds, picking, DXF). */
+export function primPolylines(prims: Prim[], tol = 0.02): Vec2[][] {
+  const out: Vec2[][] = [];
+  for (const p of prims) {
+    switch (p.kind) {
+      case 'polyline':
+        out.push(p.closed ? [...p.points, p.points[0]] : p.points);
+        break;
+      case 'polygon':
+        out.push([...p.points, p.points[0]]);
+        break;
+      case 'arc':
+        out.push(arcPoints(p.center, p.radius, p.start, p.end, tol));
+        break;
+      case 'circle':
+        out.push(arcPoints(p.center, p.radius, 0, Math.PI * 2, tol));
+        break;
+      case 'ellipse':
+        out.push(ellipsePoints({ id: '', layer: '', type: 'ellipse', center: p.center, major: p.major, ratio: p.ratio, start: p.start, end: p.end }, tol));
+        break;
+      case 'text': {
+        const w = textWidth(p.text, p.height);
+        const u = fromAngle(p.rotation);
+        const v = { x: -u.y, y: u.x };
+        const x0 = p.align === 'left' ? 0 : p.align === 'center' ? -w / 2 : -w;
+        const c = [
+          { x: x0, y: 0 },
+          { x: x0 + w, y: 0 },
+          { x: x0 + w, y: p.height },
+          { x: x0, y: p.height },
+          { x: x0, y: 0 },
+        ];
+        out.push(c.map((q) => add(p.position, add({ x: u.x * q.x, y: u.y * q.x }, { x: v.x * q.y, y: v.y * q.y }))));
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+export function entityBox(e: Entity, ctx?: AnnotationCtx): Box {
   switch (e.type) {
     case 'line':
       return boxOf([e.a, e.b]) as Box;
@@ -53,6 +108,15 @@ export function entityBox(e: Entity): Box {
       }
       return boxOf(pts) as Box;
     }
+    case 'dimension':
+    case 'note':
+    case 'balloon':
+    case 'surface':
+    case 'gdt':
+    case 'datum': {
+      const pts = primPolylines(annotationPrims(e, ctx ?? { style: DEFAULT_DIM_STYLE }), 0.05).flat();
+      return (boxOf(pts) ?? { min: e.position, max: e.position }) as Box;
+    }
     default: {
       // Curves without a cheap closed form: the box of the flattened points (0.05 mm is plenty for bounds).
       const pts = flattenEntity(e, 0.05).flat();
@@ -63,9 +127,10 @@ export function entityBox(e: Entity): Box {
 
 export function documentBox(doc: Document, onlyVisible = true): Box | null {
   let box: Box | null = null;
+  const ctx = annotationCtx(doc);
   for (const e of entitiesInOrder(doc)) {
     if (onlyVisible && doc.layers[e.layer]?.visible === false) continue;
-    box = boxUnion(box, entityBox(e));
+    box = boxUnion(box, entityBox(e, ctx));
   }
   return box;
 }
@@ -84,7 +149,7 @@ export function distToPolyline(p: Vec2, pts: Vec2[], closed = false): number {
 }
 
 /** Distance from a point to the entity's curve, in mm (for text: to its box outline, 0 inside). */
-export function distToEntity(p: Vec2, e: Entity): number {
+export function distToEntity(p: Vec2, e: Entity, ctx?: AnnotationCtx): number {
   switch (e.type) {
     case 'line':
       return distToSegment(p, e.a, e.b);
@@ -100,6 +165,24 @@ export function distToEntity(p: Vec2, e: Entity): number {
     case 'text': {
       const box = flattenEntity(e)[0];
       return pointInPolygon(p, box) ? 0 : distToPolyline(p, box, true);
+    }
+    case 'dimension':
+    case 'note':
+    case 'balloon':
+    case 'surface':
+    case 'gdt':
+    case 'datum': {
+      const prims = annotationPrims(e, ctx ?? { style: DEFAULT_DIM_STYLE });
+      let best = Infinity;
+      for (const prim of prims) {
+        const polys = primPolylines([prim], 0.02);
+        for (const poly of polys) {
+          const closed = prim.kind === 'text' || prim.kind === 'polygon';
+          const d = closed && pointInPolygon(p, poly) ? 0 : distToPolyline(p, poly, false);
+          if (d < best) best = d;
+        }
+      }
+      return best;
     }
     default: {
       const polys = flattenEntity(e, 0.02);
@@ -124,12 +207,13 @@ export function pointInPolygon(p: Vec2, poly: Vec2[]): boolean {
 export function pick(doc: Document, p: Vec2, tolerance: number, candidates?: Iterable<Id>): Id | null {
   let best: { id: Id; d: number } | null = null;
   const ids = candidates ? [...candidates] : doc.entityOrder;
+  const ctx = annotationCtx(doc);
   for (const id of ids) {
     const e = doc.entities[id];
     if (!e) continue;
     const layer = doc.layers[e.layer];
     if (!layer || !layer.visible || layer.locked) continue;
-    const d = distToEntity(p, e);
+    const d = distToEntity(p, e, ctx);
     if (d <= tolerance && (!best || d <= best.d)) best = { id: e.id, d };
   }
   return best?.id ?? null;

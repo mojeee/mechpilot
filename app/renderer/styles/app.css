@@ -241,6 +241,42 @@ select:focus {
   flex-shrink: 0;
 }
 
+/* ---------- sheet tabs ---------- */
+.sheet-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 8px;
+  background: var(--chrome);
+  border-bottom: 1px solid var(--line);
+  height: 28px;
+  align-items: flex-end;
+}
+.stab {
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.stab.on {
+  background: var(--bg);
+  border-color: var(--line);
+  color: var(--text);
+}
+.stab.add {
+  color: var(--dim);
+}
+.stab:hover {
+  color: var(--text);
+}
+.view-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  margin: 8px 0;
+}
+
 /* ---------- recovery banner ---------- */
 .banner {
   display: flex;
@@ -314,8 +350,22 @@ select:focus {
   color: var(--muted);
 }
 .field input,
-.field select {
+.field select,
+.field textarea {
   width: 100%;
+}
+.field textarea {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  resize: vertical;
+  font: inherit;
+  color: inherit;
+}
+.field input[type='checkbox'] {
+  width: auto;
+  justify-self: start;
 }
 .input-unit {
   display: flex;

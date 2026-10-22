@@ -6,7 +6,7 @@
 
 import { useEffect, useRef } from 'react';
 import type { Vec2 } from '@shared/geometry/vec2';
-import { readPalette, renderBase, renderOverlay, type Scene } from '../canvas/render';
+import { readPalette, renderBase, renderOverlay, renderSheetBase, type Scene } from '../canvas/render';
 import { screenToWorld, useStore, type ViewState } from '../state/store';
 
 interface Cache {
@@ -93,7 +93,8 @@ export function Canvas2D() {
         selectBox: s.selectBox ? { ...s.selectBox, crossing: s.selectBox.b.x < s.selectBox.a.x } : null,
         palette: readPalette(canvas),
       };
-      const key = [s.editor.doc, s.gridOn, themeTick, s.canvasSize.w, s.canvasSize.h, dpr];
+      const sheet = s.activeSheet ? (s.editor.doc.sheets[s.activeSheet] ?? null) : null;
+      const key = [s.editor.doc, s.gridOn, themeTick, s.canvasSize.w, s.canvasSize.h, dpr, s.activeSheet, s.settings.lang];
       const sameKey = cache !== null && key.every((k, i) => k === cache!.key[i]);
       const sameView = cache !== null && cache.view.scale === s.view.scale && cache.view.origin.x === s.view.origin.x && cache.view.origin.y === s.view.origin.y;
       const canBlit = sameKey && !sameView && cache!.ms > BLIT_THRESHOLD_MS;
@@ -130,8 +131,11 @@ export function Canvas2D() {
         }
         const octx = off.getContext('2d')!;
         const t0 = performance.now();
-        scene.visible = s.visibleIds();
-        renderBase(octx, scene);
+        if (sheet) renderSheetBase(octx, scene, sheet, s.settings.lang);
+        else {
+          scene.visible = s.visibleIds();
+          renderBase(octx, scene);
+        }
         const ms = performance.now() - t0;
         perf.full++;
         perf.fullMs += ms;

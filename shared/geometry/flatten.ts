@@ -274,6 +274,10 @@ export function flattenEntity(e: Entity, tol = 0.01): Vec2[][] {
       return [splinePoints(e, tol)];
     case 'text':
       return [textBox(e)];
+    default:
+      // Annotations (dimensions, symbols) are drawn from primitives: see shared/draw/annotations.ts
+      // and primPolylines in shared/doc/document.ts.
+      return [];
   }
 }
 

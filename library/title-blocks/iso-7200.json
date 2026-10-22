@@ -1,0 +1,64 @@
+{
+  "id": "iso-7200",
+  "name": "ISO 7200 title block data fields",
+  "source": "ISO 7200:2004 Technical product documentation - Data fields in title blocks and document headers (second edition, confirmed, current)",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://law.resource.org/pub/in/bis/S01/is.11665.2010.pdf (IS 11665:2009, identical with ISO 7200:2004: clauses 1 to 6, Tables 1 to 3, Figures 1 and 2)"
+  ],
+  "maxWidth": 180,
+  "maxWidthSource": "ISO 7200:2004, clause 6: 'The total width is 180 mm to fit an A4 sheet, with the left margin being 20 mm and the right margin 10 mm. The same title block is used for all paper sizes.' Position on the sheet: ISO 5457 (library/sheets/iso-5457.json).",
+  "fieldsSource": "ISO 7200:2004, 5.1 Table 1 (identifying), 5.2 Table 2 (descriptive), 5.3 Table 3 (administrative); M = mandatory, O = optional. maxChars = the standard's recommended number of characters (null = 'unspecified'). nameIt is MechPilot's own translation: the Italian text of UNI EN ISO 7200 was not available.",
+  "fields": [
+    { "id": "legalOwner", "group": "identifying", "clause": "5.1.2", "name": "Legal owner", "nameIt": "Proprietario legale", "mandatory": true, "languageDependent": null, "maxChars": null, "note": "Firm, company or enterprise; may be a name, an abridged trade name or a logotype. Language-dependent column is '-' in Table 1." },
+    { "id": "identificationNumber", "group": "identifying", "clause": "5.1.3", "name": "Identification number", "nameIt": "Numero di identificazione", "mandatory": true, "languageDependent": false, "maxChars": 16, "note": "Unique at least within the legal owner's organization." },
+    { "id": "revisionIndex", "group": "identifying", "clause": "5.1.4", "name": "Revision index", "nameIt": "Indice di revisione", "mandatory": false, "languageDependent": false, "maxChars": 2, "note": "A to Z, then AA, AB ... or 1, 2, 3 ...; avoid I and O. The date of issue alone may be used instead." },
+    { "id": "dateOfIssue", "group": "identifying", "clause": "5.1.5", "name": "Date of issue", "nameIt": "Data di emissione", "mandatory": true, "languageDependent": false, "maxChars": 10, "note": "Date of first release and of every later released version (the standard's example: 2002-05-14)." },
+    { "id": "sheetNumber", "group": "identifying", "clause": "5.1.6", "name": "Segment/sheet number", "nameIt": "Numero del foglio", "mandatory": true, "languageDependent": false, "maxChars": 4, "note": "For technical drawings the segments are called sheets." },
+    { "id": "numberOfSheets", "group": "identifying", "clause": "5.1.7", "name": "Number of segments/sheets", "nameIt": "Numero di fogli", "mandatory": false, "languageDependent": false, "maxChars": 4, "note": "Total number of sheets of the document." },
+    { "id": "languageCode", "group": "identifying", "clause": "5.1.8", "name": "Language code", "nameIt": "Codice della lingua", "mandatory": false, "languageDependent": false, "maxChars": 4, "maxCharsPer": "language", "note": "Per ISO 639 (e.g. en, it); in a multilingual document the codes are separated by an appropriate sign." },
+    { "id": "title", "group": "descriptive", "clause": "5.2.2", "name": "Title", "nameIt": "Titolo", "mandatory": true, "languageDependent": true, "maxChars": 25, "maxCharsTwoByte": 30, "note": "Established terms; avoid abbreviations and titles that limit a part to one use." },
+    { "id": "supplementaryTitle", "group": "descriptive", "clause": "5.2.3", "name": "Supplementary title", "nameIt": "Titolo supplementare", "mandatory": false, "languageDependent": true, "maxChars": 50, "maxCharsTwoByte": 60, "note": "Recommended 2 x 25 characters (2 x 30 for two-byte languages)." },
+    { "id": "responsibleDepartment", "group": "administrative", "clause": "5.3.2", "name": "Responsible department", "nameIt": "Reparto responsabile", "mandatory": false, "languageDependent": "No/Yes", "maxChars": 10, "note": "Unit responsible for content and maintenance at release." },
+    { "id": "technicalReference", "group": "administrative", "clause": "5.3.3", "name": "Technical reference", "nameIt": "Riferimento tecnico", "mandatory": false, "languageDependent": "No/Yes", "maxChars": 20, "note": "Contact person for the technical content, within the legal owner's organization." },
+    { "id": "approvalPerson", "group": "administrative", "clause": "5.3.4", "name": "Approval person", "nameIt": "Approvato da", "mandatory": true, "languageDependent": "No/Yes", "maxChars": 20, "note": "Person who approved the document." },
+    { "id": "creator", "group": "administrative", "clause": "5.3.5", "name": "Creator", "nameIt": "Redatto da", "mandatory": true, "languageDependent": "No/Yes", "maxChars": 20, "note": "Person who prepared or revised the document (Figure 1 labels it 'Created by')." },
+    { "id": "documentType", "group": "administrative", "clause": "5.3.6", "name": "Document type", "nameIt": "Tipo di documento", "mandatory": true, "languageDependent": true, "maxChars": 30, "note": "Role of the document, e.g. 'Sub-assembly drawing' (Figure 1)." },
+    { "id": "classification", "group": "administrative", "clause": "5.3.7", "name": "Classification/key words", "nameIt": "Classificazione/parole chiave", "mandatory": false, "languageDependent": "No/Yes", "maxChars": null, "note": "Text or code for retrieval; 'unspecified' length." },
+    { "id": "documentStatus", "group": "administrative", "clause": "5.3.8", "name": "Document status", "nameIt": "Stato del documento", "mandatory": false, "languageDependent": true, "maxChars": 20, "note": "e.g. In preparation, Under approval, Released, Withdrawn." },
+    { "id": "pageNumber", "group": "administrative", "clause": "5.3.9", "name": "Page number", "nameIt": "Numero di pagina", "mandatory": false, "languageDependent": false, "maxChars": 4, "note": "Usually generated by the presentation system; mainly for text documents." },
+    { "id": "numberOfPages", "group": "administrative", "clause": "5.3.10", "name": "Number of pages", "nameIt": "Numero di pagine", "mandatory": false, "languageDependent": false, "maxChars": 4, "note": "Depends on the presentation format." },
+    { "id": "paperSize", "group": "administrative", "clause": "5.3.11", "name": "Paper size", "nameIt": "Formato", "mandatory": false, "languageDependent": false, "maxChars": 4, "note": "Size of the original document's form, e.g. A4." }
+  ],
+  "letteringHeights": null,
+  "letteringHeightsNote": "ISO 7200:2004 gives no lettering heights for the fields. MechPilot's choice (library/lettering/iso-3098.json, `default`): labels 2.5 mm, values 3.5 mm, identification number 5 mm, all ISO 3098 type B vertical.",
+  "layout": {
+    "origin": "MechPilot's own, not from the standard. Drawn after the proportions of ISO 7200:2004 Figure 1 ('Title block in compact form'), which states only the 180 mm overall width; the cell sizes below are MechPilot's rounded choice.",
+    "width": 180,
+    "height": 27,
+    "coordinates": "x from the left edge, y from the top edge of the title block, mm; the block sits in the bottom right corner of the drawing space (ISO 5457:1999, 4.1)",
+    "labelHeight": 2.5,
+    "valueHeight": 3.5,
+    "cells": [
+      { "field": "responsibleDepartment", "x": 0, "y": 0, "w": 32, "h": 9 },
+      { "field": "technicalReference", "x": 32, "y": 0, "w": 42, "h": 9 },
+      { "field": "documentType", "x": 74, "y": 0, "w": 61, "h": 9 },
+      { "field": "documentStatus", "x": 135, "y": 0, "w": 45, "h": 9 },
+      { "field": "legalOwner", "x": 0, "y": 9, "w": 32, "h": 18 },
+      { "field": "creator", "x": 32, "y": 9, "w": 42, "h": 9 },
+      { "field": "approvalPerson", "x": 32, "y": 18, "w": 42, "h": 9 },
+      { "field": "title", "x": 74, "y": 9, "w": 55, "h": 18, "alsoShows": "supplementaryTitle" },
+      { "field": "identificationNumber", "x": 129, "y": 9, "w": 51, "h": 9, "valueHeight": 5 },
+      { "field": "revisionIndex", "x": 129, "y": 18, "w": 7, "h": 9 },
+      { "field": "dateOfIssue", "x": 136, "y": 18, "w": 25, "h": 9 },
+      { "field": "languageCode", "x": 161, "y": 18, "w": 10, "h": 9 },
+      { "field": "sheetNumber", "x": 171, "y": 18, "w": 9, "h": 9, "format": "{sheetNumber}/{numberOfSheets}" }
+    ]
+  },
+  "notes": [
+    "Scale, projection symbol, general tolerances and surface texture are not title-block fields in ISO 7200:2004: they are 'handled dynamically and presented outside the title block only when used' (clause 4). ISO 5455:1979, 4.1 asks for the main scale in the title block; MechPilot shows it in an extra row above the block (its own choice).",
+    "Figure 2 of the standard shows an alternative arrangement with the person-name fields on an additional line.",
+    "Data fields such as creator and approval person may be shown in a separate document part, e.g. a revision description (5.3.1)."
+  ]
+}

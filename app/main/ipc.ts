@@ -128,6 +128,25 @@ export function registerIpc(deps: IpcDeps): void {
     }
   });
 
+  ipcMain.handle('files:savePdf', async (e, bytes: unknown, suggestedName: unknown): Promise<Result<{ path: string } | null>> => {
+    if (!(bytes instanceof Uint8Array)) return err('bad-request', t('Nothing to save.'));
+    const name = (typeof suggestedName === 'string' && suggestedName ? suggestedName : 'drawing').replace(/[\\/:*?"<>|]/g, '_');
+    let target: string;
+    if (deps.saveDirOverride) target = join(deps.saveDirOverride, name + '.pdf');
+    else {
+      const win = BrowserWindow.fromWebContents(e.sender) ?? undefined;
+      const r = await dialog.showSaveDialog(win as BrowserWindow, { title: t('Export PDF'), defaultPath: name + '.pdf', filters: [{ name: 'PDF', extensions: ['pdf'] }] });
+      if (r.canceled || !r.filePath) return { ok: true, value: null };
+      target = r.filePath;
+    }
+    try {
+      await writeFile(target, bytes);
+      return { ok: true, value: { path: target } };
+    } catch (ex) {
+      return err('write-failed', t('Could not save {name}: {reason}', { name: basename(target), reason: reason(ex) }), t('Check that the folder exists and is not read-only.'));
+    }
+  });
+
   // Crash recovery: one autosave file in the app data folder plus a small meta file. It is removed
   // on a successful save and when the user dismisses the recovery offer.
   const autosavePath = join(deps.dataDir, 'autosave.mechpilot.json');

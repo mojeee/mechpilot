@@ -33,13 +33,13 @@ entry in `docs/progress.md`.
 
 ## M2 Dimensions and sheets
 
-- [ ] Dimensions: linear, aligned, angular, radius, diameter, ordinate (ISO 129-1)
-- [ ] Tolerances and ISO 286 fits; surface texture symbols (ISO 21920-1); GD&T frames (ISO 1101)
-- [ ] Notes and balloons
-- [ ] Sheets A4 to A0 with frame, zones and an ISO 7200 title block
-- [ ] Views at standard scales (ISO 5455)
-- [ ] Vector PDF export at true scale, print preview always white
-- [ ] Sample: mounting bracket with fits and tolerances
+- [x] Dimensions: linear, aligned, angular, radius, diameter, ordinate (ISO 129-1)
+- [x] Tolerances and ISO 286 fits; surface texture symbols (ISO 21920-1); GD&T frames (ISO 1101)
+- [x] Notes and balloons
+- [x] Sheets A4 to A0 with frame, zones and an ISO 7200 title block
+- [x] Views at standard scales (ISO 5455)
+- [x] Vector PDF export at true scale, print preview always white
+- [x] Sample: mounting bracket with fits and tolerances
 
 ## M3 Parametric sketches
 

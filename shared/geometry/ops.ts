@@ -272,6 +272,9 @@ export function offsetEntity(e: Entity, distance: number, towards: Vec2, ids: Id
     }
     case 'text':
       return null;
+    default:
+      // Annotations are not offset.
+      return null;
   }
 }
 
@@ -560,7 +563,7 @@ function polylineCuts(e: PolylineEntity, pts: Vec2[]): Cut[] {
  * remaining piece keeps the id of `e`, any second one gets `ids()`.
  */
 export function trim(e: Entity, cutters: Entity[], pick: Vec2, ids: IdGen): Entity[] | null {
-  if (e.type === 'spline' || e.type === 'text') return null;
+  if (e.type !== 'line' && e.type !== 'arc' && e.type !== 'circle' && e.type !== 'ellipse' && e.type !== 'polyline') return null;
   const pts = cutsOf(e, cutters);
   if (pts.length === 0) return null;
   const tolEnd = 1e-7;
@@ -816,6 +819,8 @@ export function splitAt(e: Entity, p: Vec2, ids: IdGen): Entity[] {
     }
     case 'text':
       return [e];
+    default:
+      return [e];
   }
 }
 
@@ -888,7 +893,7 @@ export function arrayPolar(entities: Entity[], center: Vec2, count: number, tota
   const step = full ? totalAngle / count : totalAngle / (count - 1);
   let ref: Vec2 = center;
   if (!rotateItems) {
-    const boxes = entities.map(entityBox);
+    const boxes = entities.map((e) => entityBox(e));
     const min = { x: Math.min(...boxes.map((b) => b.min.x)), y: Math.min(...boxes.map((b) => b.min.y)) };
     const max = { x: Math.max(...boxes.map((b) => b.max.x)), y: Math.max(...boxes.map((b) => b.max.y)) };
     ref = mid(min, max);
@@ -1007,6 +1012,8 @@ export function lengthOf(e: Entity): number {
     case 'spline':
       return e.controlPoints.length < 2 || e.degree < 1 ? 0 : lengthOfSpeed(splineSpeed(e));
     case 'text':
+      return 0;
+    default:
       return 0;
   }
 }

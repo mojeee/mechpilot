@@ -65,8 +65,34 @@ Angles are radians, counter-clockwise, y up.
 | `text` | `position` (baseline left), `text`, `height` in mm, `rotation` |
 
 Format 1 (M0) had line, circle and arc only; a format-1 file is upgraded to format 2 unchanged.
-Dimensions and annotations arrive with M2, sketches and constraints with M3, parts with M4. Each
-addition bumps `version` and ships a migration.
+
+## Annotations (format 3)
+
+| `type` | Fields |
+| --- | --- |
+| `dimension` | `kind` (`linear`, `aligned`, `angular`, `radius`, `diameter`, `ordinate`), `a`, `b` (measured points; for radius/diameter `a` is the centre and `b` a point on the curve; for ordinate `a` is the origin), `position` (the dimension line passes through it, or the leader ends there), `rotation` (direction of a linear or ordinate dimension), `center` (angular: the vertex); optional `text` (override, `<>` = measured value), `prefix`, `suffix`, `decimals`, `tolerance` |
+| `tolerance` | `{ kind: "deviation", upper, lower }` in mm, `{ kind: "symmetric", value }`, `{ kind: "limits", upper, lower }`, or `{ kind: "fit", cls: "H7" }` (ISO 286 class; the deviations come from the library) |
+| `note` | `position`, `text` (lines separated by `\n`), `height`, `rotation`; optional `leader`: points from the arrow tip to the text |
+| `balloon` | `position` (circle centre), `text`, `leader` (arrow tip) |
+| `surface` | `position` (tip on the surface), `rotation`, `removal` (`any`, `required`, `prohibited`); optional `ra` (µm), `text`, `leader` |
+| `gdt` | `position`, `rotation`, `characteristic` (id from `library/gdt/iso-1101.json`), `tolerance` (text), `datums` (up to three letters); optional `leader` |
+| `datum` | `position` (triangle on the feature), `rotation`, `label` |
+
+Annotations are drawn from the document's `dimStyle` (paper mm: `textHeight`, `arrowSize`,
+`extensionOvershoot`, `extensionGap`, `textGap`, `decimals`, `annotationScale`, `arrowhead`).
+The measured value is computed from the geometry when the drawing is shown, never stored, so a
+dimension can never disagree with what it measures.
+
+## Sheets (format 3)
+
+`sheetOrder` / `sheets`: each sheet has `name`, `size` (A0 to A4), `orientation`, `titleBlock`
+(ISO 7200 field id → text) and `views`: windows onto the model placed on the paper, each with
+`scale` (ratio: 0.5 for 1:2), `center` (model point at the centre of the viewport), `position`,
+`width`, `height` (paper mm) and `label` (draw "SCALE 1:2" under it). A format-2 file gets the
+default dimension style and no sheets.
+
+Sketches and constraints arrive with M3, parts with M4. Each addition bumps `version` and ships a
+migration.
 
 ## Migrations
 

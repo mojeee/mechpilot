@@ -40,6 +40,26 @@ Node 24 is required. The first `npm install` downloads Electron (about 100 MB).
     [file-format.md](file-format.md). **File > Export DXF** writes a DXF 2000 or R12 for other CAD
     tools; **File > Import DXF** reads one (see [dxf.md](dxf.md)).
 
+## Dimensions, symbols and sheets
+
+- **Dimensions:** `DLI` linear (two points, then where the dimension line goes; `H` or `V`
+  forces the direction), `DAL` aligned, `DAN` angular (click two lines, then the arc position),
+  `DRA` radius and `DDI` diameter (click the arc or circle, then the text position), `DOR`
+  ordinate (origin, then feature points). The value is measured from the geometry; select a
+  dimension to add a tolerance (deviations, ±, limits or an ISO 286 class such as H7) or an
+  override text (`<>` stands for the measured value) in the Properties panel.
+- **Symbols:** `LE` note with leader (`|` in the text starts a new line), `BAL` balloon, `SURF`
+  surface texture (A / R / P for any process, removal required or prohibited, then `Ra 3.2`),
+  `TOL` geometrical tolerance frame (`FLAT 0.05 A` style prompts), `DAT` datum.
+- **Dimension style:** with nothing selected, the Properties panel shows the lettering height,
+  arrowheads, decimals and the annotation scale (set it to the scale of your main view so the
+  lettering prints at 3.5 mm).
+- **Sheets:** the tab strip under the top bar switches between Model and the sheets; "+ Sheet"
+  adds an A3 with a 1:1 view. The Sheets tab edits the size, orientation, the ISO 7200 title block
+  fields and the views (scale, model centre, position and size on the paper).
+- **File > Export PDF** prints every sheet as a vector PDF at true scale; without a sheet the
+  model is printed at 1:1 on an A3.
+
 **View menu:** dark or light interface, dark or white canvas, English or Italian.
 
 If MechPilot ever closes unexpectedly, the next start offers to recover the autosaved drawing.

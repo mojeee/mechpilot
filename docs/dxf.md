@@ -206,3 +206,7 @@ one per entity type for skipped entities), in plain words:
 - R12 export approximates ellipses and splines with polylines within 0.01 mm, has no lineweights
   and stores colours as the nearest ACI colour.
 - Line types 02.2 and 04.2 come back from DXF only when the file has lineweights (DXF 2000).
+- MechPilot dimensions, notes, balloons, surface symbols, tolerance frames and datums are
+  exported as the lines, arcs, circles, polylines and texts they are drawn with (arrowheads as
+  closed polylines, not filled SOLIDs), so other programs show exactly what the sheet shows but
+  cannot edit them as dimensions. DXF DIMENSION entities are not written or read yet.

@@ -99,5 +99,47 @@ Planned (added in the milestone that needs them, each as a separate, replaceable
 - **Polyline offset handles the common cases.** Convex corners get an arc, concave corners are
   trimmed, inverted segments are dropped; global self-intersections of the result (a narrow neck
   offset by more than half its width) are not removed. Recorded as a known limit.
+## 2026-10-22 M2
+
+- **pdf-lib for the PDF export** (MIT, pure JavaScript; brings @pdf-lib/standard-fonts,
+  @pdf-lib/upng, pako, tslib, all MIT/Apache). The content streams are written with pdf-lib's
+  low-level operators rather than its drawing helpers, so the font resource name is fixed and a
+  deterministic mode gives byte-identical files for tests. Coordinates are written in points at
+  full double precision (true scale, product rule 1). Helvetica is used unembedded (one of the 14
+  standard PDF fonts); text outside WinAnsi becomes `?` except − → -, ⌀ → Ø, μ → µ. Alignment uses
+  the unkerned advance widths, which is where `Tj` puts the glyphs. Line width 0 means the 0.13 mm
+  ISO 128-2 minimum. Arcs are cubic Béziers within 0.005 mm.
+- **One display-primitive vocabulary** (`shared/draw/primitives.ts`): dimensions, symbols and
+  sheet furniture are turned into polylines, arcs, circles, filled polygons and text once, and the
+  Canvas 2D renderer, the PDF export and the DXF writer all draw those primitives. The screen, the
+  print and the exchange file therefore show the same geometry.
+- **ISO 1101 characteristic symbols are drawn as lines, not font glyphs**, because system fonts and
+  PDF readers rarely have them; the Unicode glyphs stay in `GDT_SYMBOLS` for UI labels only.
+- **Datum letters read upright** whatever the direction of the indicator.
+- **Dimension values are never stored.** A dimension entity keeps the measured points and the
+  style; its text is computed when drawn, so it cannot disagree with the geometry (the override
+  text keeps `<>` for the measured value).
+- **Annotation scale instead of per-entity scaling.** The dimension style holds paper sizes and one
+  annotation scale; model-space annotations are drawn at size / scale. One drawing targets one
+  main scale, which is how small shops work; per-view annotation scales can come later.
+- **Standards data read from identical national adoptions and previews.** The M2 library files
+  (`library/sheets`, `title-blocks`, `scales`, `lettering`, `dimensioning`, `fits`, `gdt`,
+  `surface`) were filled from the standards' own text where it is freely readable: iTeh and SIST
+  previews, and Indian Standards published by Public.Resource.Org that adopt the ISO text word for
+  word (IS 10711 = ISO 5457:1999, IS 11665 = ISO 7200:2004, IS 9609-0 = ISO 3098-0:1997,
+  IS 919-1 = ISO 286-1:1988, IS 11158 = ISO 7083:1983, IS 8000-1 = ISO 1101:1983,
+  IS 10719 = ISO 1302:1978). Some of those are older editions than the current ones; every such
+  value is marked in the JSON and listed in `docs/to-verify.md` for confirmation against the
+  current edition. The ISO 129-1:2004 terminator and extension-line values were read in an
+  unofficial copy; they are kept as "primary" because the text itself was seen, with the caveat
+  recorded in `docs/to-verify.md`, and the copy's URL is deliberately not in the repository.
+- **Arrowheads are 30° closed filled, length h**, as ISO 129-1:2004 fixed them (the earlier
+  guess of 15° came from ISO 129:1985, which allowed 15° to 90°). Extension lines overshoot by
+  about 8 line widths and the gap to the feature is optional (default none).
+- **Decimal comma on ISO drawings**, decimal point on ASME ones (ISO 129-1:2018, 4.1.1), and the
+  DIAMETER SIGN ⌀ (U+2300) as the diameter indicator (ISO 129-1:2018, Table 1); PDF and DXF map
+  it to Ø where the font or format has no ⌀.
+- **Samples are hand-edited and canonicalized by `scripts/canon-samples.mjs`**, a small JavaScript
+  twin of the serializer's ordering; `tests/samples.test.ts` checks the result with the real one.
 - **Site output is committed.** As in BoardPilot, `scripts/build-site.mjs` writes `site/` and the
   result is committed so Cloudflare Pages can serve the folder as it is without a build step.

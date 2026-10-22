@@ -3,7 +3,7 @@
 // $INSUNITS; numbers are parsed with Number() and never rounded (product rule 1).
 // Group codes: DXF Reference (Autodesk), sections HEADER, TABLES, BLOCKS, ENTITIES.
 
-import { defaultLayers } from '../doc/document';
+import { DEFAULT_DIM_STYLE, defaultLayers } from '../doc/document';
 import { FORMAT_NAME, FORMAT_VERSION, type Document, type Entity, type Id, type Layer, type SplineEntity } from '../doc/types';
 import { interpolateSpline } from '../geometry/flatten';
 import { normAngle, type Vec2 } from '../geometry/vec2';
@@ -769,6 +769,9 @@ export function readDxf(text: string, opts: { name?: string; ids?: IdGen } = {})
     activeLayer: active,
     entities: Object.fromEntries(ctx.out.map((e) => [e.id, e])),
     entityOrder: ctx.out.map((e) => e.id),
+    dimStyle: { ...DEFAULT_DIM_STYLE },
+    sheets: {},
+    sheetOrder: [],
   };
   return { ok: true, doc, warnings: warn.list() };
 }

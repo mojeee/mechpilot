@@ -58,6 +58,8 @@ export interface MechPilotApi {
     openDxf(): Promise<Result<OpenedFile | null>>;
     /** Save-as dialog for a DXF text. null when cancelled. */
     saveDxf(text: string, suggestedName: string): Promise<Result<{ path: string } | null>>;
+    /** Save-as dialog for PDF bytes. null when cancelled. */
+    savePdf(bytes: Uint8Array, suggestedName: string): Promise<Result<{ path: string } | null>>;
     /** Crash recovery: write the dirty document to the app data folder (product rule 3). */
     autosave(text: string, originalPath: string | null): Promise<void>;
     /** Is there an autosave from an earlier run? */

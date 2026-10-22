@@ -27,6 +27,19 @@ const EDIT: { id: ToolId; key: string; icon: string }[] = [
   { id: 'chamfer', key: 'CHA', icon: '◣' },
   { id: 'array', key: 'AR', icon: '⁞⁞' },
 ];
+const ANNOTATE: { id: ToolId; key: string; icon: string }[] = [
+  { id: 'dim-linear', key: 'DLI', icon: '⟷' },
+  { id: 'dim-aligned', key: 'DAL', icon: '⤡' },
+  { id: 'dim-angular', key: 'DAN', icon: '∡' },
+  { id: 'dim-radius', key: 'DRA', icon: 'R' },
+  { id: 'dim-diameter', key: 'DDI', icon: 'Ø' },
+  { id: 'dim-ordinate', key: 'DOR', icon: '⊢' },
+  { id: 'note', key: 'LE', icon: '⤷' },
+  { id: 'balloon', key: 'BAL', icon: '①' },
+  { id: 'surface', key: 'SURF', icon: '√' },
+  { id: 'gdt', key: 'TOL', icon: '⊞' },
+  { id: 'datum', key: 'DAT', icon: '▲' },
+];
 
 export function ToolPalette() {
   const tool = useStore((s) => s.tool);
@@ -45,6 +58,8 @@ export function ToolPalette() {
       {DRAW.map(button)}
       <div className="palette-sep" />
       {EDIT.map(button)}
+      <div className="palette-sep" />
+      {ANNOTATE.map(button)}
     </aside>
   );
 }

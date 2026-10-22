@@ -8,7 +8,9 @@ import { canRedo, canUndo, editorState, execute, markSaved, redo as redoState, u
 import { documentBox, entityBox, pick } from '@shared/doc/document';
 import { newDocument } from '@shared/doc/document';
 import { parse, serialize } from '@shared/doc/file';
-import type { Document, Entity, Id } from '@shared/doc/types';
+import type { Document, Entity, Id, Sheet, SheetSize } from '@shared/doc/types';
+import { newSheet, sheetPaper } from '@shared/draw/sheet';
+import { sheetPage } from '@shared/draw/pages';
 import { type Box, type Vec2 } from '@shared/geometry/vec2';
 import { randomId } from '@shared/ids';
 import { setLanguage, t } from '@shared/i18n';
@@ -66,6 +68,14 @@ export interface Store {
   version: string;
   /** Autosave: last time the dirty document was written (ms), and whether a recovery file exists. */
   recovery: { path: string; name: string } | null;
+  /** The sheet shown on the canvas (paper mm), or null for model space. */
+  activeSheet: Id | null;
+  setActiveSheet(id: Id | null): void;
+  addSheet(size?: SheetSize): void;
+  deleteSheet(id: Id): void;
+  updateSheet(sheet: Sheet): void;
+  /** Export every sheet as one PDF (one page per sheet), or the model at 1:1 on A3 when there is none. */
+  exportPdf(): Promise<void>;
 
   run(cmd: Command): boolean;
   undo(): void;
@@ -219,6 +229,48 @@ export const useStore = create<Store>((set, get) => {
     message: null,
     version: '',
     recovery: null,
+    activeSheet: null,
+
+    setActiveSheet(id) {
+      set({ activeSheet: id, selection: [], tool: 'select', toolState: null, cursor: null, snap: null, hover: null });
+      get().zoomExtents();
+    },
+    addSheet(size = 'A3') {
+      const s = get();
+      const box = documentBox(s.editor.doc);
+      const center = box ? { x: (box.min.x + box.max.x) / 2, y: (box.min.y + box.max.y) / 2 } : { x: 0, y: 0 };
+      const n = s.editor.doc.sheetOrder.length + 1;
+      const sheet = newSheet(randomId(), randomId(), t('Sheet {n}', { n }), center, size);
+      if (s.run({ kind: 'addSheet', sheet })) s.setActiveSheet(sheet.id);
+    },
+    deleteSheet(id) {
+      const s = get();
+      if (s.run({ kind: 'deleteSheet', id }) && s.activeSheet === id) s.setActiveSheet(null);
+    },
+    updateSheet(sheet) {
+      get().run({ kind: 'updateSheet', sheet });
+    },
+    async exportPdf() {
+      const s = get();
+      const doc = s.editor.doc;
+      const { pdfFromPages } = await import('@shared/pdf');
+      const lang = s.settings.lang;
+      const sheets = doc.sheetOrder.map((id) => doc.sheets[id]);
+      const pages = sheets.length
+        ? sheets.map((sh) => sheetPage(doc, sh, lang))
+        : [sheetPage(doc, newSheet('tmp', 'v', doc.name, (() => {
+            const b = documentBox(doc);
+            return b ? { x: (b.min.x + b.max.x) / 2, y: (b.min.y + b.max.y) / 2 } : { x: 0, y: 0 };
+          })()), lang)];
+      const bytes = await pdfFromPages(pages, { title: doc.name, author: t('MechPilot user'), creator: `MechPilot ${s.version}` });
+      const r = await api().files.savePdf(bytes, doc.name);
+      if (!r.ok) {
+        s.say({ kind: 'error', text: r.error.message, hint: r.error.hint });
+        return;
+      }
+      if (!r.value) return;
+      s.say({ kind: 'info', text: t('Exported {path} ({n} pages).', { path: r.value.path, n: pages.length }), hint: sheets.length ? undefined : t('The drawing has no sheet yet, so it was printed at 1:1 on an A3; add a sheet in the Sheets tab to choose the size, scale and title block.') });
+    },
 
     run(cmd) {
       const r = execute(get().editor, cmd);
@@ -320,6 +372,10 @@ export const useStore = create<Store>((set, get) => {
     },
     toolClick(world, shift) {
       const s = get();
+      if (s.activeSheet) {
+        s.say({ kind: 'info', text: t('This is a sheet. Switch to Model to draw; edit the views and the title block in the Sheets tab.') });
+        return;
+      }
       if (s.tool === 'select') {
         const id = s.pickAt(world);
         if (id) s.select([id], shift ? 'toggle' : 'set');
@@ -408,7 +464,14 @@ export const useStore = create<Store>((set, get) => {
       set({ view: { ...v, origin: { x: v.origin.x + dx, y: v.origin.y + dy } } });
     },
     zoomExtents() {
-      set({ view: fitView(documentBox(get().editor.doc), get().canvasSize) });
+      const s = get();
+      const sheet = s.activeSheet ? s.editor.doc.sheets[s.activeSheet] : null;
+      if (sheet) {
+        const p = sheetPaper(sheet);
+        set({ view: fitView({ min: { x: -5, y: -5 }, max: { x: p.width + 5, y: p.height + 5 } }, s.canvasSize) });
+        return;
+      }
+      set({ view: fitView(documentBox(s.editor.doc), s.canvasSize) });
     },
     zoomTo(box) {
       set({ view: fitView(box, get().canvasSize) });
@@ -420,6 +483,11 @@ export const useStore = create<Store>((set, get) => {
         return;
       }
       let world = screenToWorld(s.view, screen);
+      if (s.activeSheet) {
+        // Sheet mode: paper coordinates, no snaps or picking (views are edited in the Sheets tab).
+        set({ cursor: world, snap: null, hover: null });
+        return;
+      }
       if (s.snapGrid) {
         const step = s.gridStep();
         world = { x: Math.round(world.x / step) * step, y: Math.round(world.y / step) * step };
@@ -459,7 +527,7 @@ export const useStore = create<Store>((set, get) => {
         if (!r.ok) return;
         setEditor(path ? markSaved(r.state) : r.state);
       }
-      set({ filePath: path, selection: [], tool: 'select', toolState: null, message: { kind: 'info', text: label } });
+      set({ filePath: path, selection: [], tool: 'select', toolState: null, activeSheet: null, message: { kind: 'info', text: label } });
       get().zoomExtents();
     },
     async openFile(path) {
@@ -559,6 +627,10 @@ export const useStore = create<Store>((set, get) => {
       // #sample=<id> opens a sample at start (screenshots, demos, tests).
       const sample = /[#&]sample=([\w-]+)/.exec(window.location.hash)?.[1];
       if (sample) await get().openSample(sample);
+      // #sheet=1 shows the first sheet (screenshots and tests).
+      const sheetNo = Number(/[#&]sheet=(\d+)/.exec(window.location.hash)?.[1] ?? 0);
+      const sheetId = get().editor.doc.sheetOrder[sheetNo - 1];
+      if (sheetId) get().setActiveSheet(sheetId);
       setInterval(() => void get().autosave(), 20_000);
     },
     async updateSettings(patch) {
@@ -697,5 +769,27 @@ export function toolName(tool: ToolId): string {
       return t('Chamfer');
     case 'array':
       return t('Array');
+    case 'dim-linear':
+      return t('Linear dimension');
+    case 'dim-aligned':
+      return t('Aligned dimension');
+    case 'dim-angular':
+      return t('Angular dimension');
+    case 'dim-radius':
+      return t('Radius dimension');
+    case 'dim-diameter':
+      return t('Diameter dimension');
+    case 'dim-ordinate':
+      return t('Ordinate dimension');
+    case 'note':
+      return t('Note with leader');
+    case 'balloon':
+      return t('Balloon');
+    case 'surface':
+      return t('Surface texture');
+    case 'gdt':
+      return t('Geometrical tolerance');
+    case 'datum':
+      return t('Datum');
   }
 }

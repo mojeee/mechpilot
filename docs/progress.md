@@ -3,6 +3,45 @@
 Short entries after each milestone: what works, what is left, anything the owner must do by hand.
 Newest first.
 
+## 2026-10-22 — M2 Dimensions and sheets done
+
+**What works**
+
+- Dimensions to ISO 129-1 (linear, aligned, angular, radius, diameter, ordinate) drawn by the
+  command line or the palette; the value is measured from the geometry and never stored; decimal
+  comma on ISO drawings, ⌀ and R prefixes, override text; tolerances as deviations, ±, limits or an
+  ISO 286 class with the deviations looked up in the library (H7/g6 at 25 mm gives the standard's
+  own worked example).
+- Notes with leaders, balloons, surface texture symbols, geometrical tolerance frames (symbols
+  drawn as lines so every font and PDF reader shows them), datums; a Properties panel for all of
+  them and for the dimension style (3.5 mm lettering, 30° closed filled arrowheads, annotation
+  scale).
+- Sheets A0 to A4 (ISO 5457 frame, zones, centring and trimming marks), the ISO 7200 title block
+  with its 19 fields, views at ISO 5455 scales, a Model / Sheet tab strip, and a vector PDF export
+  at true scale (one page per sheet; without a sheet, the model at 1:1 on an A3).
+- Standards data for all of the above verified on the standards' own text (previews and identical
+  national adoptions) and recorded with sources in `library/` and `docs/standards.md`; what comes
+  from an older edition is listed in `docs/to-verify.md`.
+- File format 3 with a migration; annotations exploded on DXF export; the sample now carries
+  dimensions, a fit, symbols and an A3 sheet.
+- 207 unit tests and 5 end-to-end tests (the sheets one exports a PDF and parses it back).
+
+**What is left for M3** (see `docs/roadmap.md`)
+
+- planegcs in a worker, the sketch constraints, driving dimensions, degrees-of-freedom colouring,
+  conflicts explained in plain words.
+- Known limits recorded in `docs/decisions.md`: one annotation scale per drawing; text widths are
+  estimated (0.7 × height) on screen while the PDF uses Helvetica's real metrics; DXF DIMENSION
+  entities are neither read nor written (dimensions are exploded).
+
+**For the owner to do by hand**
+
+- Open the exported PDF (File > Export PDF on the sample) in your usual viewer and in a CAD
+  program's PDF import once, and tell me if a line width or a text looks wrong.
+- Several library values come from older editions (ISO 286-1:1988, ISO 129-1:2004, ISO 3098-0:1997,
+  ISO 7083:1983, ISO 1302:1978); if you have the current editions, the rows in `docs/to-verify.md`
+  say exactly what to confirm.
+
 ## 2026-10-22 — M1 2D drafting done
 
 **What works**

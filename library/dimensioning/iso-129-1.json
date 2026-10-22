@@ -1,0 +1,98 @@
+{
+  "id": "iso-129-1",
+  "name": "ISO 129-1 dimensioning conventions",
+  "source": "ISO 129-1:2018 Technical product documentation (TPD) - Presentation of dimensions and tolerances - Part 1: General principles (with Amd 1:2020, not seen). Terminator sizes and extension-line lengths from the previous edition ISO 129-1:2004, whose clauses 5.3, 5.4 and Annex A the 2018 text was not available to confirm.",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://cdn.standards.iteh.ai/samples/64007/426c238f9dbe454eb17901d1d32bfc90/ISO-129-1-2018.pdf (ISO 129-1:2018 preview: clauses 1 to 5.3, Table 1)",
+    "https://law.resource.org/pub/in/bis/S01/is.11669.1986.pdf (IS 11669:1986, identical with ISO 129:1985: clause 4)",
+    "ISO 129-1:2004 full text (clauses 5.3, 5.4, Annex A), read in a copy found online; not linked here because it is not an authorised distribution"
+  ],
+  "arrowhead": {
+    "edition": "ISO 129-1:2004, 5.3.2, Figure 11 and Annex A, Figure A.1 (h = lettering height of the dimensions)",
+    "forms": [
+      { "id": "closed-filled-30", "includedAngle": 30, "filled": true, "lengthInH": 1 },
+      { "id": "closed-30", "includedAngle": 30, "filled": false, "closed": true, "lengthInH": 1 },
+      { "id": "open-30", "includedAngle": 30, "filled": false, "closed": false, "lengthInH": 1 },
+      { "id": "open-90", "includedAngle": 90, "filled": false, "closed": false, "depthInH": 0.4 },
+      { "id": "oblique-stroke", "angle": 45, "lengthInH": 1 },
+      { "id": "point", "diameterInH": 0.5, "use": "only where there is no room for an arrowhead (the oblique stroke may also be used)" }
+    ],
+    "default": "closed-filled-30 (MechPilot's choice among the forms above)",
+    "oneStylePerDrawing": "One style of arrowhead only on a single drawing; where space is too small, an oblique stroke or a dot may be substituted (ISO 129:1985, 4.3.3).",
+    "placement": "Between the extension lines where space is available; where space is limited, the dimension line may be extended past the extension lines with the arrowheads outside and reversed (ISO 129-1:2018, 5.3).",
+    "history": "ISO 129:1985, 4.3.1 allowed any included angle between 15 and 90 degrees, open, closed or closed and filled; ISO 129-1:2004 fixed the 30 degree and 90 degree forms above."
+  },
+  "extensionLineOvershoot": {
+    "lineWidths": 8,
+    "text": "Extension lines shall extend approximately 8 times the line width beyond the respective dimension line.",
+    "source": "ISO 129-1:2004, 5.4"
+  },
+  "extensionLineGap": {
+    "lineWidths": 8,
+    "text": "It is permissible to have a gap (approximately 8 times the line width) between the feature and the beginning of the extension line in certain technical fields.",
+    "default": "MechPilot draws no gap by default; the gap is an option.",
+    "source": "ISO 129-1:2004, 5.4"
+  },
+  "extensionLineRules": [
+    "Extension lines are continuous narrow lines per ISO 128-20 (now ISO 128-2) (ISO 129-1:2004, 5.4).",
+    "Drawn perpendicular to the dimensioned length; may be oblique but parallel to each other (ISO 129-1:2004, 5.4).",
+    "Intersecting projected contours extend about 8 line widths beyond their intersection (ISO 129-1:2004, 5.4)."
+  ],
+  "dimensionLine": "Continuous narrow line per ISO 128-20; unbroken where the feature is shown broken (ISO 129-1:2018, 5.3).",
+  "textAboveLine": true,
+  "textPlacement": {
+    "rule": "The text of all dimensions, graphical symbols and annotations shall be indicated above the dimension line and read from the bottom. When the text is presented vertically, it shall read from the right. Orientation is determined at the centre of the dimension, symbol or annotation.",
+    "source": "ISO 129-1:2018, 4.1.1"
+  },
+  "decimalMarker": {
+    "rule": "Dimensional values in decimal notation shall use a comma as the decimal marker.",
+    "source": "ISO 129-1:2018, 4.1.1",
+    "note": "MechPilot writes a comma on ISO drawings and offers a point as an option for ASME drawings."
+  },
+  "characterHeight": {
+    "rule": "Characters per the ISO 3098 series; only one character height for dimension and tolerance presentation on a drawing; a space separates the elements of the dimension indicator.",
+    "source": "ISO 129-1:2018, 4.1.7"
+  },
+  "symbols": {
+    "source": "ISO 129-1:2018, 5.2 and Table 1 (property indicators). The indicator precedes the value without a space. Unicode characters are MechPilot's mapping, by Unicode character name.",
+    "diameter": { "text": "⌀", "unicode": "U+2300 DIAMETER SIGN" },
+    "radius": { "text": "R" },
+    "square": { "text": "□", "unicode": "U+25A1 WHITE SQUARE" },
+    "sphericalDiameter": { "text": "S⌀" },
+    "sphericalRadius": { "text": "SR" },
+    "arcLength": { "text": "⌒", "unicode": "U+2312 ARC" },
+    "thickness": { "text": "t=" },
+    "depth": { "text": "↧", "unicode": "U+21A7 DOWNWARDS ARROW FROM BAR" },
+    "counterbore": { "text": "⌴", "unicode": "U+2334 COUNTERBORE" },
+    "countersink": { "text": "⌵", "unicode": "U+2335 COUNTERSINK" },
+    "between": { "text": "↔", "unicode": "U+2194 LEFT RIGHT ARROW", "note": "the standard's symbol has filled arrowheads; draw it as a graphic, not text, when exact form matters" },
+    "developedLength": { "text": null, "note": "a graphical symbol (circle with arrow) without a Unicode equivalent; drawn as a graphic" }
+  },
+  "angles": "Angular dimensions need no property indicator (ISO 129-1:2018, 5.2) and always carry their unit, e.g. 30° (4.3). The ∠ sign is the ISO 1101 angularity symbol, not a dimension prefix.",
+  "repetition": {
+    "rule": "Number of repetitions, a multiplication sign and a space before the dimension, e.g. '2× 18'.",
+    "source": "ISO 129-1:2018, 4.1.2"
+  },
+  "specialValues": {
+    "outOfScale": "underlined value (ISO 129-1:2018, 4.1.3)",
+    "auxiliary": "value in parentheses, e.g. (50) (4.1.4)",
+    "theoreticallyExact": "value in a rectangular frame, per ISO 1101 (4.1.5)"
+  },
+  "tolerances": {
+    "rules": [
+      "When upper and lower limits are on two lines, the decimal markers of both are aligned; without a decimal marker, the digits are aligned as if it were shown.",
+      "The dimension value and the lower deviation are at the same distance from the dimension line (so the upper deviation sits above the lower).",
+      "Deviations always carry a + or - sign, except a zero value, which has no sign.",
+      "Trailing zeros may or may not be presented.",
+      "For a tolerance class per ISO 286-1 (e.g. 25 H7), the deviation values need not be shown unless needed."
+    ],
+    "source": "ISO 129-1:2018, 4.1.7, Examples 1 and 2 and Figure 1"
+  },
+  "notes": [
+    "Left out because no clause giving a number was seen (docs/to-verify.md): spacing between parallel dimension lines, distance of the first dimension line from the outline, gap between the text and the dimension line, and the chamfer notation (ISO 129-1:2018, Annex B, informative).",
+    "Origin of running dimensions: a small open circle (origin symbol, ISO 129-1:2018, 3.1.4); ISO 129:1985, 4.3.1 c) gave about 3 mm diameter. Its 2018 size is in Annex A (not seen).",
+    "ISO 129:1985 also allowed 'method 2' (values read from the bottom only, dimension line interrupted); ISO 129-1:2018 keeps only the rule in textPlacement."
+  ]
+}

@@ -2,7 +2,7 @@
 // command: plain data applied by a pure function that returns the new document and the inverse
 // command. Undo, autosave, scripting and AI all go through here; nothing else edits a document.
 
-import type { Document, Entity, Id, Layer, Projection, Standard } from '../doc/types';
+import type { DimStyle, Document, Entity, Id, Layer, Projection, Sheet, Standard } from '../doc/types';
 
 export type Command =
   | { kind: 'addEntities'; entities: Entity[] }
@@ -18,12 +18,17 @@ export type Command =
   /** Several commands as one undo step, e.g. an import or an AI proposal. */
   | { kind: 'batch'; label: string; commands: Command[] }
   /** The whole document at once (open, import). Undoable like everything else (product rule 4). */
-  | { kind: 'replaceDocument'; doc: Document };
+  | { kind: 'replaceDocument'; doc: Document }
+  /* M2: dimension style and sheets. */
+  | { kind: 'setDimStyle'; style: DimStyle }
+  | { kind: 'addSheet'; sheet: Sheet; index?: number }
+  | { kind: 'deleteSheet'; id: Id }
+  | { kind: 'updateSheet'; sheet: Sheet };
 
 export type CommandKind = Command['kind'];
 
 export interface CommandError {
-  code: 'unknown-entity' | 'unknown-layer' | 'duplicate-id' | 'layer-not-empty' | 'last-layer' | 'layer-locked' | 'empty';
+  code: 'unknown-entity' | 'unknown-layer' | 'unknown-sheet' | 'duplicate-id' | 'layer-not-empty' | 'last-layer' | 'layer-locked' | 'empty';
   message: string;
   hint?: string;
 }
@@ -130,6 +135,27 @@ export function apply(doc: Document, cmd: Command): ApplyResult {
     }
     case 'replaceDocument':
       return { ok: true, doc: cmd.doc, inverse: { kind: 'replaceDocument', doc } };
+    case 'setDimStyle':
+      return { ok: true, doc: { ...doc, dimStyle: cmd.style }, inverse: { kind: 'setDimStyle', style: doc.dimStyle } };
+    case 'addSheet': {
+      if (doc.sheets[cmd.sheet.id]) return fail('duplicate-id', `A sheet with id ${cmd.sheet.id} already exists.`);
+      const sheetOrder = [...doc.sheetOrder];
+      sheetOrder.splice(cmd.index ?? sheetOrder.length, 0, cmd.sheet.id);
+      return { ok: true, doc: { ...doc, sheets: { ...doc.sheets, [cmd.sheet.id]: cmd.sheet }, sheetOrder }, inverse: { kind: 'deleteSheet', id: cmd.sheet.id } };
+    }
+    case 'deleteSheet': {
+      const sheet = doc.sheets[cmd.id];
+      if (!sheet) return fail('unknown-sheet', `Sheet "${cmd.id}" does not exist.`);
+      const sheets = { ...doc.sheets };
+      delete sheets[cmd.id];
+      const index = doc.sheetOrder.indexOf(cmd.id);
+      return { ok: true, doc: { ...doc, sheets, sheetOrder: doc.sheetOrder.filter((id) => id !== cmd.id) }, inverse: { kind: 'addSheet', sheet, index } };
+    }
+    case 'updateSheet': {
+      const old = doc.sheets[cmd.sheet.id];
+      if (!old) return fail('unknown-sheet', `Sheet "${cmd.sheet.id}" does not exist.`);
+      return { ok: true, doc: { ...doc, sheets: { ...doc.sheets, [cmd.sheet.id]: cmd.sheet } }, inverse: { kind: 'updateSheet', sheet: old } };
+    }
   }
 }
 
@@ -156,5 +182,13 @@ export function labelOf(cmd: Command): string {
       return cmd.label;
     case 'replaceDocument':
       return `Open ${cmd.doc.name}`;
+    case 'setDimStyle':
+      return 'Edit dimension style';
+    case 'addSheet':
+      return `Add sheet ${cmd.sheet.name}`;
+    case 'deleteSheet':
+      return 'Delete sheet';
+    case 'updateSheet':
+      return `Edit sheet ${cmd.sheet.name}`;
   }
 }

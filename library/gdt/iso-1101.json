@@ -1,0 +1,52 @@
+{
+  "id": "iso-1101",
+  "name": "ISO 1101 geometrical characteristics and tolerance frame",
+  "source": "ISO 1101:2017 Geometrical product specifications (GPS) - Geometrical tolerancing - Tolerances of form, orientation, location and run-out (fourth edition, confirmed, current); frame proportions from ISO 7083:1983",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://cdn.standards.iteh.ai/samples/66777/accb9f85e8b64f108b5b205a0471539c/ISO-1101-2017.pdf (ISO 1101:2017 preview: clause 5, Table 2)",
+    "https://law.resource.org/pub/in/bis/S01/is.11158.1984.pdf (IS 11158:1984, identical with ISO 7083:1983: clause 5, Tables 1 and 2)",
+    "https://law.resource.org/pub/in/bis/S01/is.8000.1.1985.pdf (IS 8000 (Part 1):1985, identical with ISO 1101:1983: clause 8, datum indication)"
+  ],
+  "characteristicsSource": "ISO 1101:2017, clause 5, Table 2 'Symbols for geometrical characteristics' (characteristic, specification group, datum needed, subclause). datum: 'none' = 'no' in Table 2, 'required' = 'yes', 'optional' = 'no' in one row and 'yes' in another (position; line and surface profile, which have no datum as a form specification and a datum as orientation or location). symbol = MechPilot's Unicode mapping by Unicode character name (Miscellaneous Technical block); the drawn symbol follows the figure in Table 2. nameIt = MechPilot's own translation (UNI EN ISO 1101 Italian terms not seen).",
+  "characteristics": [
+    { "id": "straightness", "name": "Straightness", "nameIt": "Rettilineità", "symbol": "⏤", "unicode": "U+23E4 STRAIGHTNESS", "datum": "none", "groups": ["form"], "subclause": "17.2" },
+    { "id": "flatness", "name": "Flatness", "nameIt": "Planarità", "symbol": "⏥", "unicode": "U+23E5 FLATNESS", "datum": "none", "groups": ["form"], "subclause": "17.3" },
+    { "id": "roundness", "name": "Roundness", "nameIt": "Circolarità", "symbol": "○", "unicode": "U+25CB WHITE CIRCLE", "datum": "none", "groups": ["form"], "subclause": "17.4" },
+    { "id": "cylindricity", "name": "Cylindricity", "nameIt": "Cilindricità", "symbol": "⌭", "unicode": "U+232D CYLINDRICITY", "datum": "none", "groups": ["form"], "subclause": "17.5" },
+    { "id": "lineProfile", "name": "Line profile", "nameIt": "Profilo di una linea", "symbol": "⌒", "unicode": "U+2312 ARC", "datum": "optional", "groups": ["form", "orientation", "location"], "subclause": "17.6 (form), 17.7 (with datum)", "note": "Datum 'no' as form, 'yes' as orientation or location. Called 'profile any line' in former versions (Table 2, NOTE 1)." },
+    { "id": "surfaceProfile", "name": "Surface profile", "nameIt": "Profilo di una superficie", "symbol": "⌓", "unicode": "U+2313 SEGMENT", "datum": "optional", "groups": ["form", "orientation", "location"], "subclause": "17.8 (form), 17.9 (with datum)", "note": "Datum 'no' as form, 'yes' as orientation or location. Called 'profile any surface' in former versions (Table 2, NOTE 2)." },
+    { "id": "parallelism", "name": "Parallelism", "nameIt": "Parallelismo", "symbol": "∥", "unicode": "U+2225 PARALLEL TO", "datum": "required", "groups": ["orientation"], "subclause": "17.10" },
+    { "id": "perpendicularity", "name": "Perpendicularity", "nameIt": "Perpendicolarità", "symbol": "⟂", "unicode": "U+27C2 PERPENDICULAR", "datum": "required", "groups": ["orientation"], "subclause": "17.11" },
+    { "id": "angularity", "name": "Angularity", "nameIt": "Inclinazione", "symbol": "∠", "unicode": "U+2220 ANGLE", "datum": "required", "groups": ["orientation"], "subclause": "17.12" },
+    { "id": "position", "name": "Position", "nameIt": "Localizzazione", "symbol": "⌖", "unicode": "U+2316 POSITION INDICATOR", "datum": "optional", "groups": ["location"], "subclause": "17.13", "note": "Table 2 gives 'no' and 'yes' (see also ISO 5458)." },
+    { "id": "concentricity", "name": "Concentricity (for centre points)", "nameIt": "Concentricità", "symbol": "◎", "unicode": "U+25CE BULLSEYE", "datum": "required", "groups": ["location"], "subclause": "17.14" },
+    { "id": "coaxiality", "name": "Coaxiality (for median lines)", "nameIt": "Coassialità", "symbol": "◎", "unicode": "U+25CE BULLSEYE", "datum": "required", "groups": ["location"], "subclause": "17.14" },
+    { "id": "symmetry", "name": "Symmetry", "nameIt": "Simmetria", "symbol": "⌯", "unicode": "U+232F SYMMETRY", "datum": "required", "groups": ["location"], "subclause": "17.15" },
+    { "id": "circularRunout", "name": "Circular run-out", "nameIt": "Oscillazione circolare", "symbol": "↗", "unicode": "U+2197 NORTH EAST ARROW", "datum": "required", "groups": ["run-out"], "subclause": "17.16", "note": "Unicode has no dedicated circular run-out character; the ISO symbol is a single filled arrow at about 45 degrees, drawn as a graphic." },
+    { "id": "totalRunout", "name": "Total run-out", "nameIt": "Oscillazione totale", "symbol": "⌰", "unicode": "U+2330 TOTAL RUNOUT", "datum": "required", "groups": ["run-out"], "subclause": "17.17" }
+  ],
+  "frame": {
+    "source": "ISO 7083:1983, clause 5, Table 2 (lettering type B) and 5.2; ISO 1101:2017, clause 5 NOTE refers to ISO 7083 and its own Annex F (not seen) for proportions",
+    "heightInH": 2,
+    "heightNote": "Height of frame H = 2h for type B lettering (H 5, 7, 10, 14, 20, 28, 40 for h 2.5, 3.5, 5, 7, 10, 14, 20). Increase it when an additional tolerance value is inscribed in a lower compartment.",
+    "lineWidthInH": 0.1,
+    "lineWidthNote": "Thickness of line d = h/10 for type B (0.25 to 2 mm in Table 2), the same as the lettering line width.",
+    "firstCompartmentWidth": "equal to H (holds the characteristic symbol)",
+    "secondCompartmentWidth": "to suit the length of the inscription (tolerance value and modifiers)",
+    "furtherCompartments": "to suit the width of the datum letter or letters",
+    "minTextClearance": "at least 2 d, minimum 0.7 mm, between the vertical strokes and the inscriptions",
+    "datumTargetCircleDiameterInH": 4
+  },
+  "datumIndicator": {
+    "form": "a capital letter in a square frame, connected by a leader to a datum triangle; the triangle may be filled (solid) or open (blank)",
+    "source": "ISO 1101:1983, 8.1 (via IS 8000 (Part 1):1985); in ISO 1101:2017 datums are covered by ISO 5459, not seen",
+    "default": "filled triangle (MechPilot's choice)",
+    "proportions": "ISO 7083:1983 Figures 16 and 17 (not transcribed; see docs/to-verify.md)"
+  },
+  "notes": [
+    "Table 2 lists 15 rows; concentricity and coaxiality share one symbol, giving 14 distinct symbols.",
+    "Additional symbols (combined zone CZ, separate zones SZ, unequal zone UZ, projected zone P, MMR M, LMR L and others) are in ISO 1101:2017 Tables 3 and 4 and are not stored here yet."
+  ]
+}

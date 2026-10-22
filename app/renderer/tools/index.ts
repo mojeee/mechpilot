@@ -1,5 +1,6 @@
 // Registry of tools and their command-line names.
 
+import { ANNOTATE_TOOLS } from './annotate';
 import { DRAW_TOOLS } from './draw';
 import { EDIT_TOOLS } from './edit';
 import type { Tool, ToolId } from './types';
@@ -25,8 +26,19 @@ export const TOOLS: Record<ToolId, Tool<unknown> | null> = {
   fillet: null,
   chamfer: null,
   array: null,
+  'dim-linear': null,
+  'dim-aligned': null,
+  'dim-angular': null,
+  'dim-radius': null,
+  'dim-diameter': null,
+  'dim-ordinate': null,
+  note: null,
+  balloon: null,
+  surface: null,
+  gdt: null,
+  datum: null,
 };
-for (const t of [...DRAW_TOOLS, ...EDIT_TOOLS]) TOOLS[t.id] = t;
+for (const t of [...DRAW_TOOLS, ...EDIT_TOOLS, ...ANNOTATE_TOOLS]) TOOLS[t.id] = t;
 
 /** Command-line aliases (AutoCAD habits): L, PL, REC, C, A, EL, SPL, T, M, CO, RO, SC, MI, O, TR, EX, F, CHA, AR. */
 export const ALIASES: Record<string, ToolId> = {
@@ -70,6 +82,25 @@ export const ALIASES: Record<string, ToolId> = {
   CHAMFER: 'chamfer',
   AR: 'array',
   ARRAY: 'array',
+  D: 'dim-linear',
+  DIM: 'dim-linear',
+  DLI: 'dim-linear',
+  DAL: 'dim-aligned',
+  DAN: 'dim-angular',
+  DRA: 'dim-radius',
+  DDI: 'dim-diameter',
+  DOR: 'dim-ordinate',
+  LE: 'note',
+  LEADER: 'note',
+  NOTE: 'note',
+  BAL: 'balloon',
+  BALLOON: 'balloon',
+  SURF: 'surface',
+  SURFACE: 'surface',
+  TOL: 'gdt',
+  GDT: 'gdt',
+  DAT: 'datum',
+  DATUM: 'datum',
 };
 
 export type { Tool, ToolId, ToolCtx } from './types';
