@@ -735,3 +735,426 @@ select:focus {
   color: var(--muted);
   white-space: nowrap;
 }
+
+/* ---------- M7: the assistant (chat, references, proposals) ---------- */
+/* Six tabs in 320 px: each takes the width of its label. */
+.tab {
+  flex: 1 1 auto;
+  padding: 8px 3px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.tab-count {
+  display: inline-block;
+  margin-left: 4px;
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #06111f;
+  font-size: 10px;
+  line-height: 16px;
+  font-family: var(--font-mono);
+}
+.small {
+  font-size: 12px;
+}
+.assistant .ok {
+  color: var(--ok);
+}
+.accent {
+  color: var(--accent);
+}
+.viewer-tools {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  display: flex;
+  gap: 6px;
+}
+.viewer-tools .btn.on,
+.btn.on {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.viewer-hud .accent {
+  color: var(--accent);
+}
+.icon-btn.to-chat {
+  color: var(--accent);
+  padding: 1px 4px;
+}
+.features .part-list li .to-chat {
+  float: right;
+}
+.panel-body:has(> .assistant) {
+  padding: 0;
+  overflow: hidden;
+}
+.assistant {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.ai-settings {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 12px;
+  background: var(--chrome);
+}
+.ai-settings-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+.ai-settings-line .link {
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ai-key {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.ai-key.ok {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 50%, transparent);
+}
+.ai-key.none {
+  color: var(--warn);
+  border-color: color-mix(in srgb, var(--warn) 50%, transparent);
+}
+.ai-settings-body {
+  margin-top: 8px;
+}
+.ai-settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+.ai-unavailable {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.ai-unavailable p {
+  margin: 0 0 4px;
+}
+.ai-log {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 12px;
+  user-select: text;
+}
+.ai-empty {
+  color: var(--muted);
+}
+.ai-empty p {
+  margin: 0 0 8px;
+}
+.ai-turn {
+  margin: 0 0 10px;
+}
+.ai-turn.user {
+  margin-left: 24px;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  background: var(--accent-bg);
+}
+.ai-turn.assistant .ai-text {
+  color: var(--text);
+}
+.ai-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ai-turn.busy .btn {
+  margin-top: 6px;
+}
+.ai-toollog {
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+.ai-error {
+  border: 1px solid var(--err);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  color: var(--err);
+  background: color-mix(in srgb, var(--err) 8%, transparent);
+}
+.ai-error .dim {
+  color: var(--muted);
+}
+.ai-error-line {
+  color: var(--err);
+  font-size: 12px;
+  margin: 4px 0;
+}
+.ai-claims {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  font-size: 12px;
+}
+.ai-claims li {
+  margin: 3px 0;
+}
+.ai-source {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.ai-source.measured {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 50%, transparent);
+}
+.ai-source.standard {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.ai-source.library {
+  color: var(--construction);
+  border-color: color-mix(in srgb, var(--construction) 50%, transparent);
+}
+.ai-source.suggestion {
+  color: var(--warn);
+  border-color: color-mix(in srgb, var(--warn) 50%, transparent);
+}
+.ai-proposal {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  outline: none;
+}
+.ai-proposal.pending {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+.ai-proposal.previewed,
+.ai-proposal:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.ai-proposal.accepted {
+  border-color: color-mix(in srgb, var(--ok) 55%, var(--line));
+}
+.ai-proposal.rejected {
+  opacity: 0.6;
+}
+.ai-proposal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.ai-state {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.ai-state.accepted {
+  color: var(--ok);
+}
+.ai-state.rejected {
+  color: var(--dim);
+}
+.ai-summary {
+  margin: 4px 0;
+  color: var(--muted);
+}
+.ai-diff {
+  list-style: none;
+  margin: 6px 0;
+  padding: 4px 6px;
+  font-size: 11.5px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+.ai-diff li {
+  margin: 1px 0;
+  word-break: break-word;
+}
+.ai-diff .add {
+  color: var(--accent);
+}
+.ai-diff .del {
+  color: var(--err);
+}
+.ai-diff .chg {
+  color: var(--warn);
+}
+.ai-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.ai-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 1px 4px 1px 7px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, var(--line));
+  background: var(--accent-bg);
+  font-size: 11.5px;
+  color: var(--text);
+}
+.ai-chip .glyph {
+  color: var(--accent);
+}
+.ai-chip .label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ai-chip .x {
+  color: var(--muted);
+  padding: 0 3px;
+  border-radius: 999px;
+}
+.ai-chip .x:hover {
+  color: var(--text);
+  background: var(--raised);
+}
+.ai-composer {
+  border-top: 1px solid var(--line);
+  padding: 8px 12px 10px;
+  background: var(--chrome);
+}
+.ai-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 56px;
+  max-height: 240px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 5px 7px;
+  font: inherit;
+  color: inherit;
+  user-select: text;
+}
+.ai-input:focus {
+  outline: 1px solid var(--accent);
+}
+.ai-composer-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+.ai-composer-actions .grow {
+  flex: 1;
+}
+
+.view-error {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  background: var(--canvas-bg);
+  color: var(--text);
+}
+
+/* ---------- assistant text (rendered markdown subset) and thin scrollbars ---------- */
+.ai-text p {
+  margin: 0 0 8px;
+  line-height: 1.45;
+}
+.ai-text p:last-child {
+  margin-bottom: 0;
+}
+.ai-text ul,
+.ai-text ol {
+  margin: 2px 0 8px 0;
+  padding-left: 20px;
+}
+.ai-text li {
+  margin: 3px 0;
+  line-height: 1.4;
+}
+.ai-text li::marker {
+  color: var(--accent);
+}
+.ai-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.ai-text code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--raised);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--dim);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* The chat log is its own compositing layer and every turn paints inside its own box, so a
+   scrolled log never shows stale text over fresh text (seen on Windows with GPU compositing). */
+.ai-log {
+  will-change: transform;
+  overflow-anchor: none;
+}
+.ai-turn {
+  contain: layout paint;
+  position: relative;
+  background: var(--panel);
+}
+.ai-turn.user {
+  background: var(--accent-bg);
+}

@@ -2,7 +2,7 @@
 // plain value; nothing throws across the bridge. Messages go through t() like everything the user
 // can read (CLAUDE.md, Conventions).
 
-import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, safeStorage, shell } from 'electron';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
@@ -10,6 +10,8 @@ import type { AutosaveInfo, FileFilter, OpenedFile, Result, SampleInfo, Settings
 import { FILE_EXTENSION } from '@shared/doc/file';
 import { setLanguage, t } from '@shared/i18n';
 import type { SettingsStore } from './settings';
+import { registerAiIpc } from './ai/ipc';
+import { KeyStore } from './ai/keys';
 
 const SAMPLE_SUFFIX = FILE_EXTENSION;
 
@@ -43,6 +45,12 @@ function sampleInfo(dir: string, file: string): SampleInfo | null {
 export function registerIpc(deps: IpcDeps): void {
   const { settings } = deps;
   setLanguage(settings.get().lang);
+
+  // The assistant (M7). Development builds (not packaged) may take the key from the environment or
+  // from .env.local in the repository root; a packaged app only uses keys the user stored.
+  const dev = !app.isPackaged;
+  const keys = new KeyStore({ dataDir: deps.dataDir, safeStorage, env: dev ? process.env : undefined, devEnvFile: dev ? join(app.getAppPath(), '.env.local') : null });
+  registerAiIpc({ settings, keys });
 
   ipcMain.handle('app:version', () => app.getVersion());
   ipcMain.handle('app:platform', () => process.platform);

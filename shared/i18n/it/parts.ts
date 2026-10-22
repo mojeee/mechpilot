@@ -117,6 +117,11 @@ const it: Record<string, string> = {
   'Shell {n}': 'Svuotamento {n}',
   'Mirror {n}': 'Specchio {n}',
   'Pattern {n}': 'Ripetizione {n}',
+  // ---------- error boundary ----------
+  'The 3D view': 'La vista 3D',
+  '{what} could not start: {reason}': '{what} non è partita: {reason}',
+  'The rest of MechPilot keeps working: the part still builds, the Features tab and the exports still work.': 'Il resto di MechPilot continua a funzionare: la parte si costruisce comunque, la scheda Funzioni e le esportazioni funzionano.',
+  'Try again': 'Riprova',
   // ---------- main process ----------
   'Export {format}': 'Esporta {format}',
 };

@@ -1,5 +1,11 @@
 # MechPilot
 
+[![CI](https://github.com/mojeee/mechpilot/actions/workflows/ci.yml/badge.svg)](https://github.com/mojeee/mechpilot/actions/workflows/ci.yml)
+[![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-blue.svg)](LICENSE)
+[![Website](https://img.shields.io/badge/website-mechpilot.agentflowbind.com-4da3ff.svg)](https://mechpilot.agentflowbind.com)
+
+![MechPilot: the mounting bracket sample, dimensioned to ISO 129-1, in the dark theme](site/img/hero-dark.png)
+
 Open-source 2D/3D mechanical design for machine builders, fabrication shops, fixture designers and
 small engineering offices: production drawings to ISO standards, with 3D parts built in. Free,
 local-first, no account, no cloud. Your files stay yours.

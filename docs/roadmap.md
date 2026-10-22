@@ -87,21 +87,21 @@ website keep pointing at the same names.
 
 ## M7-AI Assistant (pulled forward for the demo)
 
-- [ ] Optional AI assistant: Claude, OpenAI or Gemini with the user's key, main process only;
+- [x] Optional AI assistant: Claude, OpenAI or Gemini with the user's key, main process only;
       key stored in the OS keychain / app data, never in the renderer or in git
-- [ ] Context: model, sketches, dimensions, parts, check results; tools to read, measure, check,
+- [x] Context: model, sketches, dimensions, parts, check results; tools to read, measure, check,
       propose commands
-- [ ] "Make a design from a sentence": the assistant drafts a 2D outline or a 3D part from a
+- [x] "Make a design from a sentence": the assistant drafts a 2D outline or a 3D part from a
       description (for example "a 120 × 80 plate with four M6 holes on a 100 × 60 pattern and R10
       corners"), shown as a preview
-- [ ] "Select something and ask for a change": the selection is the context ("make this 5 mm
+- [x] "Select something and ask for a change": the selection is the context ("make this 5 mm
       thicker", "add a chamfer here", "dimension these"); the answer is a preview on the drawing
-- [ ] Proposals as highlighted previews with Accept / Reject, one undo step; every claim with its
+- [x] Proposals as highlighted previews with Accept / Reject, one undo step; every claim with its
       source (measured, standard and clause, library entry, or "suggestion")
-- [ ] Assistant panel with the conversation, the proposal list and the provider settings
-- [ ] Fake provider in CI; real-key test written and skipped without a key
-- [ ] Demo sample: a prompt-to-part walkthrough in `docs/getting-started.md`
-- [ ] Demo script (owner's request, 2026-10-22): default demo model Claude Opus 5.5 for the
+- [x] Assistant panel with the conversation, the proposal list and the provider settings
+- [x] Fake provider in CI; real-key test written and skipped without a key
+- [x] Demo sample: a prompt-to-part walkthrough in `docs/getting-started.md`
+- [x] Demo script (owner's request, 2026-10-22): default demo model Claude Opus 5.5 for the
       impression; a complex part built step by step from written requests; pick a face, part or
       corner in the viewer or the drawing and it appears as a reference chip in the chat; ask for
       a change on it; finish with the PDF drawing of the design. The same walkthrough goes on the

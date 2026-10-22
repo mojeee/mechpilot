@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react';
 import type { Vec2 } from '@shared/geometry/vec2';
 import { readPalette, renderBase, renderOverlay, renderSheetBase, type Scene } from '../canvas/render';
 import { screenToWorld, useStore, type ViewState } from '../state/store';
+import { referenceEntities } from '../state/assistant';
 
 interface Cache {
   canvas: HTMLCanvasElement;
@@ -96,6 +97,10 @@ export function Canvas2D() {
         freedom: s.freedom,
         showConstraints: !sheet && s.editor.doc.constraintOrder.length > 0,
       };
+      // M7: the assistant's proposal preview and the hovered reference chip (model space only).
+      const pv = s.assistant.preview;
+      if (!sheet && pv?.doc && pv.diff && pv.base === s.editor.doc) scene.ghost = { doc: pv.doc, ids: [...pv.diff.added, ...pv.diff.changed], deleted: pv.diff.deleted };
+      if (!sheet && s.assistant.hoverReference) scene.refIds = referenceEntities(s.editor.doc, s.assistant.hoverReference);
       // The constraint overlay needs the visible ids (sketches are small; the set is memoized per state).
       if (scene.showConstraints) scene.visible = [...visibleSet(s)];
       const key = [s.editor.doc, s.gridOn, themeTick, s.canvasSize.w, s.canvasSize.h, dpr, s.activeSheet, s.settings.lang];

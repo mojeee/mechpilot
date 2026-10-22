@@ -8,6 +8,8 @@ import main from './it/main';
 import dxf from './it/dxf';
 import sketch from './it/sketch';
 import parts from './it/parts';
+import ai from './it/ai';
+import assistant from './it/assistant';
 import cad from './it/cad';
 
 export type Lang = 'en' | 'it';
@@ -16,7 +18,7 @@ export const LANGS: { id: Lang; label: string }[] = [
   { id: 'it', label: 'Italiano' },
 ];
 
-export const IT: Record<string, string> = { ...app, ...main, ...dxf, ...sketch, ...parts, ...cad };
+export const IT: Record<string, string> = { ...app, ...main, ...dxf, ...sketch, ...parts, ...ai, ...assistant, ...cad };
 
 let current: Lang = 'en';
 const listeners = new Set<(l: Lang) => void>();

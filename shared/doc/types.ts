@@ -290,7 +290,7 @@ export type EdgeSelector =
   | { kind: 'parallelTo'; axis: 'X' | 'Y' | 'Z' }
   /** Edges lying in a principal plane at an offset (e.g. the top face's outline). */
   | { kind: 'inPlane'; plane: SketchPlane; offset: number }
-  /** Edges of a given length (within 1e-6 mm). */
+  /** Edges of a given length (within 0.001 mm). */
   | { kind: 'ofLength'; length: number }
   /** Edges inside an axis-aligned box (mm). */
   | { kind: 'inBox'; min: [number, number, number]; max: [number, number, number] };

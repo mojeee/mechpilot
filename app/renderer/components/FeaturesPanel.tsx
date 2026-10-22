@@ -395,6 +395,7 @@ export function FeaturesPanel() {
   const measure = useStore((s) => s.measure);
   const toggleMeasure = useStore((s) => s.toggleMeasure);
   const [open, setOpen] = useState<string | null>(null);
+  const addReference = useStore((s) => s.assistant.addReference);
   const part = activePart ? doc.parts[activePart] : null;
 
   const move = (p: Part, i: number, d: -1 | 1) => {
@@ -426,6 +427,9 @@ export function FeaturesPanel() {
               {doc.parts[id].name}
             </button>
             <span className="dim small"> {t('{n} features', { n: doc.parts[id].features.length })}</span>
+            <button className="icon-btn to-chat" title={t('Add this part to the assistant chat')} aria-label={t('Add this part to the assistant chat')} onClick={() => addReference({ kind: 'part', partId: id, label: doc.parts[id].name })}>
+              {t('→ chat')}
+            </button>
           </li>
         ))}
       </ul>
@@ -449,6 +453,9 @@ export function FeaturesPanel() {
                   <div className="feature-row">
                     <button className="link grow" onClick={() => setOpen(open === f.id ? null : f.id)} title={featureKindLabel(f.kind)}>
                       <span className="feature-kind">{featureKindLabel(f.kind)}</span> {f.name}
+                    </button>
+                    <button className="icon-btn to-chat" title={t('Add this feature to the assistant chat')} aria-label={t('Add this feature to the assistant chat')} onClick={() => addReference({ kind: 'feature', partId: part.id, featureId: f.id, label: t('{feature} in {part}', { feature: f.name, part: part.name }) })}>
+                      →
                     </button>
                     <button className="icon-btn" title={t('Move up')} onClick={() => move(part, i, -1)}>
                       ↑

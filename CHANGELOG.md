@@ -5,6 +5,30 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## 0.6.0 — 2026-10-22 — M7-AI The assistant
+
+### Added
+
+- The optional assistant (Assistant tab, Ctrl+Shift+A, or `AI <text>` on the command line):
+  describe a part in a sentence and it answers with a proposal, shown as a ghost preview on the
+  drawing (and a translucent body in 3D) that you accept or reject; every accepted proposal is one
+  undo step. It never edits silently. Claude (default Claude Opus 5.5), OpenAI or Gemini with your
+  own key, stored encrypted on your computer; the model runs in the main process only.
+- References: the 2D selection ("Use selection"), a part or a feature from the Features tab, a
+  face (Alt+click) or a point (Shift+click) in the 3D viewer become chips in the chat, so you can
+  point at something and ask for a change on it.
+- Honest answers: the model reads the drawing through tools (read the model, measure, look up the
+  library, check profiles and builds) and every claim shows its source: measured on this model, a
+  standard and clause, a library entry, or "suggestion". When a request is not clear for the shape
+  at hand it asks one short question with numbered options and a default instead of guessing.
+- Proposals are validated before you see them: ids filled, commands dry-run, the document
+  validated, unknown ids and impossible features refused with the reason sent back to the model.
+- A scripted fake provider for tests (`MP_AI_FAKE=1`), a real-key test that runs only when a key
+  is present, and the demo script (`docs/demo.md`) that plays the whole walkthrough against the
+  real model and takes the website's demo screenshots.
+- Website: a bold, AI-first landing page and the demo page (`/demo/`); the app's 3D view behind
+  an error boundary that explains a missing WebGL in plain words.
+
 ## 0.5.0 — 2026-10-22 — M4 3D parts
 
 ### Added

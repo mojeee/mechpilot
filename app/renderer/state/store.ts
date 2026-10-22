@@ -23,6 +23,7 @@ import { parseLength, parsePoint } from '@shared/units';
 import { DEFAULT_SNAPS, findSnap, type SnapResult, type SnapSettings } from '../snap';
 // (SnapResult is also the type of the snap handed to tools for inferred constraints.)
 import { ALIASES, TOOLS, type ToolCtx, type ToolId } from '../tools';
+import { createAssistant, type AssistantSlice } from './assistant';
 
 export type { ToolId } from '../tools';
 
@@ -109,6 +110,9 @@ export interface Store {
   setSection(section: { plane: SketchPlane; offset: number } | null): void;
   toggleMeasure(): void;
   addMeasurePoint(p: [number, number, number]): void;
+
+  /** M7: the optional assistant (chat, references, proposals and their preview). */
+  assistant: AssistantSlice;
 
   run(cmd: Command): boolean;
   undo(): void;
@@ -313,6 +317,8 @@ export const useStore = create<Store>((set, get) => {
         set({ solving: false });
       }
     },
+
+    assistant: createAssistant(set, get),
 
     activePart: null,
     build: null,
@@ -853,6 +859,7 @@ export const useStore = create<Store>((set, get) => {
       const sheetId = get().editor.doc.sheetOrder[sheetNo - 1];
       if (sheetId) get().setActiveSheet(sheetId);
       setInterval(() => void get().autosave(), 20_000);
+      void get().assistant.loadAiSettings();
     },
     async updateSettings(patch) {
       const settings = await api().settings.set(patch);
@@ -870,6 +877,13 @@ export const useStore = create<Store>((set, get) => {
         return;
       }
       const upper = raw.toUpperCase();
+      // AI <text> sends a message to the assistant; AI alone shows the Assistant tab.
+      if (s.tool === 'select' && /^AI(s|$)/i.test(raw)) {
+        const msg = raw.slice(2).trim();
+        s.assistant.focus();
+        if (msg) void s.assistant.send(msg);
+        return;
+      }
       // While a tool runs, everything goes to it first, except the universal commands.
       if (s.tool !== 'select' && !['U', 'UNDO', 'REDO', 'ESC', 'CANCEL', 'ZE'].includes(upper)) {
         s.toolText(raw);
@@ -1079,6 +1093,11 @@ export const useStore = create<Store>((set, get) => {
       }
     },
   };
+});
+
+// The assistant's preview follows the document and the part shown in 3D.
+useStore.subscribe((s, prev) => {
+  if (s.assistant.panelOpen && (s.editor.doc !== prev.editor.doc || s.activePart !== prev.activePart)) s.assistant.syncPreview();
 });
 
 async function importDxfText(get: () => Store, text: string, path: string): Promise<void> {

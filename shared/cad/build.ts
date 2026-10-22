@@ -259,7 +259,8 @@ function edgesFor(body: Shape3D, sel: EdgeSelector): Edge[] {
     case 'inPlane':
       return new EdgeFinder().inPlane(sel.plane, sel.offset).find(body);
     case 'ofLength':
-      return new EdgeFinder().ofLength((l) => Math.abs(l - sel.length) <= 1e-6).find(body);
+      // 0.001 mm: lengths are typed or computed to three decimals (2π·30 = 188.496), not to 1e-6.
+      return new EdgeFinder().ofLength((l) => Math.abs(l - sel.length) <= 1e-3).find(body);
     case 'inBox': {
       const tol = 1e-6;
       return body.edges.filter((e) => {

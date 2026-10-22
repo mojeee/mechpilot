@@ -208,3 +208,27 @@ Planned (added in the milestone that needs them, each as a separate, replaceable
   primary densities (EN 1993-1-2, EN 10088-1, EN 1999-1-1) with supplier datasheets for C45,
   brass, copper, cast iron and plastics; each entry carries its own `verification` and the file's
   is its weakest. PTFE is left out because sources disagree; M60/M64 have no ISO 2306 tap drill.
+- **The assistant (M7-AI) is a proposal machine, not an editor.** The model runs in the main
+  process only (`app/main/ai`), sees a snapshot of the document sent with each request, reads it
+  through tools (`read_model`, `get_entities`, `measure`, `library`, `check`) and changes nothing
+  except through `propose`, whose commands are dry-run with `apply` and `validate` on a copy
+  before the user sees them; a broken proposal goes back to the model as a tool error. Accept runs
+  the commands as one batch, so one undo removes a whole proposal. Measurements and library
+  look-ups come back as claims with their source (product rule 7).
+- **Ask instead of guessing.** The system prompt tells the model to ask one short question with
+  numbered options and a stated default when a request is not clear for the shape at hand, and
+  to write "Assumed: …" in the summary when it fills a small gap itself (owner's rule, 2026-10-22).
+- **Keys.** Stored with Electron `safeStorage` in the app data folder, never in the renderer or
+  in git; in development `ANTHROPIC_API_KEY` & co. from the environment or `.env.local` are used
+  when no key is stored. The Anthropic client is pinned to `https://api.anthropic.com` and
+  ignores `ANTHROPIC_BASE_URL`, so a key never goes to a proxy set in the shell. `ai:testKey`
+  checks a key against the provider's model list without spending tokens.
+- **Models.** Claude Opus 5.5 is the default (the demo wants the strongest model), Haiku for
+  helper calls; OpenAI and Gemini through `fetch`, Anthropic through `@anthropic-ai/sdk` 1.1
+  (MIT). The real-key test (`tests/ai-real.test.ts`) runs whenever a key is present and makes
+  one small Haiku call.
+- **References.** A face clicked in the 3D viewer is measured on the display mesh (area-weighted
+  centre and normal from its triangles) and mapped by the prompt to an `inPlane` edge selector
+  or a `normal` face selector; the 2D selection, a part and a feature are references too.
+- **Previews.** The renderer dry-runs a proposal with `apply` on the current document and draws
+  the difference: dashed accent entities in 2D, a translucent body built by the kernel in 3D.

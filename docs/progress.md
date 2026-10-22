@@ -3,6 +3,39 @@
 Short entries after each milestone: what works, what is left, anything the owner must do by hand.
 Newest first.
 
+## 2026-10-22 — M7-AI The assistant done; demo recorded; website AI-first
+
+**What works**
+
+- Assistant tab (Ctrl+Shift+A, `AI <text>` on the command line). The model runs in the main
+  process with the user's key (Claude Opus 5.5 by default; OpenAI and Gemini too), reads the
+  drawing through tools and answers with proposals: ordinary commands shown as a ghost preview in
+  2D and a translucent body in 3D, accepted as one undo step or rejected. References: the 2D
+  selection, a part, a feature, a face (Alt+click) or a point in 3D. Every claim carries its
+  source; unclear requests get a question with numbered options and a default. Proposals are
+  validated (dry run + document validation) before the user sees them.
+- The demo script (`docs/demo.md`) played against the real model end to end in 6.8 minutes
+  (`e2e/demo.e2e.ts`, MP_DEMO=1): plate from one sentence with ISO 273 and ISO 286 values cited,
+  12 mm part, Ø60 boss with fillets, an R20 fillet refused with the geometric reasons and three
+  options, a chamfer on a clicked face, holes changed from the selection with a wall-thickness
+  warning, a front view and full ISO 129-1 dimensioning on an A3 sheet, PDF exported. The run is
+  recorded as a real screen capture for the website (`scripts/demo-video.mjs` makes the web
+  files).
+- Chat text renders a safe markdown subset; thin themed scrollbars; the 3D view behind an error
+  boundary; CI end-to-end tests fixed for Linux (entity count element, software WebGL).
+- 368 unit tests (incl. a real-key test that runs only when a key is present), 8 end-to-end
+  tests.
+
+**What's left**
+
+- Edge picking in 3D (today faces and points); the assistant maps a face to edge selectors.
+- A clip of the demo on the landing page once the recording is compressed and committed.
+
+**For the owner to do by hand**
+
+- Nothing for the assistant. For the launch: see `docs/launch.md` (CI green, first release with
+  installers, good-first-issue list, then the posts).
+
 ## 2026-10-22 — M4 3D parts done; website built (M8-Website pulled forward)
 
 **What works**

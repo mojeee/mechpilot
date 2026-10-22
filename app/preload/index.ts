@@ -1,8 +1,9 @@
 // Preload: exposes the typed API from shared/api.ts as window.mechpilot. No Node, file system or
 // network access leaks to the renderer.
 
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron';
 import type { MechPilotApi } from '@shared/api';
+import type { AssistantProgress } from '@shared/ai/types';
 
 const call =
   <T>(channel: string) =>
@@ -10,6 +11,22 @@ const call =
     ipcRenderer.invoke(channel, ...args) as Promise<T>;
 
 const api: MechPilotApi = {
+  ai: {
+    settings: call('ai:settings'),
+    setSettings: call('ai:setSettings'),
+    setKey: call('ai:setKey'),
+    clearKey: call('ai:clearKey'),
+    testKey: call('ai:testKey'),
+    chat: call('ai:chat'),
+    onProgress: (cb) => {
+      const listener = (_e: IpcRendererEvent, p: AssistantProgress) => cb(p);
+      ipcRenderer.on('ai:progress', listener);
+      return () => {
+        ipcRenderer.removeListener('ai:progress', listener);
+      };
+    },
+    cancel: call('ai:cancel'),
+  },
   app: {
     version: call('app:version'),
     platform: call('app:platform'),

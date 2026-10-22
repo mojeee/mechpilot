@@ -26,6 +26,9 @@ export interface Palette {
   snap: string;
   cursor: string;
   box: string;
+  /** The UI accent (assistant previews) and the error colour (what a proposal deletes). */
+  accent: string;
+  error: string;
 }
 
 export type SnapKind = 'end' | 'mid' | 'center' | 'intersection' | 'perpendicular' | 'tangent' | 'nearest' | 'grid' | 'polar' | 'quadrant';
@@ -59,6 +62,11 @@ export interface Scene {
   /** M3: degrees-of-freedom colouring per entity, and whether to draw constraint glyphs. */
   freedom: Record<Id, 'free' | 'constrained' | 'unknown'>;
   showConstraints: boolean;
+  /** M7: the assistant's proposal preview: entities of the preview document that are new or
+   *  changed (drawn from `doc`), and current entities the proposal deletes. Overlay only. */
+  ghost?: { doc: Document; ids: Id[]; deleted: Id[] } | null;
+  /** M7: entities of a reference chip under the pointer. */
+  refIds?: Id[];
 }
 
 export function readPalette(el: HTMLElement): Palette {
@@ -75,6 +83,8 @@ export function readPalette(el: HTMLElement): Palette {
     snap: v('--snap'),
     cursor: v('--canvas-fg'),
     box: v('--accent'),
+    accent: v('--accent'),
+    error: v('--err'),
   };
 }
 
@@ -488,6 +498,12 @@ export function renderOverlay(ctx: CanvasRenderingContext2D, s: Scene): void {
     ctx.strokeRect(Math.min(a.x, b.x) + 0.5, Math.min(a.y, b.y) + 0.5, Math.abs(b.x - a.x), Math.abs(b.y - a.y));
     ctx.restore();
   }
+  if (s.refIds?.length) {
+    ctx.globalAlpha = 0.55;
+    drawEntities(ctx, doc, s.refIds, view, palette, { color: palette.accent, widthPx: 4, dash: [] });
+    ctx.globalAlpha = 1;
+  }
+  if (s.ghost) drawGhost(ctx, s, s.ghost);
   if (s.snap) marker(ctx, s.snap, view, palette.snap);
   if (s.cursor) {
     const c = worldToScreen(view, s.cursor);
@@ -503,6 +519,22 @@ export function renderOverlay(ctx: CanvasRenderingContext2D, s: Scene): void {
     ctx.stroke();
     ctx.globalAlpha = 1;
   }
+}
+
+/** An assistant proposal as a ghost on top of the drawing: what it adds or changes in the accent
+ *  colour, what it deletes in the error colour, both dashed and slightly transparent. */
+function drawGhost(ctx: CanvasRenderingContext2D, s: Scene, g: { doc: Document; ids: Id[]; deleted: Id[] }): void {
+  const { view, palette } = s;
+  ctx.save();
+  if (g.deleted.length) {
+    ctx.globalAlpha = 0.85;
+    drawEntities(ctx, s.doc, g.deleted, view, palette, { color: palette.error, widthPx: 2, dash: [5, 4] });
+  }
+  if (g.ids.length) {
+    ctx.globalAlpha = 0.8;
+    drawEntities(ctx, g.doc, g.ids, view, palette, { color: palette.accent, widthPx: 2, dash: [7, 4] });
+  }
+  ctx.restore();
 }
 
 export function render(ctx: CanvasRenderingContext2D, s: Scene): void {

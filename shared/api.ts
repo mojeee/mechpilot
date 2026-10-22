@@ -19,6 +19,8 @@ export interface Settings {
   lang: Lang;
   /** Last opened files, newest first. */
   recent: string[];
+  /** The assistant's provider and model (M7). Keys are not here: they are encrypted separately. */
+  ai?: { provider: AiProviderId; model: string };
 }
 export const DEFAULT_SETTINGS: Settings = { theme: 'dark', canvas: 'dark', lang: 'en', recent: [] };
 
@@ -38,7 +40,24 @@ export interface OpenedFile {
   text: string;
 }
 
+import type { AiProviderId, AiSettings, AssistantProgress, AssistantReply, AssistantRequest } from './ai/types';
+
 export interface MechPilotApi {
+  /** The optional assistant (product rule 7). Keys live in the main process only. */
+  ai: {
+    settings(): Promise<AiSettings>;
+    setSettings(patch: { provider?: AiProviderId; model?: string }): Promise<AiSettings>;
+    /** Store a key (encrypted with Electron safeStorage in the app data folder). */
+    setKey(provider: AiProviderId, key: string): Promise<Result<AiSettings>>;
+    clearKey(provider: AiProviderId): Promise<AiSettings>;
+    /** One cheap call to the provider to see that the key works. */
+    testKey(provider: AiProviderId): Promise<Result<{ model: string }>>;
+    /** One assistant turn: the model may call tools on the snapshot and answer with proposals. */
+    chat(req: AssistantRequest): Promise<Result<AssistantReply>>;
+    /** Progress of the running request. Returns the unsubscribe function. */
+    onProgress(cb: (e: AssistantProgress) => void): () => void;
+    cancel(): Promise<void>;
+  };
   app: {
     version(): Promise<string>;
     /** process.platform: "darwin", "win32", "linux". */

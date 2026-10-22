@@ -15,13 +15,14 @@ export interface App {
   close(): Promise<void>;
 }
 
-export async function launch(opts: { env?: Record<string, string> } = {}): Promise<App> {
+/** `aiFake` runs the assistant against the scripted fake provider (MP_AI_FAKE=1, no key, no network). */
+export async function launch(opts: { env?: Record<string, string>; aiFake?: boolean } = {}): Promise<App> {
   const profile = mkdtempSync(join(tmpdir(), 'mp-e2e-'));
   const saveDir = mkdtempSync(join(tmpdir(), 'mp-e2e-save-'));
   const app = await electron.launch({
-    args: ['.', '--no-sandbox'],
+    args: ['.', '--no-sandbox', ...(process.env.CI ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] : [])],
     cwd: root,
-    env: { ...process.env, MP_PROFILE: profile, MP_SAVE_DIR: saveDir, ...opts.env },
+    env: { ...process.env, MP_PROFILE: profile, MP_SAVE_DIR: saveDir, ...(opts.aiFake ? { MP_AI_FAKE: '1' } : {}), ...opts.env },
   });
   const page = await app.firstWindow();
   await page.waitForSelector('.topbar', { timeout: 60_000 });
@@ -46,7 +47,7 @@ export async function command(page: Page, text: string): Promise<void> {
 }
 
 export async function entityCount(page: Page): Promise<number> {
-  const text = (await page.locator('.statusbar').textContent()) ?? '';
+  const text = (await page.locator('.statusbar .entities').textContent()) ?? '';
   const m = /(\d+) (?:entities|of (\d+) selected)/.exec(text);
   if (!m) throw new Error(`no entity count in status bar: ${text}`);
   return Number(m[2] ?? m[1]);

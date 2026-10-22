@@ -9,6 +9,7 @@ import { SheetTabs } from './components/SheetTabs';
 import { ToolPalette } from './components/ToolPalette';
 import { Canvas2D } from './components/Canvas2D';
 import { Viewer3D } from './components/Viewer3D';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { RightPanel } from './components/RightPanel';
 import { CommandLine } from './components/CommandLine';
 import { StatusBar } from './components/StatusBar';
@@ -44,7 +45,13 @@ export function App() {
       <SheetTabs />
       <div className="middle">
         <ToolPalette />
-        {activePart ? <Viewer3D /> : <Canvas2D />}
+        {activePart ? (
+          <ErrorBoundary what={t('The 3D view')}>
+            <Viewer3D />
+          </ErrorBoundary>
+        ) : (
+          <Canvas2D />
+        )}
         <RightPanel />
       </div>
       <CommandLine />

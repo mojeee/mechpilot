@@ -56,7 +56,7 @@ export function StatusBar() {
           {solving ? ' …' : ''}
         </span>
       )}
-      <span className="dim">{selected ? t('{n} of {total} selected', { n: selected, total: count }) : t('{n} entities', { n: count })}</span>
+      <span className="dim entities">{selected ? t('{n} of {total} selected', { n: selected, total: count }) : t('{n} entities', { n: count })}</span>
       <span className={`worker ${worker}`} title={t('Background worker (solver and kernel run here, never on the UI thread)')}>
         {worker === 'ok' ? t('Worker ready') : worker === 'failed' ? t('Worker failed') : t('Worker…')}
       </span>

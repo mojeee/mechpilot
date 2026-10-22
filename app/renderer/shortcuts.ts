@@ -48,6 +48,12 @@ export function useShortcuts(): void {
         s.newDocument();
         return;
       }
+      // Ctrl+Shift+A: the assistant's input (M7).
+      if (mod && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        s.assistant.focus();
+        return;
+      }
       if (isTextField(e.target)) return;
       if (e.key === 'Delete' || e.key === 'Backspace') {
         e.preventDefault();
