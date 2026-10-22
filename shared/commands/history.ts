@@ -26,10 +26,23 @@ export const editorState = (doc: Document): EditorState => ({ doc, history: empt
 
 export type ExecuteResult = { ok: true; state: EditorState } | { ok: false; error: CommandError };
 
-/** Apply a command and record it. A new command clears the redo stack. */
-export function execute(state: EditorState, cmd: Command, limit = DEFAULT_HISTORY_LIMIT): ExecuteResult {
+/**
+ * Apply a command and record it. A new command clears the redo stack. With `merge`, the command
+ * joins the previous history entry as one undo step (used for the solver's follow-up: the user's
+ * edit and the geometry the solver moved undo together).
+ */
+export function execute(state: EditorState, cmd: Command, limit = DEFAULT_HISTORY_LIMIT, merge = false): ExecuteResult {
   const r = apply(state.doc, cmd);
   if (!r.ok) return r;
+  const last = state.history.undo[state.history.undo.length - 1];
+  if (merge && last) {
+    const entry: HistoryEntry = {
+      label: last.label,
+      command: { kind: 'batch', label: last.label, commands: [last.command, cmd] },
+      inverse: { kind: 'batch', label: last.label, commands: [r.inverse, last.inverse] },
+    };
+    return { ok: true, state: { doc: r.doc, history: { undo: [...state.history.undo.slice(0, -1), entry], redo: [] }, dirty: true } };
+  }
   const entry: HistoryEntry = { label: labelOf(cmd), command: cmd, inverse: r.inverse };
   const undo = [...state.history.undo, entry];
   if (undo.length > limit) undo.splice(0, undo.length - limit);

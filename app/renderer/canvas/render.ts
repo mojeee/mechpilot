@@ -8,6 +8,7 @@ import type { Document, Entity, Id, Layer, Sheet } from '@shared/doc/types';
 import { annotationCtx, isAnnotation } from '@shared/doc/document';
 import { annotationPrims } from '@shared/draw/annotations';
 import { sheetPaper, sheetPrims, viewRect } from '@shared/draw/sheet';
+import { constraintPrims } from '@shared/draw/constraints';
 import { textWidth, type Prim } from '@shared/draw/primitives';
 import { arcPoints, bulgeToArc, ellipsePoints, polylineSegments, splinePoints } from '@shared/geometry/flatten';
 import { lineType } from '@shared/library';
@@ -55,6 +56,9 @@ export interface Scene {
   /** Window/crossing selection rectangle in world mm; crossing = right to left. */
   selectBox: { a: Vec2; b: Vec2; crossing: boolean } | null;
   palette: Palette;
+  /** M3: degrees-of-freedom colouring per entity, and whether to draw constraint glyphs. */
+  freedom: Record<Id, 'free' | 'constrained' | 'unknown'>;
+  showConstraints: boolean;
 }
 
 export function readPalette(el: HTMLElement): Palette {
@@ -419,6 +423,16 @@ export function renderOverlay(ctx: CanvasRenderingContext2D, s: Scene): void {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.lineCap = 'butt';
   ctx.lineJoin = 'round';
+  // Degrees-of-freedom colouring (M3): fully constrained entities green, free ones amber, when
+  // the sketch has constraints. Drawn as a thin overlay so the layer colours stay visible.
+  if (s.showConstraints) {
+    const constrained = s.visible.filter((id) => s.freedom[id] === 'constrained');
+    const free = s.visible.filter((id) => s.freedom[id] === 'free');
+    if (constrained.length) drawEntities(ctx, doc, constrained, view, palette, { color: 'rgba(82,201,139,0.9)', widthPx: 2, dash: [] });
+    if (free.length) drawEntities(ctx, doc, free, view, palette, { color: 'rgba(240,166,58,0.8)', widthPx: 2, dash: [] });
+    const h = 11 / view.scale;
+    drawPrims(ctx, constraintPrims(doc, h), view, palette.box);
+  }
   if (s.hover && !s.selection.has(s.hover)) {
     drawEntities(ctx, doc, [s.hover], view, palette, { color: palette.box, widthPx: 2, dash: [] });
   }

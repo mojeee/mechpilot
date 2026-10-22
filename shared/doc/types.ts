@@ -7,8 +7,9 @@ export type Id = string;
 
 /** Bumped on every change of shape; shared/doc/file.ts migrates older files.
  *  1: M0 (line, circle, arc). 2: M1 adds polyline, ellipse, spline, text.
- *  3: M2 adds dimensions, notes, balloons, surface and GD&T symbols, datums, dimStyle and sheets. */
-export const FORMAT_VERSION = 3;
+ *  3: M2 adds dimensions, notes, balloons, surface and GD&T symbols, datums, dimStyle and sheets.
+ *  4: M3 adds sketch constraints and driving dimensions. */
+export const FORMAT_VERSION = 4;
 export const FORMAT_NAME = 'mechpilot';
 
 export type Standard = 'iso' | 'asme';
@@ -137,6 +138,9 @@ export interface DimensionEntity extends EntityBase {
   tolerance?: Tolerance;
   /** Decimal places for the value; the style's default when absent. */
   decimals?: number;
+  /** M3: a driving dimension fixes the measured value to this number (mm, or degrees for angular)
+   *  through the constraint solver; absent = the dimension only reports the measure. */
+  driving?: number;
 }
 
 /** A note: one or more lines of text with an optional leader from the first point to the text. */
@@ -233,6 +237,44 @@ export interface DimStyle {
   arrowhead: 'closed-filled' | 'open' | 'oblique' | 'dot';
 }
 
+/* ---------- M3: sketch constraints (solved by planegcs in a worker) ---------- */
+
+/**
+ * A point of an entity: `a`/`b` of a line, `center` of a circle or arc, `start`/`end` of an arc,
+ * or a vertex index of a polyline. Constraints refer to points and entities by id, never by
+ * coordinates, so they survive every edit and undo.
+ */
+export interface PointRef {
+  entity: Id;
+  point: 'a' | 'b' | 'center' | 'start' | 'end' | number;
+}
+
+export type Constraint = { id: Id } & (
+  | { kind: 'coincident'; p1: PointRef; p2: PointRef }
+  | { kind: 'pointOnLine'; p: PointRef; line: Id }
+  | { kind: 'horizontal'; entity: Id }
+  | { kind: 'vertical'; entity: Id }
+  | { kind: 'parallel'; a: Id; b: Id }
+  | { kind: 'perpendicular'; a: Id; b: Id }
+  /** Line–circle/arc, or circle/arc–circle/arc. */
+  | { kind: 'tangent'; a: Id; b: Id }
+  /** Equal lengths of two lines, or equal radii of two circles/arcs. */
+  | { kind: 'equal'; a: Id; b: Id }
+  /** p1 and p2 mirror images about `line`. */
+  | { kind: 'symmetric'; p1: PointRef; p2: PointRef; line: Id }
+  /** Every point of the entity is fixed. */
+  | { kind: 'fixed'; entity: Id }
+  /** Distance between two points, mm. */
+  | { kind: 'distance'; p1: PointRef; p2: PointRef; value: number }
+  /** Distance from a point to a line, mm. */
+  | { kind: 'pointLineDistance'; p: PointRef; line: Id; value: number }
+  /** Angle between two lines, radians, counter-clockwise from a to b. */
+  | { kind: 'angle'; a: Id; b: Id; value: number }
+  /** Radius of a circle or arc, mm. */
+  | { kind: 'radius'; entity: Id; value: number }
+);
+export type ConstraintKind = Constraint['kind'];
+
 /* ---------- M2: sheets (ISO 5457, ISO 7200, ISO 5455) ---------- */
 
 export type SheetSize = 'A0' | 'A1' | 'A2' | 'A3' | 'A4';
@@ -282,4 +324,7 @@ export interface Document {
   dimStyle: DimStyle;
   sheets: Record<Id, Sheet>;
   sheetOrder: Id[];
+  /** M3: sketch constraints between entities, solved whenever they change. */
+  constraints: Record<Id, Constraint>;
+  constraintOrder: Id[];
 }

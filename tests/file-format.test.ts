@@ -18,7 +18,7 @@ describe('serialize', () => {
     ]);
     const text = serialize(doc);
     const keys = Object.keys(JSON.parse(text) as object);
-    expect(keys).toEqual(['format', 'version', 'unit', 'name', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'sheetOrder', 'sheets']);
+    expect(keys).toEqual(['format', 'version', 'unit', 'name', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'constraintOrder', 'constraints', 'sheetOrder', 'sheets']);
     expect(text.indexOf('"b": {')).toBeLessThan(text.indexOf('"a": {'));
     // id, type and layer first, then alphabetical.
     expect(Object.keys((JSON.parse(text) as { entities: Record<string, object> }).entities.b)).toEqual(['id', 'type', 'layer', 'center', 'radius']);

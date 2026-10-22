@@ -772,6 +772,8 @@ export function readDxf(text: string, opts: { name?: string; ids?: IdGen } = {})
     dimStyle: { ...DEFAULT_DIM_STYLE },
     sheets: {},
     sheetOrder: [],
+    constraints: {},
+    constraintOrder: [],
   };
   return { ok: true, doc, warnings: warn.list() };
 }

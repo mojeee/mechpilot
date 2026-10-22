@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 import { t } from '@shared/i18n';
 import type { DimensionEntity, DimStyle, Entity, Projection, Standard, Tolerance } from '@shared/doc/types';
 import { countByType } from '@shared/doc/document';
-import { GDT_SYMBOLS } from '@shared/draw/annotations';
+import { dimensionValue, GDT_SYMBOLS } from '@shared/draw/annotations';
+import { constraintEntities } from '@shared/commands';
+import { CONSTRAINT_GLYPH } from '@shared/draw/constraints';
 import { formatLength, parseLength } from '@shared/units';
 import { useStore } from '../state/store';
 
@@ -227,6 +229,16 @@ function EntityProps({ e }: { e: Entity }) {
             </select>
           </label>
           <ToleranceEditor e={e} />
+          <label className="field">
+            <span>{t('Driving')}</span>
+            <input
+              type="checkbox"
+              checked={e.driving !== undefined}
+              title={t('A driving dimension fixes the measured value through the constraint solver')}
+              onChange={(ev) => update(ev.target.checked ? { ...e, driving: dimensionValue(e) } : withoutKey(e, 'driving'))}
+            />
+          </label>
+          {e.driving !== undefined && <NumberField label={t('Drives to')} value={e.driving} unit={e.kind === 'angular' ? '°' : 'mm'} onCommit={(driving) => update({ ...e, driving })} />}
         </>
       )}
       {e.type === 'note' && (
@@ -267,11 +279,44 @@ function EntityProps({ e }: { e: Entity }) {
         </>
       )}
       {e.type === 'datum' && <TextField label={t('Label')} value={e.label} onCommit={(label) => /^[A-Za-z]{1,2}$/.test(label.trim()) && update({ ...e, label: label.trim().toUpperCase() })} />}
+      <EntityConstraints id={e.id} />
       <div className="readout dim">
         <span>id</span>
         <span className="mono">{e.id}</span>
       </div>
     </div>
+  );
+}
+
+/** The constraints that refer to this entity, with a remove button each. */
+function EntityConstraints({ id }: { id: string }) {
+  const s = useStore();
+  const doc = s.editor.doc;
+  const ids = doc.constraintOrder.filter((cid) => constraintEntities(doc.constraints[cid]).includes(id));
+  const freedom = s.freedom[id];
+  if (ids.length === 0 && !freedom) return null;
+  return (
+    <>
+      <div className="readout">
+        <span>{t('Constraints')}</span>
+        <span>{freedom === 'constrained' ? t('fully constrained') : freedom === 'free' ? t('can still move') : ids.length ? t('{n}', { n: ids.length }) : t('none')}</span>
+      </div>
+      {ids.map((cid) => {
+        const c = doc.constraints[cid];
+        return (
+          <div key={cid} className="finding">
+            <span className="glyph">{CONSTRAINT_GLYPH[c.kind]}</span>
+            <span>
+              {c.kind}
+              {'value' in c ? ` ${c.kind === 'angle' ? `${Number(((c.value * 180) / Math.PI).toPrecision(6))}°` : `${c.value} mm`}` : ''}
+            </span>
+            <button className="icon-btn" title={t('Remove')} onClick={() => s.run({ kind: 'deleteConstraints', ids: [cid] })}>
+              ×
+            </button>
+          </div>
+        );
+      })}
+    </>
   );
 }
 

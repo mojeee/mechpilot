@@ -7,6 +7,7 @@ import type { Document, Entity, Id } from '@shared/doc/types';
 import type { Vec2 } from '@shared/geometry/vec2';
 import type { IdGen } from '@shared/ids';
 import type { Message } from '../state/store';
+import type { SnapResult } from '../snap';
 
 export type ToolId =
   | 'select'
@@ -39,7 +40,20 @@ export type ToolId =
   | 'balloon'
   | 'surface'
   | 'gdt'
-  | 'datum';
+  | 'datum'
+  | 'c-coincident'
+  | 'c-point-on-line'
+  | 'c-horizontal'
+  | 'c-vertical'
+  | 'c-parallel'
+  | 'c-perpendicular'
+  | 'c-tangent'
+  | 'c-equal'
+  | 'c-symmetric'
+  | 'c-fixed'
+  | 'c-distance'
+  | 'c-angle'
+  | 'c-radius';
 
 export interface ToolCtx {
   doc: Document;
@@ -56,6 +70,8 @@ export interface ToolCtx {
   finish(): void;
   /** Ask for text to be typed: the command line shows it as the prompt's input (e.g. the text tool). */
   t(text: string, vars?: Record<string, string | number>): string;
+  /** The object snap the last point came from (end point, centre, polar angle), for inferred constraints. */
+  lastSnap: SnapResult | null;
 }
 
 /**

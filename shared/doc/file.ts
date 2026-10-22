@@ -3,7 +3,7 @@
 // round-trips every double exactly, so nothing is rounded on save or load (product rule 1).
 
 import { DEFAULT_DIM_STYLE } from '../draw/annotations';
-import { FORMAT_NAME, FORMAT_VERSION, type DimensionKind, type DimStyle, type Document, type Entity, type Layer, type Sheet, type SheetView, type Tolerance } from './types';
+import { FORMAT_NAME, FORMAT_VERSION, type Constraint, type DimensionKind, type DimStyle, type Document, type Entity, type Layer, type PointRef, type Sheet, type SheetView, type Tolerance } from './types';
 
 export interface FileError {
   code: 'not-json' | 'not-mechpilot' | 'newer-version' | 'invalid';
@@ -15,7 +15,7 @@ export type ParseResult = { ok: true; doc: Document; migratedFrom?: number } | {
 export const FILE_EXTENSION = '.mechpilot.json';
 
 /** Fixed key order for the top level; other objects get their keys sorted. */
-const TOP_ORDER: (keyof Document)[] = ['format', 'version', 'unit', 'name', 'description', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'sheetOrder', 'sheets'];
+const TOP_ORDER: (keyof Document)[] = ['format', 'version', 'unit', 'name', 'description', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'constraintOrder', 'constraints', 'sheetOrder', 'sheets'];
 /** Entities and layers: id and type first, then the rest alphabetically, so a diff reads naturally. */
 const FIRST_KEYS = ['id', 'type', 'kind', 'layer'];
 
@@ -54,6 +54,10 @@ export function serialize(doc: Document): string {
       const m: Record<string, unknown> = {};
       for (const id of doc.sheetOrder) if (doc.sheets[id]) m[id] = canonical(doc.sheets[id], FIRST_KEYS);
       out[k] = m;
+    } else if (k === 'constraints') {
+      const m: Record<string, unknown> = {};
+      for (const id of doc.constraintOrder) if (doc.constraints[id]) m[id] = canonical(doc.constraints[id], FIRST_KEYS);
+      out[k] = m;
     } else out[k] = canonical(v);
   }
   return JSON.stringify(out, null, 2) + '\n';
@@ -66,6 +70,8 @@ const migrations: Record<number, Migration> = {
   1: (raw) => ({ ...raw, version: 2 }),
   // 2 → 3 (M2): dimension style and sheets, with defaults.
   2: (raw) => ({ ...raw, version: 3, dimStyle: { ...DEFAULT_DIM_STYLE }, sheets: {}, sheetOrder: [] }),
+  // 3 → 4 (M3): sketch constraints (none yet) and driving dimensions (none yet).
+  3: (raw) => ({ ...raw, version: 4, constraints: {}, constraintOrder: [] }),
 };
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -161,6 +167,10 @@ function validateEntity(v: unknown, id: string, layers: Record<string, Layer>): 
       if (isStr(v.suffix)) e.suffix = v.suffix;
       if (tol) e.tolerance = tol;
       if (isNum(v.decimals) && Number.isInteger(v.decimals) && v.decimals >= 0 && v.decimals <= 6) e.decimals = v.decimals;
+      if (v.driving !== undefined) {
+        if (!isNum(v.driving)) return `entity ${id}: driving must be a number`;
+        e.driving = v.driving;
+      }
       return e;
     }
     case 'note': {
@@ -203,6 +213,108 @@ function validateEntity(v: unknown, id: string, layers: Record<string, Layer>): 
       return { ...base, type: 'datum', position: vec(v.position), rotation: v.rotation, label: v.label };
     default:
       return `entity ${id}: unknown type "${String(v.type)}"`;
+  }
+}
+
+const POINT_NAMES = ['a', 'b', 'center', 'start', 'end'];
+function validatePointRef(v: unknown, entities: Record<string, Entity>, where: string): PointRef | string {
+  if (!isObj(v) || !isStr(v.entity) || !entities[v.entity]) return `${where}: unknown entity`;
+  const e = entities[v.entity];
+  const p = v.point;
+  if (typeof p === 'number') {
+    if (e.type !== 'polyline' || !Number.isInteger(p) || p < 0 || p >= e.points.length) return `${where}: vertex ${String(p)} does not exist`;
+    return { entity: v.entity, point: p };
+  }
+  if (!isStr(p) || !POINT_NAMES.includes(p)) return `${where}: point must be a, b, center, start, end or a vertex index`;
+  const ok = (e.type === 'line' && (p === 'a' || p === 'b')) || (e.type === 'circle' && p === 'center') || (e.type === 'arc' && (p === 'center' || p === 'start' || p === 'end'));
+  if (!ok) return `${where}: a ${e.type} has no point "${p}"`;
+  return { entity: v.entity, point: p as PointRef['point'] };
+}
+
+function validateConstraint(v: unknown, id: string, entities: Record<string, Entity>): Constraint | string {
+  if (!isObj(v)) return `constraint ${id} is not an object`;
+  if (v.id !== id) return `constraint ${id} has id "${String(v.id)}"`;
+  const ent = (key: string, types: Entity['type'][]): string | null => {
+    const eid = v[key];
+    if (!isStr(eid) || !entities[eid]) return `constraint ${id}: ${key} is not an entity`;
+    if (!types.includes(entities[eid].type)) return `constraint ${id}: ${key} must be a ${types.join(' or ')}`;
+    return null;
+  };
+  const pt = (key: string): PointRef | string => validatePointRef(v[key], entities, `constraint ${id}: ${key}`);
+  const num = (key: string): number | string => (isNum(v[key]) ? (v[key] as number) : `constraint ${id}: ${key} must be a number`);
+  switch (v.kind) {
+    case 'coincident':
+    case 'distance': {
+      const p1 = pt('p1');
+      if (typeof p1 === 'string') return p1;
+      const p2 = pt('p2');
+      if (typeof p2 === 'string') return p2;
+      if (v.kind === 'coincident') return { id, kind: 'coincident', p1, p2 };
+      const value = num('value');
+      if (typeof value === 'string') return value;
+      return { id, kind: 'distance', p1, p2, value };
+    }
+    case 'pointOnLine':
+    case 'pointLineDistance': {
+      const p = pt('p');
+      if (typeof p === 'string') return p;
+      const bad = ent('line', ['line']);
+      if (bad) return bad;
+      if (v.kind === 'pointOnLine') return { id, kind: 'pointOnLine', p, line: v.line as string };
+      const value = num('value');
+      if (typeof value === 'string') return value;
+      return { id, kind: 'pointLineDistance', p, line: v.line as string, value };
+    }
+    case 'horizontal':
+    case 'vertical': {
+      const bad = ent('entity', ['line']);
+      if (bad) return bad;
+      return { id, kind: v.kind, entity: v.entity as string };
+    }
+    case 'parallel':
+    case 'perpendicular':
+    case 'angle': {
+      const bad = ent('a', ['line']) ?? ent('b', ['line']);
+      if (bad) return bad;
+      if (v.a === v.b) return `constraint ${id}: a and b are the same line`;
+      if (v.kind === 'angle') {
+        const value = num('value');
+        if (typeof value === 'string') return value;
+        return { id, kind: 'angle', a: v.a as string, b: v.b as string, value };
+      }
+      return { id, kind: v.kind, a: v.a as string, b: v.b as string };
+    }
+    case 'tangent':
+    case 'equal': {
+      const bad = ent('a', ['line', 'circle', 'arc']) ?? ent('b', ['line', 'circle', 'arc']);
+      if (bad) return bad;
+      if (v.a === v.b) return `constraint ${id}: a and b are the same entity`;
+      return { id, kind: v.kind, a: v.a as string, b: v.b as string };
+    }
+    case 'symmetric': {
+      const p1 = pt('p1');
+      if (typeof p1 === 'string') return p1;
+      const p2 = pt('p2');
+      if (typeof p2 === 'string') return p2;
+      const bad = ent('line', ['line']);
+      if (bad) return bad;
+      return { id, kind: 'symmetric', p1, p2, line: v.line as string };
+    }
+    case 'fixed': {
+      const bad = ent('entity', ['line', 'circle', 'arc', 'polyline']);
+      if (bad) return bad;
+      return { id, kind: 'fixed', entity: v.entity as string };
+    }
+    case 'radius': {
+      const bad = ent('entity', ['circle', 'arc']);
+      if (bad) return bad;
+      const value = num('value');
+      if (typeof value === 'string') return value;
+      if (value <= 0) return `constraint ${id}: radius must be > 0`;
+      return { id, kind: 'radius', entity: v.entity as string, value };
+    }
+    default:
+      return `constraint ${id}: unknown kind "${String(v.kind)}"`;
   }
 }
 
@@ -286,6 +398,17 @@ export function validate(raw: Record<string, unknown>): Document | string {
     sheetOrder.push(id);
   }
   for (const id of Object.keys(raw.sheets)) if (!sheets[id]) return `sheet ${id} is not in sheetOrder`;
+  if (!isObj(raw.constraints) || !Array.isArray(raw.constraintOrder)) return 'constraints and constraintOrder are missing';
+  const constraints: Record<string, Constraint> = {};
+  const constraintOrder: string[] = [];
+  for (const id of raw.constraintOrder) {
+    if (!isStr(id)) return 'constraintOrder must contain ids';
+    const c = validateConstraint(raw.constraints[id], id, entities);
+    if (typeof c === 'string') return c;
+    constraints[id] = c;
+    constraintOrder.push(id);
+  }
+  for (const id of Object.keys(raw.constraints)) if (!constraints[id]) return `constraint ${id} is not in constraintOrder`;
   const doc: Document = {
     format: FORMAT_NAME,
     version: FORMAT_VERSION,
@@ -301,6 +424,8 @@ export function validate(raw: Record<string, unknown>): Document | string {
     dimStyle,
     sheets,
     sheetOrder,
+    constraints,
+    constraintOrder,
   };
   if (isStr(raw.description)) doc.description = raw.description;
   return doc;

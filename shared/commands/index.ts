@@ -2,10 +2,11 @@
 // command: plain data applied by a pure function that returns the new document and the inverse
 // command. Undo, autosave, scripting and AI all go through here; nothing else edits a document.
 
-import type { DimStyle, Document, Entity, Id, Layer, Projection, Sheet, Standard } from '../doc/types';
+import type { Constraint, DimStyle, Document, Entity, Id, Layer, Projection, Sheet, Standard } from '../doc/types';
 
 export type Command =
-  | { kind: 'addEntities'; entities: Entity[] }
+  /** `order`, when given, is the full entityOrder to restore (undo of a delete keeps the drawing order). */
+  | { kind: 'addEntities'; entities: Entity[]; order?: Id[] }
   | { kind: 'deleteEntities'; ids: Id[] }
   /** Replace entities by id (whole entity, so the inverse is the previous entity). */
   | { kind: 'updateEntities'; entities: Entity[] }
@@ -23,12 +24,17 @@ export type Command =
   | { kind: 'setDimStyle'; style: DimStyle }
   | { kind: 'addSheet'; sheet: Sheet; index?: number }
   | { kind: 'deleteSheet'; id: Id }
-  | { kind: 'updateSheet'; sheet: Sheet };
+  | { kind: 'updateSheet'; sheet: Sheet }
+  /* M3: sketch constraints. */
+  /** `order`, when given, is the full constraintOrder to restore (undo of a delete keeps the order). */
+  | { kind: 'addConstraints'; constraints: Constraint[]; order?: Id[] }
+  | { kind: 'deleteConstraints'; ids: Id[] }
+  | { kind: 'updateConstraints'; constraints: Constraint[] };
 
 export type CommandKind = Command['kind'];
 
 export interface CommandError {
-  code: 'unknown-entity' | 'unknown-layer' | 'unknown-sheet' | 'duplicate-id' | 'layer-not-empty' | 'last-layer' | 'layer-locked' | 'empty';
+  code: 'unknown-entity' | 'unknown-layer' | 'unknown-sheet' | 'unknown-constraint' | 'duplicate-id' | 'layer-not-empty' | 'last-layer' | 'layer-locked' | 'empty';
   message: string;
   hint?: string;
 }
@@ -51,7 +57,8 @@ export function apply(doc: Document, cmd: Command): ApplyResult {
         entities[e.id] = e;
         entityOrder.push(e.id);
       }
-      return { ok: true, doc: { ...doc, entities, entityOrder }, inverse: { kind: 'deleteEntities', ids: cmd.entities.map((e) => e.id) } };
+      const order = cmd.order && cmd.order.length === entityOrder.length && cmd.order.every((id) => entities[id]) ? cmd.order : entityOrder;
+      return { ok: true, doc: { ...doc, entities, entityOrder: order }, inverse: { kind: 'deleteEntities', ids: cmd.entities.map((e) => e.id) } };
     }
     case 'deleteEntities': {
       if (cmd.ids.length === 0) return fail('empty', 'Nothing selected.');
@@ -68,7 +75,17 @@ export function apply(doc: Document, cmd: Command): ApplyResult {
       const gone = new Set(cmd.ids);
       // Keep the removed entities in drawing order so undo puts them back in the same order.
       const ordered = doc.entityOrder.filter((id) => gone.has(id)).map((id) => doc.entities[id]);
-      return { ok: true, doc: { ...doc, entities, entityOrder: doc.entityOrder.filter((id) => !gone.has(id)) }, inverse: { kind: 'addEntities', entities: ordered } };
+      // Constraints that refer to a deleted entity go with it (and come back on undo).
+      const goneConstraints = doc.constraintOrder.filter((cid) => constraintEntities(doc.constraints[cid]).some((eid) => gone.has(eid)));
+      let next: Document = { ...doc, entities, entityOrder: doc.entityOrder.filter((id) => !gone.has(id)) };
+      if (goneConstraints.length) {
+        const constraints = { ...doc.constraints };
+        for (const cid of goneConstraints) delete constraints[cid];
+        const gc = new Set(goneConstraints);
+        next = { ...next, constraints, constraintOrder: doc.constraintOrder.filter((cid) => !gc.has(cid)) };
+        return { ok: true, doc: next, inverse: { kind: 'batch', label: 'deleteEntities', commands: [{ kind: 'addEntities', entities: ordered, order: doc.entityOrder }, { kind: 'addConstraints', constraints: goneConstraints.map((cid) => doc.constraints[cid]), order: doc.constraintOrder }] } };
+      }
+      return { ok: true, doc: next, inverse: { kind: 'addEntities', entities: ordered, order: doc.entityOrder } };
     }
     case 'updateEntities': {
       if (cmd.entities.length === 0) return fail('empty', 'Nothing to change.');
@@ -156,6 +173,67 @@ export function apply(doc: Document, cmd: Command): ApplyResult {
       if (!old) return fail('unknown-sheet', `Sheet "${cmd.sheet.id}" does not exist.`);
       return { ok: true, doc: { ...doc, sheets: { ...doc.sheets, [cmd.sheet.id]: cmd.sheet } }, inverse: { kind: 'updateSheet', sheet: old } };
     }
+    case 'addConstraints': {
+      if (cmd.constraints.length === 0) return fail('empty', 'Nothing to add.');
+      const constraints = { ...doc.constraints };
+      const constraintOrder = [...doc.constraintOrder];
+      for (const c of cmd.constraints) {
+        if (constraints[c.id]) return fail('duplicate-id', `A constraint with id ${c.id} already exists.`);
+        for (const eid of constraintEntities(c)) if (!doc.entities[eid]) return fail('unknown-entity', `Entity ${eid} does not exist.`);
+        constraints[c.id] = c;
+        constraintOrder.push(c.id);
+      }
+      const order = cmd.order && cmd.order.length === constraintOrder.length && cmd.order.every((id) => constraints[id]) ? cmd.order : constraintOrder;
+      return { ok: true, doc: { ...doc, constraints, constraintOrder: order }, inverse: { kind: 'deleteConstraints', ids: cmd.constraints.map((c) => c.id) } };
+    }
+    case 'deleteConstraints': {
+      if (cmd.ids.length === 0) return fail('empty', 'Nothing selected.');
+      const constraints = { ...doc.constraints };
+      for (const id of cmd.ids) {
+        if (!constraints[id]) return fail('unknown-constraint', `Constraint ${id} does not exist.`);
+        delete constraints[id];
+      }
+      const gone = new Set(cmd.ids);
+      const removed = doc.constraintOrder.filter((id) => gone.has(id)).map((id) => doc.constraints[id]);
+      return { ok: true, doc: { ...doc, constraints, constraintOrder: doc.constraintOrder.filter((id) => !gone.has(id)) }, inverse: { kind: 'addConstraints', constraints: removed, order: doc.constraintOrder } };
+    }
+    case 'updateConstraints': {
+      if (cmd.constraints.length === 0) return fail('empty', 'Nothing to change.');
+      const constraints = { ...doc.constraints };
+      const previous: Constraint[] = [];
+      for (const c of cmd.constraints) {
+        const old = constraints[c.id];
+        if (!old) return fail('unknown-constraint', `Constraint ${c.id} does not exist.`);
+        previous.push(old);
+        constraints[c.id] = c;
+      }
+      return { ok: true, doc: { ...doc, constraints }, inverse: { kind: 'updateConstraints', constraints: previous } };
+    }
+  }
+}
+
+/** The entity ids a constraint refers to. */
+export function constraintEntities(c: Constraint): Id[] {
+  switch (c.kind) {
+    case 'coincident':
+    case 'distance':
+      return [c.p1.entity, c.p2.entity];
+    case 'pointOnLine':
+    case 'pointLineDistance':
+      return [c.p.entity, c.line];
+    case 'symmetric':
+      return [c.p1.entity, c.p2.entity, c.line];
+    case 'horizontal':
+    case 'vertical':
+    case 'fixed':
+    case 'radius':
+      return [c.entity];
+    case 'parallel':
+    case 'perpendicular':
+    case 'tangent':
+    case 'equal':
+    case 'angle':
+      return [c.a, c.b];
   }
 }
 
@@ -190,5 +268,11 @@ export function labelOf(cmd: Command): string {
       return 'Delete sheet';
     case 'updateSheet':
       return `Edit sheet ${cmd.sheet.name}`;
+    case 'addConstraints':
+      return cmd.constraints.length === 1 ? `Add ${cmd.constraints[0].kind} constraint` : `Add ${cmd.constraints.length} constraints`;
+    case 'deleteConstraints':
+      return cmd.ids.length === 1 ? 'Delete constraint' : `Delete ${cmd.ids.length} constraints`;
+    case 'updateConstraints':
+      return cmd.constraints.length === 1 ? `Edit ${cmd.constraints[0].kind} constraint` : `Edit ${cmd.constraints.length} constraints`;
   }
 }

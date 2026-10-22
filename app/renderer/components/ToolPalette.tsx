@@ -40,6 +40,21 @@ const ANNOTATE: { id: ToolId; key: string; icon: string }[] = [
   { id: 'gdt', key: 'TOL', icon: '⊞' },
   { id: 'datum', key: 'DAT', icon: '▲' },
 ];
+const CONSTRAIN: { id: ToolId; key: string; icon: string }[] = [
+  { id: 'c-coincident', key: 'CC', icon: '●' },
+  { id: 'c-point-on-line', key: 'CPL', icon: '◦' },
+  { id: 'c-horizontal', key: 'CH', icon: '—' },
+  { id: 'c-vertical', key: 'CV', icon: '|' },
+  { id: 'c-parallel', key: 'CPA', icon: '∥' },
+  { id: 'c-perpendicular', key: 'CPE', icon: '⊥' },
+  { id: 'c-tangent', key: 'CT', icon: '◠' },
+  { id: 'c-equal', key: 'CE', icon: '=' },
+  { id: 'c-symmetric', key: 'CS', icon: '⋈' },
+  { id: 'c-fixed', key: 'CF', icon: '⚓' },
+  { id: 'c-distance', key: 'CD', icon: '↔' },
+  { id: 'c-angle', key: 'CA', icon: '∠' },
+  { id: 'c-radius', key: 'CR', icon: 'R' },
+];
 
 export function ToolPalette() {
   const tool = useStore((s) => s.tool);
@@ -60,6 +75,8 @@ export function ToolPalette() {
       {EDIT.map(button)}
       <div className="palette-sep" />
       {ANNOTATE.map(button)}
+      <div className="palette-sep" />
+      {CONSTRAIN.map(button)}
     </aside>
   );
 }

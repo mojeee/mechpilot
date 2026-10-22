@@ -47,7 +47,9 @@ describe('apply', () => {
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.doc.entityOrder).toEqual(['b']);
-    expect(r.inverse).toEqual({ kind: 'addEntities', entities: [line('a'), line('c')] });
+    expect(r.inverse).toEqual({ kind: 'addEntities', entities: [line('a'), line('c')], order: ['a', 'b', 'c'] });
+    const back = apply(r.doc, r.inverse);
+    expect(back.ok && back.doc.entityOrder).toEqual(['a', 'b', 'c']);
   });
 
   it('updateEntities keeps the previous entity as the inverse', () => {

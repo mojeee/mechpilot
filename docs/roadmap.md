@@ -43,12 +43,12 @@ entry in `docs/progress.md`.
 
 ## M3 Parametric sketches
 
-- [ ] planegcs in a worker (LGPL notice, replaceable module)
-- [ ] Constraints: coincident, horizontal, vertical, parallel, perpendicular, tangent, equal,
+- [x] planegcs in a worker (LGPL notice, replaceable module)
+- [x] Constraints: coincident, horizontal, vertical, parallel, perpendicular, tangent, equal,
       symmetric, fixed, distance, angle, radius
-- [ ] Driving dimensions
-- [ ] Degrees-of-freedom colouring
-- [ ] Conflicts explained in plain words, with a way out
+- [x] Driving dimensions
+- [x] Degrees-of-freedom colouring
+- [x] Conflicts explained in plain words, with a way out
 
 ## M4 3D parts
 

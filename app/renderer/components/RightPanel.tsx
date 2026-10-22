@@ -5,6 +5,7 @@ import { t } from '@shared/i18n';
 import { PropertiesPanel } from './PropertiesPanel';
 import { LayersPanel } from './LayersPanel';
 import { SheetsPanel } from './SheetsPanel';
+import { ChecksPanel } from './ChecksPanel';
 import { useStore } from '../state/store';
 
 type Tab = 'properties' | 'layers' | 'sheets' | 'checks';
@@ -35,7 +36,7 @@ export function RightPanel() {
         {tab === 'properties' && <PropertiesPanel />}
         {tab === 'layers' && <LayersPanel />}
         {tab === 'sheets' && <SheetsPanel />}
-        {tab === 'checks' && <p className="dim">{t('The drawing checker arrives with milestone M7. It will list under-constrained sketches, missing dimensions, unknown fits and empty title-block fields here.')}</p>}
+        {tab === 'checks' && <ChecksPanel />}
       </div>
     </aside>
   );

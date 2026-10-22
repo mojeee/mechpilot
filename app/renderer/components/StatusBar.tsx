@@ -23,6 +23,8 @@ export function StatusBar() {
   const gridStep = useStore((s) => s.gridStep());
   const count = useStore((s) => s.editor.doc.entityOrder.length);
   const selected = useStore((s) => s.selection.length);
+  const diagnosis = useStore((s) => s.diagnosis);
+  const solving = useStore((s) => s.solving);
   const [worker, setWorker] = useState<'checking' | 'ok' | 'failed'>('checking');
   useEffect(() => {
     smokeWorker()
@@ -48,6 +50,12 @@ export function StatusBar() {
         {t('Polar')}
       </button>
       <span className="grow" />
+      {diagnosis && (
+        <span className={`dof ${diagnosis.status}`} title={t('Sketch constraints: degrees of freedom left, conflicts and redundancies (see the Checks tab)')}>
+          {diagnosis.status === 'conflicting' ? t('Over-constrained') : diagnosis.status === 'redundant' ? t('Redundant constraints') : diagnosis.status === 'failed' ? t('Solver failed') : diagnosis.dof === 0 ? t('Fully constrained') : t('DOF {n}', { n: diagnosis.dof })}
+          {solving ? ' …' : ''}
+        </span>
+      )}
       <span className="dim">{selected ? t('{n} of {total} selected', { n: selected, total: count }) : t('{n} entities', { n: count })}</span>
       <span className={`worker ${worker}`} title={t('Background worker (solver and kernel run here, never on the UI thread)')}>
         {worker === 'ok' ? t('Worker ready') : worker === 'failed' ? t('Worker failed') : t('Worker…')}

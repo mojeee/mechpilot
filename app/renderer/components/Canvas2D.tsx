@@ -74,6 +74,7 @@ export function Canvas2D() {
         canvas.height = h;
       }
       const palette = readPalette(canvas);
+      const sheet = s.activeSheet ? (s.editor.doc.sheets[s.activeSheet] ?? null) : null;
       const scene: Scene = {
         doc: s.editor.doc,
         view: s.view,
@@ -92,8 +93,11 @@ export function Canvas2D() {
         tracking: s.snap?.tracking ?? null,
         selectBox: s.selectBox ? { ...s.selectBox, crossing: s.selectBox.b.x < s.selectBox.a.x } : null,
         palette: readPalette(canvas),
+        freedom: s.freedom,
+        showConstraints: !sheet && s.editor.doc.constraintOrder.length > 0,
       };
-      const sheet = s.activeSheet ? (s.editor.doc.sheets[s.activeSheet] ?? null) : null;
+      // The constraint overlay needs the visible ids (sketches are small; the set is memoized per state).
+      if (scene.showConstraints) scene.visible = [...visibleSet(s)];
       const key = [s.editor.doc, s.gridOn, themeTick, s.canvasSize.w, s.canvasSize.h, dpr, s.activeSheet, s.settings.lang];
       const sameKey = cache !== null && key.every((k, i) => k === cache!.key[i]);
       const sameView = cache !== null && cache.view.scale === s.view.scale && cache.view.origin.x === s.view.origin.x && cache.view.origin.y === s.view.origin.y;

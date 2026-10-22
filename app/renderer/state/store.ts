@@ -4,7 +4,9 @@
 
 import { create } from 'zustand';
 import type { Command } from '@shared/commands';
-import { canRedo, canUndo, editorState, execute, markSaved, redo as redoState, undo as undoState, type EditorState } from '@shared/commands/history';
+import { canRedo, canUndo, DEFAULT_HISTORY_LIMIT, editorState, execute, markSaved, redo as redoState, undo as undoState, type EditorState } from '@shared/commands/history';
+import { explain, type SketchDiagnosis } from '@shared/sketch/model';
+import { solverWorker } from '../workers';
 import { documentBox, entityBox, pick } from '@shared/doc/document';
 import { newDocument } from '@shared/doc/document';
 import { parse, serialize } from '@shared/doc/file';
@@ -18,6 +20,7 @@ import { DEFAULT_SETTINGS, type SampleInfo, type Settings } from '@shared/api';
 import { contains, overlaps, SpatialIndex } from '@shared/spatial/index';
 import { parseLength, parsePoint } from '@shared/units';
 import { DEFAULT_SNAPS, findSnap, type SnapResult, type SnapSettings } from '../snap';
+// (SnapResult is also the type of the snap handed to tools for inferred constraints.)
 import { ALIASES, TOOLS, type ToolCtx, type ToolId } from '../tools';
 
 export type { ToolId } from '../tools';
@@ -76,6 +79,12 @@ export interface Store {
   updateSheet(sheet: Sheet): void;
   /** Export every sheet as one PDF (one page per sheet), or the model at 1:1 on A3 when there is none. */
   exportPdf(): Promise<void>;
+  /** M3: the sketch solver's last diagnosis and per-entity freedom (degrees-of-freedom colouring). */
+  diagnosis: SketchDiagnosis | null;
+  freedom: Record<Id, 'free' | 'constrained' | 'unknown'>;
+  solving: boolean;
+  /** Solve the constraints now and apply the moved geometry as part of the last undo step. */
+  solveNow(): Promise<void>;
 
   run(cmd: Command): boolean;
   undo(): void;
@@ -180,10 +189,14 @@ function viewBox(view: ViewState, size: Size): Box {
   return { min: a, max: b };
 }
 
+/** The snap the last tool point came from (set by toolClick before the tool sees the point). */
+let lastSnapUsed: SnapResult | null = null;
+
 export const useStore = create<Store>((set, get) => {
   const ctx = (): ToolCtx => {
     const s = get();
     return {
+      lastSnap: lastSnapUsed,
       doc: s.editor.doc,
       selection: s.selection,
       layer: s.editor.doc.activeLayer,
@@ -230,6 +243,45 @@ export const useStore = create<Store>((set, get) => {
     version: '',
     recovery: null,
     activeSheet: null,
+    diagnosis: null,
+    freedom: {},
+    solving: false,
+
+    async solveNow() {
+      const s = get();
+      const doc = s.editor.doc;
+      const hasDriving = doc.entityOrder.some((id) => {
+        const e = doc.entities[id];
+        return e.type === 'dimension' && e.driving !== undefined;
+      });
+      if (doc.constraintOrder.length === 0 && !hasDriving) {
+        if (s.diagnosis || Object.keys(s.freedom).length) set({ diagnosis: null, freedom: {} });
+        return;
+      }
+      if (s.solving) return;
+      set({ solving: true });
+      try {
+        const r = await solverWorker().call('solve', { doc }, 20_000);
+        // The document may have changed while solving: apply only if it is still the same one.
+        if (get().editor.doc !== doc) {
+          set({ solving: false });
+          void get().solveNow();
+          return;
+        }
+        if (r.entities.length && r.diagnosis.status !== 'failed') {
+          const next = execute(get().editor, { kind: 'updateEntities', entities: r.entities }, DEFAULT_HISTORY_LIMIT, true);
+          if (next.ok) setEditor(next.state);
+        }
+        const text = explain(get().editor.doc, r.diagnosis, t);
+        set({ diagnosis: r.diagnosis, message: { kind: r.diagnosis.status === 'conflicting' || r.diagnosis.status === 'redundant' || r.diagnosis.status === 'failed' ? 'warn' : 'info', text } });
+        const f = await solverWorker().call('freedom', { doc: get().editor.doc }, 20_000);
+        set({ freedom: f });
+      } catch (e) {
+        set({ diagnosis: null, message: { kind: 'error', text: t('The constraint solver did not answer: {reason}', { reason: e instanceof Error ? e.message : String(e) }) } });
+      } finally {
+        set({ solving: false });
+      }
+    },
 
     setActiveSheet(id) {
       set({ activeSheet: id, selection: [], tool: 'select', toolState: null, cursor: null, snap: null, hover: null });
@@ -279,17 +331,25 @@ export const useStore = create<Store>((set, get) => {
         return false;
       }
       setEditor(r.state);
+      // Geometry or constraints changed: let the solver move things (as part of this undo step).
+      if (cmd.kind !== 'setProps' && cmd.kind !== 'setActiveLayer' && cmd.kind !== 'setDimStyle' && !cmd.kind.endsWith('Sheet') && cmd.kind !== 'addLayer' && cmd.kind !== 'updateLayer' && cmd.kind !== 'deleteLayer') {
+        queueMicrotask(() => void get().solveNow());
+      }
       return true;
     },
     undo() {
       const s = undoState(get().editor);
       if (!s) return;
       setEditor(s, { message: { kind: 'info', text: t('Undo') } });
+      set({ freedom: {} });
+      queueMicrotask(() => void get().solveNow());
     },
     redo() {
       const s = redoState(get().editor);
       if (!s) return;
       setEditor(s, { message: { kind: 'info', text: t('Redo') } });
+      set({ freedom: {} });
+      queueMicrotask(() => void get().solveNow());
     },
     canUndo: () => canUndo(get().editor),
     canRedo: () => canRedo(get().editor),
@@ -394,7 +454,9 @@ export const useStore = create<Store>((set, get) => {
         return;
       }
       const p = s.snap?.point ?? world;
+      lastSnapUsed = s.snap;
       if (def.point) after(def.point(s.toolState, p, ctx()));
+      lastSnapUsed = null;
     },
     toolText(text) {
       const s = get();
@@ -527,8 +589,9 @@ export const useStore = create<Store>((set, get) => {
         if (!r.ok) return;
         setEditor(path ? markSaved(r.state) : r.state);
       }
-      set({ filePath: path, selection: [], tool: 'select', toolState: null, activeSheet: null, message: { kind: 'info', text: label } });
+      set({ filePath: path, selection: [], tool: 'select', toolState: null, activeSheet: null, diagnosis: null, freedom: {}, message: { kind: 'info', text: label } });
       get().zoomExtents();
+      queueMicrotask(() => void get().solveNow());
     },
     async openFile(path) {
       const r = await api().files.open(path);
@@ -791,5 +854,31 @@ export function toolName(tool: ToolId): string {
       return t('Geometrical tolerance');
     case 'datum':
       return t('Datum');
+    case 'c-coincident':
+      return t('Coincident');
+    case 'c-point-on-line':
+      return t('Point on line');
+    case 'c-horizontal':
+      return t('Horizontal');
+    case 'c-vertical':
+      return t('Vertical');
+    case 'c-parallel':
+      return t('Parallel');
+    case 'c-perpendicular':
+      return t('Perpendicular');
+    case 'c-tangent':
+      return t('Tangent');
+    case 'c-equal':
+      return t('Equal');
+    case 'c-symmetric':
+      return t('Symmetric');
+    case 'c-fixed':
+      return t('Fix');
+    case 'c-distance':
+      return t('Distance constraint');
+    case 'c-angle':
+      return t('Angle constraint');
+    case 'c-radius':
+      return t('Radius constraint');
   }
 }

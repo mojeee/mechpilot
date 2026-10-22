@@ -60,6 +60,20 @@ Node 24 is required. The first `npm install` downloads Electron (about 100 MB).
 - **File > Export PDF** prints every sheet as a vector PDF at true scale; without a sheet the
   model is printed at 1:1 on an A3.
 
+## Sketch constraints
+
+- **Constraints:** `CC` coincident (click near two points), `CPL` point on line, `CH` horizontal,
+  `CV` vertical, `CPA` parallel, `CPE` perpendicular, `CT` tangent, `CE` equal, `CS` symmetric,
+  `CF` fix, `CD` distance, `CA` angle, `CR` radius. The solver (FreeCAD's planegcs) moves the
+  geometry at once; the result undoes together with the edit.
+- **Inferred while drawing:** a line whose end snaps to another end point becomes coincident with
+  it; a segment drawn along polar tracking at 0° or 90° becomes horizontal or vertical.
+- **Driving dimensions:** select a dimension and tick "Driving" in Properties; change its value and
+  the sketch follows.
+- **Reading the sketch:** green entities are fully constrained, amber ones can still move; the
+  status bar shows the degrees of freedom left; the Checks tab explains conflicting or redundant
+  constraints in plain words and removes them with one click.
+
 **View menu:** dark or light interface, dark or white canvas, English or Italian.
 
 If MechPilot ever closes unexpectedly, the next start offers to recover the autosaved drawing.

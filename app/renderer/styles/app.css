@@ -195,19 +195,22 @@ select:focus {
   width: var(--palette-w);
   background: var(--chrome);
   border-right: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  padding: 6px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  padding: 6px 4px;
   gap: 2px;
 }
 .tool {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 7px 0 5px;
-  margin: 0 6px;
+  padding: 6px 0 4px;
   border-radius: var(--radius-sm);
   color: var(--muted);
+}
+.palette-sep {
+  grid-column: 1 / -1;
 }
 .tool .icon {
   font-size: 18px;
@@ -275,6 +278,57 @@ select:focus {
   border-radius: var(--radius-sm);
   padding: 8px;
   margin: 8px 0;
+}
+
+/* ---------- sketch findings ---------- */
+.dof {
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  color: var(--ok);
+}
+.dof.conflicting,
+.dof.failed {
+  color: var(--err);
+  border-color: var(--err);
+}
+.dof.redundant {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+.finding {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  color: var(--muted);
+}
+.finding .glyph {
+  width: 18px;
+  text-align: center;
+  color: var(--accent);
+}
+.finding .link {
+  flex: 1;
+  text-align: left;
+  color: var(--text);
+  padding: 0;
+}
+.finding .link:hover {
+  color: var(--accent);
+}
+.link {
+  color: var(--accent);
+  padding: 0;
+}
+.finding-group h3 {
+  margin: 12px 0 4px;
+}
+.err {
+  color: var(--err);
+}
+.warn {
+  color: var(--warn);
 }
 
 /* ---------- recovery banner ---------- */

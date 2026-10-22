@@ -40,6 +40,8 @@ export function newDocument(name = 'Untitled'): Document {
     dimStyle: { ...DEFAULT_DIM_STYLE },
     sheets: {},
     sheetOrder: [],
+    constraints: {},
+    constraintOrder: [],
   };
 }
 

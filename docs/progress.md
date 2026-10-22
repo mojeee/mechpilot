@@ -3,6 +3,42 @@
 Short entries after each milestone: what works, what is left, anything the owner must do by hand.
 Newest first.
 
+## 2026-10-22 — M3 Parametric sketches done
+
+**What works**
+
+- Sketch constraints solved by planegcs (FreeCAD's solver as WebAssembly, LGPL, in its own
+  worker, `app/workers/solver`): coincident, point on line, horizontal, vertical, parallel,
+  perpendicular, tangent (including endpoint tangency for fillet-style corners), equal, symmetric,
+  fixed, distance, point–line distance, angle, radius; tools `CC CPL CH CV CPA CPE CT CE CS CF CD
+  CA CR`.
+- Driving dimensions (tick "Driving" in a dimension's properties), inferred constraints while
+  drawing lines (snapped ends, polar 0°/90°, consecutive segments), degrees-of-freedom colouring
+  (green/amber), constraint glyphs, the DOF count in the status bar, and conflicts or
+  redundancies explained in plain words in the Checks tab with one-click removal.
+- The solver's moves join the user's edit as one undo step; deleting an entity deletes its
+  constraints and undo restores both in order. File format 4 with a migration. The sample's
+  outline is a constrained sketch (fixed bottom edge, tangent R10 corners, equal radii, the 80
+  height driving) and solves cleanly on open.
+- 249 unit tests (including the solver against the real WebAssembly engine) and 6 end-to-end
+  tests. The M2 CI failure (a synthetic mouse drag under xvfb) is fixed: the window-selection step
+  of the drafting test goes through the store API in CI.
+
+**What is left for M4** (see `docs/roadmap.md`)
+
+- replicad / opencascade.js in a worker, sketch on a plane, extrude, revolve, cut, holes, fillet,
+  chamfer, shell, mirror, pattern, the feature tree, materials with mass properties, section view
+  and measuring in 3D, STEP and STL/3MF export, STEP import, the stepped shaft and sheet-metal
+  cover samples.
+- Known limits recorded in `docs/decisions.md` and `docs/sketches.md`: planegcs's fixed memory
+  caps one connected group at about 150 joined lines (a plain message says so); rotated linear
+  driving dimensions are skipped and reported; no dragging of points with the mouse yet
+  (constraints and driving values move the geometry).
+
+**For the owner to do by hand**
+
+- Nothing is required.
+
 ## 2026-10-22 — M2 Dimensions and sheets done
 
 **What works**

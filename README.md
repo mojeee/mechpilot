@@ -19,9 +19,11 @@ milestone by milestone (see [docs/roadmap.md](docs/roadmap.md) and [docs/progres
 - **Honest, optional AI.** An assistant with your own API key that proposes changes as a preview
   you accept or reject, and cites its sources. The app is fully usable without it.
 
-Milestone M0 (scaffold) is done: the app runs with its main layout, draws lines and circles,
-saves and opens its own format, and ships a sample. Drafting, dimensions, sheets, sketches, 3D and
-the rest arrive with M1 to M8.
+Done so far: M0 scaffold, M1 2D drafting (all entities, snaps, edit tools, DXF in and out), M2
+dimensions and sheets (ISO 129-1 dimensions with tolerances and ISO 286 fits, symbols, ISO 5457
+sheets with ISO 7200 title block, vector PDF), M3 parametric sketches (constraints solved by
+planegcs, driving dimensions, degrees-of-freedom colouring). 3D parts, drawings from 3D, the
+library and assemblies, checks and AI, and the release arrive with M4 to M8.
 
 ## Run it
 

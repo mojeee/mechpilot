@@ -139,6 +139,39 @@ Planned (added in the milestone that needs them, each as a separate, replaceable
 - **Decimal comma on ISO drawings**, decimal point on ASME ones (ISO 129-1:2018, 4.1.1), and the
   DIAMETER SIGN ⌀ (U+2300) as the diameter indicator (ISO 129-1:2018, Table 1); PDF and DXF map
   it to Ø where the font or format has no ⌀.
+## 2026-10-22 M3
+
+- **planegcs (`@salusoft89/planegcs`, LGPL-2.0-or-later) only inside `app/workers/solver`.** The
+  rest of the app depends on `shared/sketch/model.ts` (a pure translation of the document into
+  solver primitives) and the typed worker protocol, never on the engine. The notice is in
+  `app/workers/solver/NOTICE.md`; the package is on the LGPL allowlist of the licence check.
+- **Constraints refer to entity points by id**, never by coordinates, so they survive every edit
+  and undo; deleting an entity deletes the constraints that use it, and undo restores both in the
+  original order (`addEntities` / `addConstraints` carry the full order for that).
+- **The solver's moves join the user's edit as one undo step** (`execute(..., merge = true)`): the
+  user never sees a half-applied state in the history.
+- **Degrees-of-freedom colouring by a drag test**, not by Jacobian analysis: for each solver
+  entity the worker pulls one of its points by 1 mm with a temporary constraint and checks whether
+  the solve moves it. It is exact enough for colouring, costs one solve per entity, and is skipped
+  above 300 solver entities or when the sketch conflicts (status "unknown").
+- **One annotation of each kind in the sample sketch**: the mounting bracket outline is tangent
+  arcs, equal radii, horizontal/vertical sides and two driving dimensions, so opening the sample
+  exercises the solver on every start (and the end-to-end test checks the plate stays 120 × 80).
+- **planegcs quirks handled in `shared/sketch`** (found while testing the real engine): the
+  package is pinned to exactly 1.3.0; `fixed` is written as coordinate, radius and angle equations
+  rather than planegcs fixed points (the engine silently ignores constraints whose unknowns are all
+  fixed, so conflicts would vanish); horizontal + vertical on one line and parallel + perpendicular
+  on one pair are reported as conflicts before solving (the engine would "solve" them by shrinking
+  the line to a point); each connected group is solved on its own and unconstrained entities are
+  never sent (the engine has a fixed ~21 MB memory and a dense diagnosis matrix: a group above
+  200,000 unknowns × constraints is refused with a plain message); measure-only dimensions are not
+  sent (a non-driving constraint adds an unknown of its own); driving dimensions match entity
+  points within 1e-9 mm and rotated linear dimensions are skipped and reported; the DOF colouring
+  pulls every point of a group at once (two solves per group) with a 1e-7 mm threshold.
+- **Inferred constraints are conservative**: coincident on snapped end points, horizontal or
+  vertical on polar-tracked 0°/90° segments, consecutive line segments joined. Nothing is inferred
+  from "looks aligned" without a snap, so the user is never surprised by a constraint they did not
+  see being made.
 - **Samples are hand-edited and canonicalized by `scripts/canon-samples.mjs`**, a small JavaScript
   twin of the serializer's ordering; `tests/samples.test.ts` checks the result with the real one.
 - **Site output is committed.** As in BoardPilot, `scripts/build-site.mjs` writes `site/` and the

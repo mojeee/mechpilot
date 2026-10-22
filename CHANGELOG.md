@@ -5,6 +5,24 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## 0.4.0 — 2026-10-22 — M3 Parametric sketches
+
+### Added
+
+- Sketch constraints solved by planegcs (FreeCAD's solver as WebAssembly, LGPL, in its own
+  worker): coincident, point on line, horizontal, vertical, parallel, perpendicular, tangent, equal,
+  symmetric, fixed, distance, point–line distance, angle, radius. Tools `CC`, `CPL`, `CH`, `CV`,
+  `CPA`, `CPE`, `CT`, `CE`, `CS`, `CF`, `CD`, `CA`, `CR`.
+- Driving dimensions: tick "Driving" on a dimension and the geometry follows its value.
+- Inferred constraints while drawing lines: snapped end points become coincident, polar-tracked
+  0°/90° segments become horizontal or vertical, consecutive segments share their corner.
+- Degrees-of-freedom colouring (green fully constrained, amber free), constraint glyphs on the
+  drawing, the DOF count in the status bar, and conflicts or redundancies explained in plain words
+  in the Checks tab with one-click removal.
+- The solver's result joins the user's edit as one undo step; deleting an entity deletes its
+  constraints (undo restores both). File format 4 with a migration.
+- Sample: the mounting bracket outline is a constrained sketch driven by its 120 and 80 dimensions.
+
 ## 0.3.0 — 2026-10-22 — M2 Dimensions and sheets
 
 ### Added

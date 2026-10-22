@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const TOP_ORDER = ['format', 'version', 'unit', 'name', 'description', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'sheetOrder', 'sheets'];
+const TOP_ORDER = ['format', 'version', 'unit', 'name', 'description', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'constraintOrder', 'constraints', 'sheetOrder', 'sheets'];
 const FIRST_KEYS = ['id', 'type', 'kind', 'layer'];
 
 function canonical(value, firstKeys = []) {
@@ -33,8 +33,9 @@ function serialize(doc) {
   for (const k of TOP_ORDER) {
     const v = doc[k];
     if (v === undefined) continue;
-    if (k === 'layers' || k === 'entities' || k === 'sheets') {
-      const order = doc[k === 'layers' ? 'layerOrder' : k === 'entities' ? 'entityOrder' : 'sheetOrder'] ?? Object.keys(v);
+    if (k === 'layers' || k === 'entities' || k === 'sheets' || k === 'constraints') {
+      const orderKey = { layers: 'layerOrder', entities: 'entityOrder', sheets: 'sheetOrder', constraints: 'constraintOrder' }[k];
+      const order = doc[orderKey] ?? Object.keys(v);
       const m = {};
       for (const id of order) if (v[id]) m[id] = canonical(v[id], FIRST_KEYS);
       out[k] = m;
@@ -52,9 +53,12 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.mechpilot.json'))) {
   doc.entityOrder ??= Object.keys(doc.entities);
   doc.sheetOrder ??= Object.keys(doc.sheets ?? {});
   doc.sheets ??= {};
+  doc.constraints ??= {};
+  doc.constraintOrder ??= Object.keys(doc.constraints);
   for (const [id, e] of Object.entries(doc.entities)) e.id ??= id;
   for (const [id, l] of Object.entries(doc.layers)) l.id ??= id;
   for (const [id, s] of Object.entries(doc.sheets)) s.id ??= id;
+  for (const [id, c] of Object.entries(doc.constraints)) c.id ??= id;
   writeFileSync(p, serialize(doc));
   console.log(`${f}: ${doc.entityOrder.length} entities, ${doc.sheetOrder.length} sheets`);
 }

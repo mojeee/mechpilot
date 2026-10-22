@@ -1,6 +1,7 @@
 // Drawing tools: line, polyline, rectangle, circle, arc (three points), ellipse, spline, text.
 
-import type { Entity, PolylineEntity } from '@shared/doc/types';
+import type { Constraint, Entity, Id, PointRef, PolylineEntity } from '@shared/doc/types';
+import type { Command } from '@shared/commands';
 import { angleOf, cross, dist, dot, perp, scale, sub, type Vec2, normalize } from '@shared/geometry/vec2';
 import { interpolateSpline } from '@shared/geometry/flatten';
 import { parseLength } from '@shared/units';
@@ -10,26 +11,48 @@ interface Points {
   points: Vec2[];
 }
 
-export const lineTool: Tool<Points> = {
+interface LineState extends Points {
+  /** Entity point the last point snapped to (for an inferred coincident constraint). */
+  lastRef: PointRef | null;
+  /** The line just drawn, so the next segment can be made coincident with its end. */
+  lastLine: Id | null;
+}
+
+export const lineTool: Tool<LineState> = {
   id: 'line',
-  init: () => ({ points: [] }),
+  init: () => ({ points: [], lastRef: null, lastLine: null }),
   prompt: (s, ctx) => (s.points.length === 0 ? ctx.t('Line: first point') : ctx.t('Line: next point (Enter or Esc to finish, U undoes the last segment)')),
   point(s, p, ctx) {
-    if (s.points.length === 0) return { points: [p] };
+    const snapRef = ctx.lastSnap?.ref ?? null;
+    if (s.points.length === 0) return { ...s, points: [p], lastRef: snapRef, lastLine: null };
     const a = s.points[s.points.length - 1];
     if (dist(a, p) === 0) {
       ctx.say({ kind: 'warn', text: ctx.t('The two points are the same; pick another point.') });
       return s;
     }
     const e: Entity = { id: ctx.ids(), type: 'line', layer: ctx.layer, a, b: p };
-    return ctx.run({ kind: 'addEntities', entities: [e] }) ? { points: [...s.points, p] } : s;
+    // Inferred constraints (product rule 5): an end snapped onto another entity's point becomes
+    // coincident; a polar-tracked 0° or 90° segment becomes horizontal or vertical; consecutive
+    // segments share their corner.
+    const constraints: Constraint[] = [];
+    const startRef: PointRef | null = s.lastLine ? { entity: s.lastLine, point: 'b' } : s.lastRef;
+    if (startRef && startRef.entity !== e.id) constraints.push({ id: ctx.ids(), kind: 'coincident', p1: { entity: e.id, point: 'a' }, p2: startRef });
+    if (snapRef && snapRef.entity !== e.id) constraints.push({ id: ctx.ids(), kind: 'coincident', p1: { entity: e.id, point: 'b' }, p2: snapRef });
+    const ang = ctx.lastSnap?.kind === 'polar' ? ctx.lastSnap.angle : undefined;
+    if (ang !== undefined) {
+      const q = Math.abs(((ang / (Math.PI / 2)) % 2 + 2) % 2);
+      if (Math.abs(q) < 1e-9 || Math.abs(q - 2) < 1e-9) constraints.push({ id: ctx.ids(), kind: 'horizontal', entity: e.id });
+      else if (Math.abs(q - 1) < 1e-9) constraints.push({ id: ctx.ids(), kind: 'vertical', entity: e.id });
+    }
+    const cmd: Command = constraints.length ? { kind: 'batch', label: ctx.t('Add line'), commands: [{ kind: 'addEntities', entities: [e] }, { kind: 'addConstraints', constraints }] } : { kind: 'addEntities', entities: [e] };
+    return ctx.run(cmd) ? { points: [...s.points, p], lastRef: snapRef, lastLine: e.id } : s;
   },
   text(s, text, ctx) {
     if (text.toUpperCase() === 'U' && s.points.length > 1) {
       // Undo the last segment: the store's undo removes the entity; drop the point.
       ctx.say({ kind: 'info', text: ctx.t('Last segment removed.') });
       ctx.run({ kind: 'deleteEntities', ids: lastLineId(ctx, s) });
-      return { points: s.points.slice(0, -1) };
+      return { ...s, points: s.points.slice(0, -1), lastLine: null, lastRef: null };
     }
     if (text.toUpperCase() === 'C' && s.points.length > 2) {
       const e: Entity = { id: ctx.ids(), type: 'line', layer: ctx.layer, a: s.points[s.points.length - 1], b: s.points[0] };

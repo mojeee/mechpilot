@@ -1,6 +1,7 @@
 // Registry of tools and their command-line names.
 
 import { ANNOTATE_TOOLS } from './annotate';
+import { CONSTRAIN_TOOLS } from './constrain';
 import { DRAW_TOOLS } from './draw';
 import { EDIT_TOOLS } from './edit';
 import type { Tool, ToolId } from './types';
@@ -37,8 +38,21 @@ export const TOOLS: Record<ToolId, Tool<unknown> | null> = {
   surface: null,
   gdt: null,
   datum: null,
+  'c-coincident': null,
+  'c-point-on-line': null,
+  'c-horizontal': null,
+  'c-vertical': null,
+  'c-parallel': null,
+  'c-perpendicular': null,
+  'c-tangent': null,
+  'c-equal': null,
+  'c-symmetric': null,
+  'c-fixed': null,
+  'c-distance': null,
+  'c-angle': null,
+  'c-radius': null,
 };
-for (const t of [...DRAW_TOOLS, ...EDIT_TOOLS, ...ANNOTATE_TOOLS]) TOOLS[t.id] = t;
+for (const t of [...DRAW_TOOLS, ...EDIT_TOOLS, ...ANNOTATE_TOOLS, ...CONSTRAIN_TOOLS]) TOOLS[t.id] = t;
 
 /** Command-line aliases (AutoCAD habits): L, PL, REC, C, A, EL, SPL, T, M, CO, RO, SC, MI, O, TR, EX, F, CHA, AR. */
 export const ALIASES: Record<string, ToolId> = {
@@ -101,6 +115,30 @@ export const ALIASES: Record<string, ToolId> = {
   GDT: 'gdt',
   DAT: 'datum',
   DATUM: 'datum',
+  // Constraints (prefix C for "constrain"): CC coincident, CH horizontal, CV vertical, CPA parallel,
+  // CPE perpendicular, CT tangent, CE equal, CS symmetric, CF fix, CD distance, CA angle, CR radius, CPL point on line.
+  CC: 'c-coincident',
+  COINCIDENT: 'c-coincident',
+  CPL: 'c-point-on-line',
+  CH: 'c-horizontal',
+  HORIZONTAL: 'c-horizontal',
+  CV: 'c-vertical',
+  VERTICAL: 'c-vertical',
+  CPA: 'c-parallel',
+  PARALLEL: 'c-parallel',
+  CPE: 'c-perpendicular',
+  PERPENDICULAR: 'c-perpendicular',
+  CT: 'c-tangent',
+  TANGENT: 'c-tangent',
+  CE: 'c-equal',
+  EQUAL: 'c-equal',
+  CS: 'c-symmetric',
+  SYMMETRIC: 'c-symmetric',
+  CF: 'c-fixed',
+  FIX: 'c-fixed',
+  CD: 'c-distance',
+  CA: 'c-angle',
+  CR: 'c-radius',
 };
 
 export type { Tool, ToolId, ToolCtx } from './types';

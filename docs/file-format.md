@@ -91,8 +91,33 @@ dimension can never disagree with what it measures.
 `width`, `height` (paper mm) and `label` (draw "SCALE 1:2" under it). A format-2 file gets the
 default dimension style and no sheets.
 
-Sketches and constraints arrive with M3, parts with M4. Each addition bumps `version` and ships a
-migration.
+## Sketch constraints (format 4)
+
+`constraintOrder` / `constraints`: each constraint has an `id` and a `kind`, and refers to entities
+by id and to their points by a `PointRef` `{ "entity": "e1", "point": "a" }` (`a`/`b` of a line,
+`center` of a circle or arc, `start`/`end` of an arc, or a vertex index of a polyline). Values are
+mm, angles radians.
+
+| `kind` | Fields |
+| --- | --- |
+| `coincident` | `p1`, `p2` |
+| `pointOnLine` | `p`, `line` |
+| `horizontal`, `vertical` | `entity` (a line) |
+| `parallel`, `perpendicular` | `a`, `b` (lines) |
+| `angle` | `a`, `b`, `value` (radians, counter-clockwise from a to b) |
+| `tangent`, `equal` | `a`, `b` (lines, circles, arcs) |
+| `symmetric` | `p1`, `p2`, `line` |
+| `fixed` | `entity` |
+| `distance` | `p1`, `p2`, `value` |
+| `pointLineDistance` | `p`, `line`, `value` |
+| `radius` | `entity`, `value` |
+
+A dimension with `driving` set (a number: mm, or degrees for angular) also constrains the
+geometry it measures. The solver (planegcs in a worker) moves the entities; the solved geometry is
+what the file stores, so a file opens exactly as it was saved even without solving. Deleting an
+entity deletes the constraints that refer to it (undo brings both back).
+
+Parts arrive with M4. Each addition bumps `version` and ships a migration.
 
 ## Migrations
 

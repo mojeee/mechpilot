@@ -1,9 +1,9 @@
 {
   "format": "mechpilot",
-  "version": 3,
+  "version": 4,
   "unit": "mm",
   "name": "Mounting bracket",
-  "description": "A 120 x 80 mm plate with R10 corners, four 9 mm holes for M8 screws (ISO 273 medium series) and a 30 mm H7 bore, dimensioned to ISO 129-1 with an ISO 286 fit, a surface texture symbol, a flatness tolerance and a datum, on an A3 sheet at 1:1.",
+  "description": "A 120 x 80 mm plate with R10 corners, four 9 mm holes for M8 screws (ISO 273 medium series) and a 30 mm H7 bore, dimensioned to ISO 129-1 with an ISO 286 fit, a surface texture symbol, a flatness tolerance and a datum, on an A3 sheet at 1:1. The outline is a constrained sketch: tangent corner arcs, equal radii, the bottom edge is fixed and the 80 height dimension drives it.",
   "standard": "iso",
   "projection": "first",
   "dimStyle": {
@@ -390,11 +390,11 @@
       "layer": "dimensions",
       "a": {
         "x": 0,
-        "y": 80
+        "y": 70
       },
       "b": {
         "x": 120,
-        "y": 80
+        "y": 70
       },
       "position": {
         "x": 60,
@@ -412,13 +412,14 @@
       "kind": "linear",
       "layer": "dimensions",
       "a": {
-        "x": 120,
+        "x": 110,
         "y": 0
       },
       "b": {
-        "x": 120,
+        "x": 110,
         "y": 80
       },
+      "driving": 80,
       "position": {
         "x": 138,
         "y": 40
@@ -673,6 +674,257 @@
         "y": 20
       },
       "text": "1"
+    }
+  },
+  "constraintOrder": [
+    "k2",
+    "k3",
+    "k4",
+    "k5",
+    "k6",
+    "k7",
+    "k8",
+    "k9",
+    "k10",
+    "k11",
+    "k12",
+    "k13",
+    "k14",
+    "k15",
+    "k16",
+    "k17",
+    "k18",
+    "k19",
+    "k20",
+    "k21",
+    "k22",
+    "k23",
+    "k24",
+    "k25",
+    "k26",
+    "k27",
+    "k28",
+    "k29",
+    "k30"
+  ],
+  "constraints": {
+    "k2": {
+      "id": "k2",
+      "kind": "vertical",
+      "entity": "e3"
+    },
+    "k3": {
+      "id": "k3",
+      "kind": "horizontal",
+      "entity": "e5"
+    },
+    "k4": {
+      "id": "k4",
+      "kind": "vertical",
+      "entity": "e7"
+    },
+    "k5": {
+      "id": "k5",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e1",
+        "point": "b"
+      },
+      "p2": {
+        "entity": "e2",
+        "point": "start"
+      }
+    },
+    "k6": {
+      "id": "k6",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e2",
+        "point": "end"
+      },
+      "p2": {
+        "entity": "e3",
+        "point": "a"
+      }
+    },
+    "k7": {
+      "id": "k7",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e3",
+        "point": "b"
+      },
+      "p2": {
+        "entity": "e4",
+        "point": "start"
+      }
+    },
+    "k8": {
+      "id": "k8",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e4",
+        "point": "end"
+      },
+      "p2": {
+        "entity": "e5",
+        "point": "a"
+      }
+    },
+    "k9": {
+      "id": "k9",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e5",
+        "point": "b"
+      },
+      "p2": {
+        "entity": "e6",
+        "point": "start"
+      }
+    },
+    "k10": {
+      "id": "k10",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e6",
+        "point": "end"
+      },
+      "p2": {
+        "entity": "e7",
+        "point": "a"
+      }
+    },
+    "k11": {
+      "id": "k11",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e7",
+        "point": "b"
+      },
+      "p2": {
+        "entity": "e8",
+        "point": "start"
+      }
+    },
+    "k12": {
+      "id": "k12",
+      "kind": "coincident",
+      "p1": {
+        "entity": "e8",
+        "point": "end"
+      },
+      "p2": {
+        "entity": "e1",
+        "point": "a"
+      }
+    },
+    "k13": {
+      "id": "k13",
+      "kind": "tangent",
+      "a": "e1",
+      "b": "e2"
+    },
+    "k14": {
+      "id": "k14",
+      "kind": "tangent",
+      "a": "e2",
+      "b": "e3"
+    },
+    "k15": {
+      "id": "k15",
+      "kind": "tangent",
+      "a": "e3",
+      "b": "e4"
+    },
+    "k16": {
+      "id": "k16",
+      "kind": "tangent",
+      "a": "e4",
+      "b": "e5"
+    },
+    "k17": {
+      "id": "k17",
+      "kind": "tangent",
+      "a": "e5",
+      "b": "e6"
+    },
+    "k18": {
+      "id": "k18",
+      "kind": "tangent",
+      "a": "e6",
+      "b": "e7"
+    },
+    "k19": {
+      "id": "k19",
+      "kind": "tangent",
+      "a": "e7",
+      "b": "e8"
+    },
+    "k20": {
+      "id": "k20",
+      "kind": "tangent",
+      "a": "e8",
+      "b": "e1"
+    },
+    "k21": {
+      "id": "k21",
+      "kind": "equal",
+      "a": "e2",
+      "b": "e4"
+    },
+    "k22": {
+      "id": "k22",
+      "kind": "equal",
+      "a": "e4",
+      "b": "e6"
+    },
+    "k23": {
+      "id": "k23",
+      "kind": "equal",
+      "a": "e6",
+      "b": "e8"
+    },
+    "k24": {
+      "id": "k24",
+      "kind": "radius",
+      "entity": "e2",
+      "value": 10
+    },
+    "k25": {
+      "id": "k25",
+      "kind": "equal",
+      "a": "e9",
+      "b": "e10"
+    },
+    "k26": {
+      "id": "k26",
+      "kind": "equal",
+      "a": "e10",
+      "b": "e11"
+    },
+    "k27": {
+      "id": "k27",
+      "kind": "equal",
+      "a": "e11",
+      "b": "e12"
+    },
+    "k28": {
+      "id": "k28",
+      "kind": "radius",
+      "entity": "e9",
+      "value": 4.5
+    },
+    "k29": {
+      "id": "k29",
+      "kind": "radius",
+      "entity": "e13",
+      "value": 15
+    },
+    "k30": {
+      "id": "k30",
+      "kind": "fixed",
+      "entity": "e1"
     }
   },
   "sheetOrder": [
