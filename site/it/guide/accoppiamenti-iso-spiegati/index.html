@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gli accoppiamenti ISO spiegati · MechPilot</title>
+    <meta name="description" content="Che cosa significano H7, g6 e H7/g6: classi di tolleranza ISO 286, gradi di tolleranza normalizzati, scostamenti fondamentali, accoppiamenti con gioco, incerti e con interferenza, con un esempio." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/it/guide/accoppiamenti-iso-spiegati/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/guide/accoppiamenti-iso-spiegati/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/guides/iso-fits-explained/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/guides/iso-fits-explained/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content="Gli accoppiamenti ISO spiegati · MechPilot" />
+    <meta property="og:description" content="Che cosa significano H7, g6 e H7/g6: classi di tolleranza ISO 286, gradi di tolleranza normalizzati, scostamenti fondamentali, accoppiamenti con gioco, incerti e con interferenza, con un esempio." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/it/guide/accoppiamenti-iso-spiegati/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="La finestra di MechPilot con l’esempio della staffa di fissaggio: una piastra quotata con fori, tolleranze e riquadri di tolleranza geometrica." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Vai al contenuto</a>
+    <header class="top">
+      <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Principale">
+        <a href="/it/documentazione/">Documentazione</a>
+        <a href="/it/norme/">Norme</a>
+        <a href="/it/guide/" aria-current="page">Guide</a>
+        <a href="/it/aziende/">Per le aziende</a>
+        <a href="/it/novita/">Novità</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/guides/iso-fits-explained/" hreflang="en" lang="en">English</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Percorso"><ol><li><a href="/it/">Home</a></li><li><a href="/it/guide/">Guide</a></li><li aria-current="page">Gli accoppiamenti ISO spiegati</li></ol></nav>
+      <article class="prose narrow">
+        <h1 id="gli-accoppiamenti-iso-spiegati">Gli accoppiamenti ISO spiegati</h1>
+<p>Un albero che deve girare libero in un foro, una spina che deve restare ferma dopo il piantaggio, una sede di cuscinetto che deve centrare senza gioco: sono tutti <em>accoppiamenti</em> tra un foro e un albero. La ISO 286 dà loro un codice comune, così &quot;⌀25 H7/g6&quot; significa la stessa cosa in ogni ufficio tecnico e in ogni officina.</p>
+<h2 id="le-due-parti-della-iso-286">Le due parti della ISO 286</h2>
+<ul><li>La <strong>ISO 286-1</strong> definisce il sistema: gradi di tolleranza normalizzati, scostamenti fondamentali e come si combinano in classi di tolleranza e accoppiamenti.</li><li>La <strong>ISO 286-2</strong> riporta in tabella gli scostamenti limite delle classi di tolleranza per fori e alberi.</li></ul>
+<h2 id="una-classe-di-tolleranza-è-una-lettera-e-un-numero">Una classe di tolleranza è una lettera e un numero</h2>
+<p>Una classe di tolleranza come <strong>H7</strong> o <strong>g6</strong> ha due parti:</p>
+<ul><li>La <strong>lettera</strong> è lo <em>scostamento fondamentale</em>: dove si trova la zona di tolleranza rispetto alla dimensione nominale. Le lettere maiuscole sono per i fori (elementi interni), le minuscole per gli alberi (elementi esterni).</li><li>Il <strong>numero</strong> è il <em>grado di tolleranza normalizzato</em>: quanto è larga la zona. La ISO 286 definisce 20 gradi, da IT01 e IT0 a IT18; un numero più alto significa una zona più larga.</li></ul>
+<p>La larghezza dipende anche dalla dimensione: lo stesso grado concede di più su un pezzo più grande. IT7 vale 21 µm per le dimensioni nominali oltre 24 fino a 30 mm, e 35 µm oltre 80 fino a 100 mm. Tutti i valori: <a href="/it/norme/iso-286-gradi-di-tolleranza/">gradi di tolleranza normalizzati ISO 286</a>.</p>
+<h2 id="dove-si-trova-la-zona">Dove si trova la zona</h2>
+<ul><li>Foro <strong>H</strong>: lo scostamento inferiore EI è zero, quindi la zona parte dalla dimensione nominale e sale.</li><li>Albero <strong>h</strong>: lo scostamento superiore es è zero, quindi la zona finisce alla dimensione nominale e scende.</li><li>Gli alberi <strong>da a a g</strong> stanno sotto la dimensione nominale, gli alberi <strong>da k a zc</strong> sopra; i fori <strong>da A a G</strong> stanno sopra. Più la lettera è lontana da h (o H), più la zona è lontana dalla dimensione nominale.</li><li><strong>js</strong> e <strong>JS</strong> sono simmetrici rispetto alla dimensione nominale: più e meno metà della tolleranza.</li></ul>
+<p>ES ed EI maiuscoli sono gli scostamenti superiore e inferiore di un foro; es ed ei minuscoli quelli di un albero.</p>
+<h2 id="foro-e-albero-insieme-laccoppiamento">Foro e albero insieme: l'accoppiamento</h2>
+<p>Una classe del foro e una dell'albero con la stessa dimensione nominale formano un accoppiamento, che si scrive con il foro per primo: <strong>H7/g6</strong>. A seconda di dove stanno le due zone, l'accoppiamento è:</p>
+<ul><li><strong>con gioco</strong>: c'è sempre gioco; il foro più piccolo è almeno grande quanto l'albero più grande;</li><li><strong>con interferenza</strong>: c'è sempre interferenza; il foro più grande è al massimo grande quanto l'albero più piccolo;</li><li><strong>incerto</strong>: gioco o interferenza, a seconda delle dimensioni effettive dei pezzi.</li></ul>
+<p>La maggior parte degli accoppiamenti si sceglie nel <strong>sistema foro base</strong>: ogni foro è H e la lettera dell'albero sceglie l'accoppiamento. Il <strong>sistema albero base</strong> fa il contrario, con ogni albero h. Il foro base è spesso preferito perché un foro è più difficile da realizzare in molte dimensioni diverse di un albero; tenerlo in H riduce il numero di alesatori e di calibri a tampone.</p>
+<h2 id="esempio-25-h7g6">Esempio: ⌀25 H7/g6</h2>
+<p>A 25 mm (l'intervallo dimensionale oltre 24 fino a 30 mm):</p>
+<ul><li>Foro <strong>25 H7</strong>: EI = 0 µm, ES = +21 µm, quindi il foro misura da 25,000 a 25,021 mm.</li><li>Albero <strong>25 g6</strong>: es = −7 µm, ei = −20 µm, quindi l'albero misura da 24,980 a 24,993 mm.</li><li>Il gioco è compreso tra 7 µm (foro minimo, albero massimo) e 41 µm (foro massimo, albero minimo): un accoppiamento con gioco.</li></ul>
+<p>La stessa tabella per ogni intervallo dimensionale: <a href="/it/norme/iso-286-accoppiamenti/h7-g6/">H7/g6</a>. Altri accoppiamenti comuni: <a href="/it/norme/iso-286-accoppiamenti/">accoppiamenti ISO 286</a>.</p>
+<h2 id="sul-disegno">Sul disegno</h2>
+<ul><li>Sul disegno di un particolare la classe segue la dimensione: <strong>25 H7</strong> sul foro, <strong>25 g6</strong> sull'albero. Gli scostamenti non vanno scritti accanto alla classe se non servono (vedi <a href="/it/norme/iso-129-1-quotatura/">quotatura ISO 129-1</a>).</li><li>Sul disegno di un assieme l'accoppiamento si scrive con la classe del foro per prima: <strong>25 H7/g6</strong>.</li><li>Limiti e accoppiamenti si riferiscono alla temperatura di riferimento normalizzata di 20 °C.</li></ul>
+<h2 id="in-mechpilot">In MechPilot</h2>
+<p>Assegna a una quota una classe di tolleranza come H7 nel pannello Proprietà: MechPilot scrive la classe e ne prende gli scostamenti dai suoi dati ISO 286 (<code>library/fits/iso-286.json</code>, che cita la ISO 286-1 e la ISO 286-2 e dice come è stato verificato ogni valore). Una classe che non è in quei dati viene segnalata come tale; non viene mai indovinata.</p>
+      </article>
+    </main>
+    <footer>
+      <nav aria-label="Piè di pagina">
+        <a href="/it/documentazione/">Documentazione</a> · <a href="/it/norme/">Norme</a> · <a href="/it/guide/">Guide</a> · <a href="/it/aziende/">Per le aziende</a> · <a href="/it/novita/">Novità</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussioni</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Versione 0.5.0.</p>
+      <p class="small">Questo sito non imposta cookie, non esegue script e non carica nulla da terze parti.</p>
+    </footer>
+  </body>
+</html>

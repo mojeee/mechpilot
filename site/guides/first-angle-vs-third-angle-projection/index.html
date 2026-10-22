@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>First angle and third angle projection · MechPilot</title>
+    <meta name="description" content="First angle and third angle projection compared: where each view goes around the front view, the projection symbol, which regions use which method, and how MechPilot handles it." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/guides/first-angle-vs-third-angle-projection/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/guides/first-angle-vs-third-angle-projection/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/guide/proiezione-primo-diedro-terzo-diedro/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/guides/first-angle-vs-third-angle-projection/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="First angle and third angle projection · MechPilot" />
+    <meta property="og:description" content="First angle and third angle projection compared: where each view goes around the front view, the projection symbol, which regions use which method, and how MechPilot handles it." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/guides/first-angle-vs-third-angle-projection/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/" aria-current="page">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/guide/proiezione-primo-diedro-terzo-diedro/" hreflang="it" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/guides/">Guides</a></li><li aria-current="page">First angle and third angle projection</li></ol></nav>
+      <article class="prose narrow">
+        <h1 id="first-angle-and-third-angle-projection">First angle and third angle projection</h1>
+<p>A production drawing shows a part in several orthographic views. Each view looks at the part along one direction, square to a projection plane. Both methods below produce exactly the same views; they differ only in <strong>where each view is placed on the sheet</strong>. A reader who assumes the wrong method reads the part mirrored, so every drawing says which method it uses.</p>
+<p>The methods are defined in <strong>ISO 5456-2</strong> (projection methods, orthographic representations). The basic conventions for views, such as choosing the principal view, are in <strong>ISO 128-30</strong>.</p>
+<h2 id="the-front-view-comes-first">The front view comes first</h2>
+<p>The most informative view of the part is drawn as the front view, also called the principal view. The other views are placed around it, and only as many as are needed to define the part completely and without ambiguity.</p>
+<h2 id="first-angle-method">First angle method</h2>
+<p>Imagine the part between you and the projection plane: each view is projected <em>through</em> the part onto the plane behind it. Relative to the front view:</p>
+<ul><li>the view from above goes <strong>below</strong>;</li><li>the view from below goes <strong>above</strong>;</li><li>the view from the left goes <strong>on the right</strong>;</li><li>the view from the right goes <strong>on the left</strong>.</li></ul>
+<h2 id="third-angle-method">Third angle method</h2>
+<p>Imagine the projection plane between you and the part, as if you looked through a window: each view is drawn on the window on your side. Relative to the front view:</p>
+<ul><li>the view from above goes <strong>above</strong>;</li><li>the view from below goes <strong>below</strong>;</li><li>the view from the left goes <strong>on the left</strong>;</li><li>the view from the right goes <strong>on the right</strong>.</li></ul>
+<figure class="figs">
+        <svg viewBox="0 0 420 240" role="img" aria-label="First angle" class="fig">
+          <text x="210" y="24" class="fig-title">First angle</text>
+          <rect x="150" y="50" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="90" class="fig-text">Front</text>
+          <rect x="150" y="150" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="190" class="fig-text">From above</text>
+          <rect x="285" y="50" width="120" height="70" rx="4" class="fig-box"/><text x="345" y="90" class="fig-text">From the left</text>
+        </svg>
+        <svg viewBox="0 0 420 240" role="img" aria-label="Third angle" class="fig">
+          <text x="210" y="24" class="fig-title">Third angle</text>
+          <rect x="150" y="140" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="180" class="fig-text">Front</text>
+          <rect x="150" y="40" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="80" class="fig-text">From above</text>
+          <rect x="15" y="140" width="120" height="70" rx="4" class="fig-box"/><text x="75" y="180" class="fig-text">From the left</text>
+        </svg>
+        <figcaption>Where the view from above and the view from the left go around the front view. Simplified drawing.</figcaption>
+      </figure>
+<h2 id="the-projection-symbol">The projection symbol</h2>
+<p>Because the views themselves do not show the method, the drawing carries a graphical symbol defined in ISO 5456-2: a truncated cone shown in two views. In the first angle symbol the end view (two circles) is to the right of the side view; in the third angle symbol it is to the left. The symbol belongs near the title block; ISO 7200 does not list it among the title-block data fields, it is shown outside the block when used (<a href="/standards/iso-7200-title-block/">ISO 7200 title block</a>).</p>
+<figure class="figs">
+        <svg viewBox="0 0 230 160" role="img" aria-label="First angle symbol" class="fig">
+          <text x="115" y="24" class="fig-title">First angle symbol</text>
+          <path d="M30 75 L100 55 L100 125 L30 105 Z" class="fig-line"/><path d="M22 90 H108" class="fig-centre"/><circle cx="170" cy="90" r="35" class="fig-line"/><circle cx="170" cy="90" r="15" class="fig-line"/><path d="M127 90 H213 M170 47 V133" class="fig-centre"/>
+        </svg>
+        <svg viewBox="0 0 230 160" role="img" aria-label="Third angle symbol" class="fig">
+          <text x="115" y="24" class="fig-title">Third angle symbol</text>
+          <circle cx="60" cy="90" r="35" class="fig-line"/><circle cx="60" cy="90" r="15" class="fig-line"/><path d="M17 90 H103 M60 47 V133" class="fig-centre"/><path d="M130 75 L200 55 L200 125 L130 105 Z" class="fig-line"/><path d="M122 90 H208" class="fig-centre"/>
+        </svg>
+        <figcaption>The projection symbols: the same truncated cone, with its end view on the right (first angle) or on the left (third angle). Simplified drawing, not to the proportions of ISO 5456-2.</figcaption>
+      </figure>
+<h2 id="which-one-to-use">Which one to use</h2>
+<p>Both methods are standard. First angle is the usual choice in most of Europe and in many other countries; third angle is the usual choice in North America, where ASME Y14.3 uses it by default. Use the method your customer or your company expects, show its symbol, and never mix the two methods on one drawing.</p>
+<p>When the usual places do not suit a drawing, ISO 5456-2 also allows the reference arrow method: each view is identified by a letter and an arrow on another view shows the viewing direction, so the views may go anywhere on the sheet.</p>
+<h2 id="in-mechpilot">In MechPilot</h2>
+<p>Every drawing has a projection setting: first angle by default, third angle as an option (in the Properties panel with nothing selected; it is stored in the file as <code>&quot;projection&quot;: &quot;first&quot;</code> or <code>&quot;third&quot;</code>). Front, top, side and isometric views generated from 3D parts, placed by that setting, are part of milestone M5.</p>
+<p>Related: <a href="/guides/iso-fits-explained/">ISO fits explained</a>.</p>
+      </article>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

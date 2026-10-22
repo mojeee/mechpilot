@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Changelog · MechPilot</title>
+    <meta name="description" content="What changed in each MechPilot version, milestone by milestone. Current version: 0.5.0." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/changelog/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Changelog · MechPilot" />
+    <meta property="og:description" content="What changed in each MechPilot version, milestone by milestone. Current version: 0.5.0." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/changelog/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/" aria-current="page">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Changelog</li></ol></nav>
+      <article class="prose narrow">
+        <h1>Changelog</h1>
+        <p>All notable changes to MechPilot. The format follows <a href="https://keepachangelog.com/" rel="noopener">Keep a Changelog</a>; versions follow <a href="https://semver.org/" rel="noopener">Semantic Versioning</a>.</p>
+<h2 id="unreleased">Unreleased</h2>
+<h2 id="050--2026-10-22--m4-3d-parts">0.5.0 — 2026-10-22 — M4 3D parts</h2>
+<h3 id="added">Added</h3>
+<ul><li>3D parts built by replicad on opencascade.js (OpenCascade as WebAssembly, LGPL, in its own worker, <code>app/workers/kernel</code>): a closed outline in the Model becomes a sketch on the XY, XZ or YZ plane (<code>SKETCH</code>), then <code>EXTRUDE</code>, <code>REVOLVE</code>, <code>HOLE</code> (plain, ISO 273 clearance or tapped with the tap drill from the library), <code>FILLET</code>, <code>CHAMFER</code>, <code>SHELL</code>, <code>MIRROR3D</code>, <code>PATTERN</code>. Every feature is a command: undo, redo and the file format (version 5) cover the feature tree.</li><li>A 3D tab per part with a three.js viewer: orbit, view cube, grid, section plane on any principal plane, point-to-point measuring, and the part's volume, surface, bounding box and centre of mass.</li><li>Features tab: the feature tree with status per feature (built, failed with the reason in plain words, skipped), reorder, suppress, edit every parameter and the part rebuilds; the body keeps building past a failed feature.</li><li>STEP, STL and 3MF export; STEP import as a part's base body (kept inside the document).</li><li>Library: ISO 273 clearance holes (fine, medium, coarse) and tap drills; common materials with density and source.</li><li>Samples: a stepped shaft (half profile revolved, chamfered ends) and a sheet-metal cover (box, R5 corners, 1.5 mm shell, four M4 clearance holes).</li></ul>
+<h2 id="040--2026-10-22--m3-parametric-sketches">0.4.0 — 2026-10-22 — M3 Parametric sketches</h2>
+<h3 id="added-1">Added</h3>
+<ul><li>Sketch constraints solved by planegcs (FreeCAD's solver as WebAssembly, LGPL, in its own worker): coincident, point on line, horizontal, vertical, parallel, perpendicular, tangent, equal, symmetric, fixed, distance, point–line distance, angle, radius. Tools <code>CC</code>, <code>CPL</code>, <code>CH</code>, <code>CV</code>, <code>CPA</code>, <code>CPE</code>, <code>CT</code>, <code>CE</code>, <code>CS</code>, <code>CF</code>, <code>CD</code>, <code>CA</code>, <code>CR</code>.</li><li>Driving dimensions: tick &quot;Driving&quot; on a dimension and the geometry follows its value.</li><li>Inferred constraints while drawing lines: snapped end points become coincident, polar-tracked 0°/90° segments become horizontal or vertical, consecutive segments share their corner.</li><li>Degrees-of-freedom colouring (green fully constrained, amber free), constraint glyphs on the drawing, the DOF count in the status bar, and conflicts or redundancies explained in plain words in the Checks tab with one-click removal.</li><li>The solver's result joins the user's edit as one undo step; deleting an entity deletes its constraints (undo restores both). File format 4 with a migration.</li><li>Sample: the mounting bracket outline is a constrained sketch driven by its 120 and 80 dimensions.</li></ul>
+<h2 id="030--2026-10-22--m2-dimensions-and-sheets">0.3.0 — 2026-10-22 — M2 Dimensions and sheets</h2>
+<h3 id="added-2">Added</h3>
+<ul><li>Dimensions to ISO 129-1: linear (<code>DLI</code>), aligned (<code>DAL</code>), angular (<code>DAN</code>), radius (<code>DRA</code>), diameter (<code>DDI</code>), ordinate (<code>DOR</code>). The value is measured from the geometry when drawn, never stored; decimal comma on ISO drawings, ⌀ and R prefixes, override text with <code>&lt;&gt;</code>.</li><li>Tolerances: deviations, symmetric, limits, and ISO 286 classes (H7, g6 …) whose deviations come from the library (<code>shared/fits.ts</code>); the Properties panel edits them.</li><li>Notes with leaders (<code>LE</code>), balloons (<code>BAL</code>), ISO 21920-1 surface texture symbols (<code>SURF</code>), ISO 1101 geometrical tolerance frames (<code>TOL</code>, symbols drawn as lines) and datums (<code>DAT</code>).</li><li>Dimension style (ISO 3098 3.5 mm lettering, 30° closed filled arrowheads of length h, 8 × line width extension overshoot, annotation scale) in the Properties panel.</li><li>Sheets: A0 to A4 to ISO 5457 (frame, zones, centring and trimming marks), ISO 7200 title block with all 19 data fields, views at ISO 5455 scales; a Model / Sheet tab strip and a Sheets panel.</li><li>Vector PDF export at true scale (pdf-lib, Helvetica, black, 0.13 mm minimum line width), one page per sheet, with ISO line widths printed as they are whatever the view scale.</li><li>Library data verified on the standards' own text: <code>sheets/iso-5457</code>, <code>title-blocks/iso-7200</code>, <code>scales/iso-5455</code>, <code>lettering/iso-3098</code>, <code>dimensioning/iso-129-1</code>, <code>fits/iso-286</code> (IT01–IT18, fundamental deviations, Δ), <code>gdt/iso-1101</code>, <code>surface/iso-21920-1</code>; <code>docs/standards.md</code>.</li><li>File format 3 (annotations, dimension style, sheets) with a migration from format 2.</li><li>Annotations are exploded into lines, arcs and text on DXF export.</li><li>Sample: the mounting bracket now carries dimensions with ±, deviations and an H7 fit, a surface symbol, flatness and position frames, datums, a note, a balloon and an A3 sheet.</li></ul>
+<h2 id="020--2026-10-22--m1-2d-drafting">0.2.0 — 2026-10-22 — M1 2D drafting</h2>
+<h3 id="added-3">Added</h3>
+<ul><li>Entities: polyline (with arc segments as DXF bulges; rectangle as a closed polyline), ellipse, spline (B-spline through fit points), text. File format 2 with a migration from format 1.</li><li>Drawing tools by mouse or command line: <code>L</code> line (<code>C</code> closes, <code>U</code> undoes a segment), <code>PL</code> polyline, <code>REC</code> rectangle, <code>C</code> circle (radius or <code>D</code> diameter), <code>A</code> three-point arc, <code>EL</code> ellipse, <code>SPL</code> spline, <code>T</code> text (<code>H=</code> sets the height).</li><li>Object snaps with markers: end, mid, centre, quadrant, intersection, perpendicular, tangent, nearest (<code>OSNAP</code> toggles them), and polar tracking every 15°.</li><li>Edit tools: <code>M</code> move, <code>CO</code> copy, <code>RO</code> rotate, <code>SC</code> scale, <code>MI</code> mirror, <code>O</code> offset, <code>TR</code> trim, <code>EX</code> extend, <code>F</code> fillet (<code>R=</code>), <code>CHA</code> chamfer (<code>D=</code>), <code>AR</code> array (rectangular or polar). Window (left to right) and crossing (right to left) selection; hover highlight; grips.</li><li>ISO 128-2 dashed, long-dashed dotted and double-dotted line types render with the Table 4 element lengths (verified against the standard's text; see <code>docs/to-verify.md</code>).</li><li>Spatial index for picking, snapping and view culling, with a 100,000-entity budget test.</li><li>Autosave every 20 s while the drawing is dirty, and a recovery banner after a crash.</li><li>DXF import and export (R12 and 2000 subsets, <code>docs/dxf.md</code>): File &gt; Import DXF, Export DXF. Round-trip tests, blocks expanded on import, units converted, unsupported entities reported.</li><li><code>ZW</code> zooms to the selection; <code>SA</code> selects all.</li></ul>
+<h2 id="010--2026-10-22--m0-scaffold">0.1.0 — 2026-10-22 — M0 Scaffold</h2>
+<h3 id="added-4">Added</h3>
+<ul><li>The project: <code>CLAUDE.md</code>, <code>docs/roadmap.md</code> (M0 to M8 as checklists), <code>docs/decisions.md</code>, <code>docs/to-verify.md</code>, <code>docs/file-format.md</code>, <code>docs/progress.md</code>.</li><li>Open source: Apache-2.0 <code>LICENSE</code> and <code>NOTICE</code>, <code>CONTRIBUTING.md</code> (DCO sign-off), <code>CODE_OF_CONDUCT.md</code>, <code>SECURITY.md</code>, issue and pull-request templates, &quot;contribute in 30 minutes&quot; in the README. <code>THIRD_PARTY_LICENSES.md</code> is generated before every build.</li><li>CI: typecheck, unit tests, licence check (fails on GPL or AGPL), library check, build, site build with an up-to-date check, end-to-end tests.</li><li>The app (Electron + electron-vite, React, Zustand, TypeScript strict) with its main layout: top bar with in-app menus, tool palette, Canvas 2D drawing canvas with grid, pan and zoom, properties and layers panels, command line, status bar. Dark and light interface, dark or white canvas, English and Italian.</li><li>The document model and file format v1 (<code>.mechpilot.json</code>): millimetres in double precision, stable ordering, migrations, plain-language errors.</li><li>The command layer with do/undo for every edit, including opening a document.</li><li>Line and circle drawing by mouse or command line (<code>L</code>, <code>C</code>, absolute and <code>@relative</code> points), selection, delete, properties editing, layer management with ISO 128-2 line types and widths.</li><li>Worker harness with a typed protocol and a smoke worker (the solver and kernel plug in later).</li><li>Library: ISO 128-2 line types and the line-width series, with sources, validated by <code>scripts/check-library.mjs</code>.</li><li>Sample project: the mounting bracket (outline, holes, centre lines).</li><li>Website skeleton (<code>site/</code>): landing page and &quot;For companies&quot; in English and Italian, sitemap, robots, security headers.</li></ul>
+      </article>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

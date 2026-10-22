@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Standards used by MechPilot · MechPilot docs</title>
+    <meta name="description" content="MechPilot draws to ISO standards. This page lists each one, what the app takes from it, where that data lives and how well it has been checked. Every value…" />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/docs/standards/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Standards used by MechPilot · MechPilot docs" />
+    <meta property="og:description" content="MechPilot draws to ISO standards. This page lists each one, what the app takes from it, where that data lives and how well it has been checked. Every value…" />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/docs/standards/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/" aria-current="page">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/docs/">Docs</a></li><li aria-current="page">Standards used by MechPilot</li></ol></nav>
+      <div class="doc-layout">
+      <nav class="doc-nav" aria-label="Docs"><ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/file-format/">The MechPilot file format</a></li><li><a href="/docs/dxf/">DXF import and export</a></li><li><a href="/docs/pdf/">PDF export</a></li><li><a href="/docs/sketches/">Sketch constraints</a></li><li><a href="/docs/standards/" aria-current="page">Standards used by MechPilot</a></li></ul></nav>
+      <article class="prose">
+        <h1>Standards used by MechPilot</h1>
+        <p>MechPilot draws to ISO standards. This page lists each one, what the app takes from it, where that data lives and how well it has been checked. Every value in <code>library/</code> names its standard and clause; values that could not be checked are left out and listed in <a href="https://github.com/mojeee/mechpilot/blob/main/docs/to-verify.md" rel="noopener">to-verify.md</a> (product rule 2).</p>
+<p><strong>How values were checked.</strong> &quot;Standard text&quot; means the value was read in the standard itself: the free previews published by iTeh (standards.iteh.ai), or the Indian Standards that adopt an ISO standard word for word and are published by Public.Resource.Org (law.resource.org). Some of those adoptions are of an older edition; where that is the case it is said below. &quot;Secondary&quot; would mean two independent handbooks or catalogues agree; only some material densities rely on that (see &quot;Holes and materials&quot; below).</p>
+<div class="table-wrap"><table><thead><tr><th>Standard</th><th>What MechPilot takes from it</th><th>Data file</th><th>Checked against</th></tr></thead><tbody><tr><td>ISO 128-2:2020 (lines)</td><td>Line types and the line-width series</td><td><code>library/line-types/iso-128-2.json</code></td><td>Standard text (2020 preview)</td></tr><tr><td>ISO 5457:1999 (drawing sheets)</td><td>Sheet sizes A0 to A4, 20/10 mm borders, 0.7 mm frame, grid zones of 50 mm and their count, centring and trimming marks, where the title block goes</td><td><code>library/sheets/iso-5457.json</code></td><td>Standard text (1999 edition). Amendment 1:2010 not seen: A4 landscape is not offered yet</td></tr><tr><td>ISO 7200:2004 (title blocks)</td><td>The 19 data fields, which are mandatory, recommended lengths, the 180 mm width. The cell layout is MechPilot's own, drawn after the standard's Figure 1</td><td><code>library/title-blocks/iso-7200.json</code></td><td>Standard text. Italian field names are our translation</td></tr><tr><td>ISO 5455:1979 (scales)</td><td>Recommended scales 50:1 to 1:10 000, how a scale is written and where</td><td><code>library/scales/iso-5455.json</code></td><td>Standard text (full)</td></tr><tr><td>ISO 3098 (lettering)</td><td>Text heights 1.8 to 20 mm, type A and B proportions, spacing. Defaults (type B vertical, 3.5 mm for dimensions) are MechPilot's choice</td><td><code>library/lettering/iso-3098.json</code></td><td>Standard text of ISO 3098-0:1997; the 2015 edition (ISO 3098-1) has the same clauses but its values were not seen</td></tr><tr><td>ISO 129-1:2018 (dimensions)</td><td>Text above the line and readable from the bottom or the right, decimal comma, symbols ⌀ R □ S⌀ SR and others, how tolerances are written</td><td><code>library/dimensioning/iso-129-1.json</code></td><td>Standard text (2018 preview)</td></tr><tr><td>ISO 129-1:2004 (dimensions, previous edition)</td><td>Arrowhead forms and sizes, extension lines 8 line widths past the dimension line</td><td>same file</td><td>Standard text of the 2004 edition; to confirm in the 2018 edition. Dimension-line spacing and text gap: no value found, not stored</td></tr><tr><td>ISO 286-1 and 286-2:2010 (limits and fits)</td><td>Tolerance grades IT01 to IT18 up to 3 150 mm; fundamental deviations of the shaft and hole letters up to 500 mm, with the rules to compute fits such as H7/g6</td><td><code>library/fits/iso-286.json</code></td><td>IT grades: 2010 standard text. Deviations: 1988 edition text, letters A to E cross-checked with 2010</td></tr><tr><td>ISO 1101:2017 (geometrical tolerances)</td><td>The 15 characteristics, their 14 symbols, whether a datum is needed</td><td><code>library/gdt/iso-1101.json</code></td><td>Standard text (2017 preview)</td></tr><tr><td>ISO 7083:1983 (GD&amp;T symbol proportions)</td><td>Tolerance frame height 2h, line width h/10, compartment widths</td><td>same file</td><td>Standard text (1983 edition); ISO 1101:2017 Annex F not seen</td></tr><tr><td>ISO 21920-1:2021 (surface texture)</td><td>The three surface symbols with the new bar, how &quot;Ra 1,6&quot; is written</td><td><code>library/surface/iso-21920-1.json</code></td><td>Standard text (2021 preview). Symbol proportions (Annex A) not seen: the app uses those of ISO 1302:1978 meanwhile</td></tr><tr><td>ISO 1302:1978 (surface texture, withdrawn)</td><td>The Ra list 0.025 to 50 µm offered first in the app; symbol proportions until ISO 21920-1 Annex A is checked</td><td>same file</td><td>Standard text (1978 edition)</td></tr></tbody></table></div>
+<p>Not yet covered here: ISO 5456-2 (projections), ASME Y14.5 and Y14.3, ISO 14405-1 (meaning of size tolerances). The open questions for each standard above are in <a href="https://github.com/mojeee/mechpilot/blob/main/docs/to-verify.md" rel="noopener">to-verify.md</a>.</p>
+<h2 id="holes-and-materials">Holes and materials</h2>
+<div class="table-wrap"><table><thead><tr><th>Standard</th><th>What MechPilot takes from it</th><th>Data file</th><th>Checked against</th></tr></thead><tbody><tr><td>ISO 273:1979 (clearance holes)</td><td>Clearance hole diameters for the fine, medium and coarse series, M1.6 to M64; H12 / H13 / H14 for information. Medium is MechPilot's default series (the standard names none)</td><td><code>library/holes/iso-273.json</code></td><td>Standard text (IS 1821:1987, identical adoption)</td></tr><tr><td>ISO 2306:1972 (drills before tapping)</td><td>Tap drill diameters for metric coarse threads M1.6 to M56, and the rule drill ≈ nominal diameter − pitch</td><td><code>library/holes/tap-drills.json</code></td><td>Standard text (IS 10952:1984, identical adoption). M60 and M64 are not in its Table 1: not stored</td></tr><tr><td>ISO 261:1998 (metric threads, general plan)</td><td>Coarse pitches of the tap-drill table (cross-check)</td><td>same file</td><td>Standard text (IS 4218 (Part 2):2001, identical adoption). ISO 262 (selected sizes) not read</td></tr><tr><td>EN 10025-2, EN 1993-1-1 and EN 1993-1-2:2005 (structural steel)</td><td>S235JR and S355J2; density 7850 kg/m³ from EN 1993-1-2, 3.2.2 (EN 1993-1-1:2005, 3.2.6 gives no density)</td><td><code>library/materials/common.json</code></td><td>Standard text (first-generation Eurocodes)</td></tr><tr><td>EN 10088-1:2005 (stainless steels)</td><td>X5CrNi18-10 (1.4301), density 7.9 kg/dm³ (Annex A, Table A.3)</td><td>same file</td><td>Standard text of the 2005 edition (unofficial copy); the 2023 edition not seen</td></tr><tr><td>EN 1999-1-1:2007 (aluminium)</td><td>EN AW-6082 and EN AW-5754, density 2700 kg/m³ (3.2.5, one value for all alloys)</td><td>same file</td><td>Standard text</td></tr><tr><td>EN 10083-2 (C45), EN 1652 / EN 12163 (CuZn37), EN 13599 (Cu-ETP), EN 1561 (EN-GJL-250), POM-C, PA 6, PE-HD</td><td>Material designations; densities from manufacturer and supplier datasheets</td><td>same file</td><td>Secondary: two or more datasheets agree for each (EN-GJL-250 is the weakest). PTFE left out: sources disagree</td></tr></tbody></table></div>
+<p>Mass in MechPilot is shown as approximate: densities vary with alloy, temper and grade. The open questions are in <a href="https://github.com/mojeee/mechpilot/blob/main/docs/to-verify.md" rel="noopener">to-verify.md</a>.</p>
+        <p class="edit"><a href="https://github.com/mojeee/mechpilot/blob/main/docs/standards.md">Source of this page on GitHub</a></p>
+      </article>
+      </div>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

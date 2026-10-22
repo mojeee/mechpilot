@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Getting started · MechPilot docs</title>
+    <meta name="description" content="MechPilot is in development (milestone M1 of M8). Today you build it from source; installers for macOS, Windows and Linux come with M8." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/docs/getting-started/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Getting started · MechPilot docs" />
+    <meta property="og:description" content="MechPilot is in development (milestone M1 of M8). Today you build it from source; installers for macOS, Windows and Linux come with M8." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/docs/getting-started/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/" aria-current="page">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/docs/">Docs</a></li><li aria-current="page">Getting started</li></ol></nav>
+      <div class="doc-layout">
+      <nav class="doc-nav" aria-label="Docs"><ul><li><a href="/docs/getting-started/" aria-current="page">Getting started</a></li><li><a href="/docs/file-format/">The MechPilot file format</a></li><li><a href="/docs/dxf/">DXF import and export</a></li><li><a href="/docs/pdf/">PDF export</a></li><li><a href="/docs/sketches/">Sketch constraints</a></li><li><a href="/docs/standards/">Standards used by MechPilot</a></li></ul></nav>
+      <article class="prose">
+        <h1>Getting started</h1>
+        <p>MechPilot is in development (milestone M1 of M8). Today you build it from source; installers for macOS, Windows and Linux come with M8.</p>
+<h2 id="build-and-run">Build and run</h2>
+<pre><code class="language-bash">git clone https://github.com/mojeee/mechpilot
+cd mechpilot
+npm install
+npm run dev</code></pre>
+<p>Node 24 is required. The first <code>npm install</code> downloads Electron (about 100 MB).</p>
+<h2 id="first-ten-minutes">First ten minutes</h2>
+<ol><li><strong>File &gt; Open sample &gt; Mounting bracket</strong> loads a 120 × 80 mm plate with holes and centre lines.</li><li><strong>Pan</strong> with the middle or right mouse button, <strong>zoom</strong> with the wheel, double-click the canvas to zoom to extents (or type <code>ZE</code>; <code>ZW</code> zooms to the selection).</li><li><strong>Draw a line:</strong> type <code>L</code>, then click two points, or type them: <code>0,100</code> then <code>@50,0</code> (relative to the last point). Enter or Esc finishes; <code>C</code> closes the shape; <code>U</code> undoes the last segment.</li><li><strong>Draw a circle:</strong> <code>C</code>, click the centre, then a point on the circle or type a radius: <code>12.5</code> (<code>D 25</code> for a diameter).</li><li><strong>Object snaps</strong> light up as you move near end points, midpoints, centres, quadrants, intersections, and (from the previous point) perpendicular and tangent points. Polar tracking locks the cursor every 15°. <code>OSNAP</code> toggles the object snaps, <code>SNAP</code> snaps to the grid.</li><li><strong>Select</strong> by clicking an entity; drag a window left to right to select what is fully inside, right to left to select what it crosses. Shift adds. Delete removes. Edit values in the Properties panel on the right.</li><li><strong>Edit:</strong> <code>M</code> move, <code>CO</code> copy, <code>RO</code> rotate, <code>SC</code> scale, <code>MI</code> mirror, <code>O</code> offset, <code>TR</code> trim, <code>EX</code> extend, <code>F</code> fillet (<code>R=3</code> sets the radius), <code>CHA</code> chamfer (<code>D=2,3</code>), <code>AR</code> array. Every tool tells you what it needs in the command line.</li><li><strong>Undo</strong> with <code>U</code> or Ctrl+Z, redo with <code>REDO</code> or Ctrl+Y. Everything is undoable, including opening a file and importing a DXF.</li><li><strong>Layers:</strong> the Layers tab shows each layer's colour, ISO 128-2 line type and width, visibility and lock. The dot on the left marks the active layer.</li><li><strong>Save</strong> with Ctrl+S as <code>name.mechpilot.json</code>: plain JSON, documented in <a href="/docs/file-format/">file-format.md</a>. <strong>File &gt; Export DXF</strong> writes a DXF 2000 or R12 for other CAD tools; <strong>File &gt; Import DXF</strong> reads one (see <a href="/docs/dxf/">dxf.md</a>).</li></ol>
+<h2 id="dimensions-symbols-and-sheets">Dimensions, symbols and sheets</h2>
+<ul><li><strong>Dimensions:</strong> <code>DLI</code> linear (two points, then where the dimension line goes; <code>H</code> or <code>V</code> forces the direction), <code>DAL</code> aligned, <code>DAN</code> angular (click two lines, then the arc position), <code>DRA</code> radius and <code>DDI</code> diameter (click the arc or circle, then the text position), <code>DOR</code> ordinate (origin, then feature points). The value is measured from the geometry; select a dimension to add a tolerance (deviations, ±, limits or an ISO 286 class such as H7) or an override text (<code>&lt;&gt;</code> stands for the measured value) in the Properties panel.</li><li><strong>Symbols:</strong> <code>LE</code> note with leader (<code>|</code> in the text starts a new line), <code>BAL</code> balloon, <code>SURF</code> surface texture (A / R / P for any process, removal required or prohibited, then <code>Ra 3.2</code>), <code>TOL</code> geometrical tolerance frame (<code>FLAT 0.05 A</code> style prompts), <code>DAT</code> datum.</li><li><strong>Dimension style:</strong> with nothing selected, the Properties panel shows the lettering height, arrowheads, decimals and the annotation scale (set it to the scale of your main view so the lettering prints at 3.5 mm).</li><li><strong>Sheets:</strong> the tab strip under the top bar switches between Model and the sheets; &quot;+ Sheet&quot; adds an A3 with a 1:1 view. The Sheets tab edits the size, orientation, the ISO 7200 title block fields and the views (scale, model centre, position and size on the paper).</li><li><strong>File &gt; Export PDF</strong> prints every sheet as a vector PDF at true scale; without a sheet the model is printed at 1:1 on an A3.</li></ul>
+<h2 id="sketch-constraints">Sketch constraints</h2>
+<ul><li><strong>Constraints:</strong> <code>CC</code> coincident (click near two points), <code>CPL</code> point on line, <code>CH</code> horizontal, <code>CV</code> vertical, <code>CPA</code> parallel, <code>CPE</code> perpendicular, <code>CT</code> tangent, <code>CE</code> equal, <code>CS</code> symmetric, <code>CF</code> fix, <code>CD</code> distance, <code>CA</code> angle, <code>CR</code> radius. The solver (FreeCAD's planegcs) moves the geometry at once; the result undoes together with the edit.</li><li><strong>Inferred while drawing:</strong> a line whose end snaps to another end point becomes coincident with it; a segment drawn along polar tracking at 0° or 90° becomes horizontal or vertical.</li><li><strong>Driving dimensions:</strong> select a dimension and tick &quot;Driving&quot; in Properties; change its value and the sketch follows.</li><li><strong>Reading the sketch:</strong> green entities are fully constrained, amber ones can still move; the status bar shows the degrees of freedom left; the Checks tab explains conflicting or redundant constraints in plain words and removes them with one click.</li></ul>
+<p><strong>View menu:</strong> dark or light interface, dark or white canvas, English or Italian.</p>
+<p>If MechPilot ever closes unexpectedly, the next start offers to recover the autosaved drawing.</p>
+<h2 id="3d-parts">3D parts</h2>
+<ul><li><strong>From outline to body:</strong> draw a closed outline in Model (lines, arcs, circles; polylines too), select it and type <code>SKETCH</code> (optionally <code>SKETCH XZ 20</code> for another plane and an offset). Then <code>EXTRUDE 10</code> (or <code>EXTRUDE 5 CUT</code>, <code>EXTRUDE 8 BOTH</code>), or <code>REVOLVE</code> (360° around the sketch's X axis by default; edit the axis in the Features tab). A 3D tab opens with the part.</li><li><strong>More features:</strong> <code>HOLE M6</code> drills ISO 273 clearance holes at the circle centres of the last sketch (<code>HOLE M8 TAP</code> a tapped hole with its tap drill, <code>HOLE 6.6 12</code> a plain hole 12 deep), <code>FILLET 2</code>, <code>CHAMFER 1</code>, <code>SHELL 1.5</code>, <code>MIRROR3D YZ</code>, <code>PATTERN 3 2 20 15</code> (3 × 2 grid) or <code>PATTERN C 6</code> (6 around Z). Every value can be changed later in the Features tab; the part rebuilds in the background and never freezes the window.</li><li><strong>Reading the tree:</strong> a red feature could not be built and says why; the body continues without it. Suppress a feature with ● / ◌, reorder with the arrows, <code>U</code> undoes any change.</li><li><strong>Looking at it:</strong> drag to orbit, wheel to zoom, right-drag to pan; the view cube snaps to the standard views. Section (Features tab) cuts the body with a plane; Measure takes the distance between two clicked points. Volume, surface, size and centre of mass are listed under the tree.</li><li><strong>Exchange:</strong> <code>EXPORT STEP</code>, <code>EXPORT STL</code>, <code>EXPORT 3MF</code>; <code>STEP</code> imports a STEP file as a new part.</li></ul>
+<h2 id="keyboard">Keyboard</h2>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Action</th></tr></thead><tbody><tr><td><code>L</code>, <code>PL</code>, <code>REC</code>, <code>C</code>, <code>A</code>, <code>EL</code>, <code>SPL</code>, <code>T</code></td><td>line, polyline, rectangle, circle, arc, ellipse, spline, text</td></tr><tr><td><code>M</code>, <code>CO</code>, <code>RO</code>, <code>SC</code>, <code>MI</code>, <code>O</code>, <code>TR</code>, <code>EX</code>, <code>F</code>, <code>CHA</code>, <code>AR</code></td><td>move, copy, rotate, scale, mirror, offset, trim, extend, fillet, chamfer, array</td></tr><tr><td><code>SKETCH</code>, <code>EXTRUDE</code>, <code>REVOLVE</code>, <code>HOLE</code>, <code>FILLET</code>, <code>CHAMFER</code>, <code>SHELL</code>, <code>MIRROR3D</code>, <code>PATTERN</code></td><td>3D features from the selected outline (see above)</td></tr><tr><td><code>PART</code>, <code>STEP</code>, <code>EXPORT STEP</code> / <code>STL</code> / <code>3MF</code>, <code>MEASURE</code></td><td>new part, import STEP, export the part, measure in 3D</td></tr><tr><td><code>U</code>, <code>REDO</code></td><td>undo, redo</td></tr><tr><td><code>E</code> or Delete</td><td>erase the selection</td></tr><tr><td><code>ZE</code>, <code>ZW</code></td><td>zoom extents, zoom to the selection</td></tr><tr><td><code>GRID</code>, <code>SNAP</code>, <code>OSNAP</code></td><td>toggle the grid, grid snap, object snaps</td></tr><tr><td>Esc</td><td>finish the tool, clear the selection</td></tr><tr><td>Ctrl+N / O / S / Shift+S</td><td>new, open, save, save as</td></tr><tr><td>Ctrl+A</td><td>select all</td></tr></tbody></table></div>
+<p>Typing a letter anywhere on the canvas goes to the command line.</p>
+        <p class="edit"><a href="https://github.com/mojeee/mechpilot/blob/main/docs/getting-started.md">Source of this page on GitHub</a></p>
+      </article>
+      </div>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

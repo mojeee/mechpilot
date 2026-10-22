@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PDF export · MechPilot docs</title>
+    <meta name="description" content="MechPilot writes sheets as vector PDF: every line, arc, circle, ellipse, filled shape and text of the sheet becomes a PDF path or text object. Nothing is…" />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/docs/pdf/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="PDF export · MechPilot docs" />
+    <meta property="og:description" content="MechPilot writes sheets as vector PDF: every line, arc, circle, ellipse, filled shape and text of the sheet becomes a PDF path or text object. Nothing is…" />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/docs/pdf/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/" aria-current="page">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/docs/">Docs</a></li><li aria-current="page">PDF export</li></ol></nav>
+      <div class="doc-layout">
+      <nav class="doc-nav" aria-label="Docs"><ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/file-format/">The MechPilot file format</a></li><li><a href="/docs/dxf/">DXF import and export</a></li><li><a href="/docs/pdf/" aria-current="page">PDF export</a></li><li><a href="/docs/sketches/">Sketch constraints</a></li><li><a href="/docs/standards/">Standards used by MechPilot</a></li></ul></nav>
+      <article class="prose">
+        <h1>PDF export</h1>
+        <p>MechPilot writes sheets as <strong>vector PDF</strong>: every line, arc, circle, ellipse, filled shape and text of the sheet becomes a PDF path or text object. Nothing is rasterised, so the file stays sharp at any zoom and prints at the size it was drawn.</p>
+<p>The code is <code>shared/pdf/index.ts</code> (<code>pdfFromPages</code>), built on <a href="https://github.com/Hopding/pdf-lib" rel="noopener">pdf-lib</a> (MIT, pure JavaScript). It draws the same display primitives as the screen (<code>shared/draw/primitives.ts</code>), so the PDF shows exactly the geometry of the sheet on screen.</p>
+<h2 id="true-scale">True scale</h2>
+<ul><li>One PDF page per sheet. The page size (MediaBox) is the paper size in mm converted with the exact factor 1 mm = 72/25.4 pt (an A4 landscape page is 841.88976… × 595.27559… pt).</li><li>Coordinates are written with full double precision, never rounded: 1 mm on the sheet is 1 mm on paper. Print with &quot;Actual size&quot; (not &quot;Fit to page&quot;) to keep the scale.</li><li>Arcs and circles are cubic Bézier curves (at most 90° each) within 0.005 mm of the true circle; ellipses are fine polylines within 0.005 mm.</li></ul>
+<h2 id="black-and-line-widths">Black and line widths</h2>
+<ul><li>Everything is drawn in <strong>black</strong>: layer and screen colours are not printed.</li><li>Line widths come from the line type (ISO 128-2). A width of 0 is printed as <strong>0.13 mm</strong>, the thinnest line of the ISO 128-2 line-width series. Dashes are written in mm, at true scale.</li></ul>
+<h2 id="text-and-characters">Text and characters</h2>
+<ul><li>Text uses <strong>Helvetica</strong>, one of the 14 standard PDF fonts that every PDF reader has, so <strong>no font is embedded</strong> and files stay small. The font size is set so that the cap height equals the text height of the drawing (Helvetica cap height = 0.718 em), and alignment uses Helvetica's real character widths.</li><li>Helvetica in a PDF covers the <strong>WinAnsi (Windows-1252) character set</strong>: Latin letters with accents and the drawing symbols Ø ° ± × µ are fine. A minus sign (−) is written as a hyphen, ⌀ as Ø, Greek μ as µ; any other character outside the set (Greek, Cyrillic, CJK, emoji, ≤ …) is printed as <code>?</code>.</li></ul>
+<h2 id="metadata">Metadata</h2>
+<p>Title, author and the creating application are written to the document information. Sheet titles appear as page labels in the reader. For tests and CI a deterministic mode gives byte-identical files (fixed dates, uncompressed content).</p>
+        <p class="edit"><a href="https://github.com/mojeee/mechpilot/blob/main/docs/pdf.md">Source of this page on GitHub</a></p>
+      </article>
+      </div>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

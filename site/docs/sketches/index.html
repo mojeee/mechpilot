@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sketch constraints · MechPilot docs</title>
+    <meta name="description" content="MechPilot keeps the shape of a sketch with constraints (horizontal, tangent, a distance of 100 mm...) and driving dimensions (a dimension whose value sets…" />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/docs/sketches/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Sketch constraints · MechPilot docs" />
+    <meta property="og:description" content="MechPilot keeps the shape of a sketch with constraints (horizontal, tangent, a distance of 100 mm...) and driving dimensions (a dimension whose value sets…" />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/docs/sketches/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/" aria-current="page">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/docs/">Docs</a></li><li aria-current="page">Sketch constraints</li></ol></nav>
+      <div class="doc-layout">
+      <nav class="doc-nav" aria-label="Docs"><ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/file-format/">The MechPilot file format</a></li><li><a href="/docs/dxf/">DXF import and export</a></li><li><a href="/docs/pdf/">PDF export</a></li><li><a href="/docs/sketches/" aria-current="page">Sketch constraints</a></li><li><a href="/docs/standards/">Standards used by MechPilot</a></li></ul></nav>
+      <article class="prose">
+        <h1>Sketch constraints</h1>
+        <p>MechPilot keeps the shape of a sketch with <strong>constraints</strong> (horizontal, tangent, a distance of 100 mm...) and <strong>driving dimensions</strong> (a dimension whose value sets the geometry). A solver moves the geometry until every constraint holds. This page says what the solver does, what takes part, and where its limits are.</p>
+<h2 id="the-solver">The solver</h2>
+<p>The solver is <a href="https://github.com/Salusoft89/planegcs" rel="noopener">planegcs</a>, the 2D constraint solver of FreeCAD compiled to WebAssembly (LGPL-2.0-or-later). It runs in its own worker (<code>app/workers/solver</code>), so the drawing never freezes while it works, and it is a separate, replaceable module: the app talks to it only through the worker protocol (<code>shared/sketch/protocol.ts</code>). Its licence notice is in <code>app/workers/solver/NOTICE.md</code>.</p>
+<p>The code has three layers:</p>
+<ul><li><code>shared/sketch/model.ts</code> turns the drawing into the solver's input (points, lines, circles, arcs and constraints as plain JSON) and the solver's output back into entities. It has no WebAssembly and is tested on its own.</li><li><code>shared/sketch/solver.ts</code> loads planegcs, solves, reads the diagnosis and computes the degree-of- freedom colouring.</li><li><code>app/workers/solver/index.ts</code> serves <code>solve</code> and <code>freedom</code> to the renderer.</li></ul>
+<p>Every solve works on the whole document and returns only the entities that changed, with their ids unchanged; the UI applies them with one <code>updateEntities</code> command, so a solve is undone like any other edit (product rule 4). Values are copied from the solver as they are: nothing is rounded (product rule 1). A solved value within 1e-12 mm (or rad) of the stored one keeps the stored value: that is floating-point noise (an arc end point at sin(π) = 1.2e-16 can pull a joined line end by 2e-15 mm), far below the solver's own convergence threshold, and not an edit.</p>
+<h2 id="what-takes-part">What takes part</h2>
+<div class="table-wrap"><table><thead><tr><th>Entity</th><th>In the solver</th><th>Degrees of freedom when unconstrained</th></tr></thead><tbody><tr><td>Line</td><td>two points and the line between them</td><td>4</td></tr><tr><td>Circle</td><td>centre point and radius</td><td>3</td></tr><tr><td>Arc</td><td>centre, start and end points, radius and both angles, kept consistent by planegcs' arc rules</td><td>5</td></tr><tr><td>Polyline (straight segments only)</td><td>one point per vertex and one line per segment</td><td>2 per vertex</td></tr><tr><td>Polyline with any arc segment</td><td>its vertices, as <strong>fixed</strong> points only (other geometry can attach to them)</td><td>0</td></tr><tr><td>Ellipse, spline, text, annotations</td><td>not at all</td><td>—</td></tr></tbody></table></div>
+<p>Every point of a solver entity is free unless a constraint holds it: a line with only a horizontal constraint can still move up and down, left and right, and change length.</p>
+<p>Points are named in constraints by entity and role: <code>a</code>/<code>b</code> for a line, <code>center</code> for a circle, <code>center</code>/<code>start</code>/<code>end</code> for an arc, the vertex index for a polyline. In the solver they become <code>&lt;entity id&gt;.a</code>, <code>&lt;entity id&gt;.center</code>, <code>&lt;entity id&gt;.3</code>...; constraints keep their MechPilot ids, so a conflict reported by planegcs reads back directly as the constraint the user made.</p>
+<h2 id="constraints">Constraints</h2>
+<div class="table-wrap"><table><thead><tr><th>Constraint</th><th>planegcs</th><th>Notes</th></tr></thead><tbody><tr><td>coincident</td><td><code>p2p_coincident</code></td><td>two points in the same place</td></tr><tr><td>pointOnLine</td><td><code>point_on_line_pl</code></td><td>the point lies on the line's infinite extension</td></tr><tr><td>horizontal, vertical</td><td><code>horizontal_l</code>, <code>vertical_l</code></td><td>lines only</td></tr><tr><td>parallel, perpendicular</td><td><code>parallel</code>, <code>perpendicular_ll</code></td><td>two lines</td></tr><tr><td>tangent</td><td><code>tangent_lc</code>, <code>tangent_la</code>, <code>tangent_cc</code>, <code>tangent_ca</code>, <code>tangent_aa</code>; <code>angle_via_point</code> at a shared end point</td><td>chosen by the two entity types (line–line is not a tangency); see below for fillet corners</td></tr><tr><td>equal</td><td><code>equal_length</code> (two lines), <code>equal_radius_cc</code> / <code>_ca</code> / <code>_aa</code></td><td></td></tr><tr><td>symmetric</td><td><code>p2p_symmetric_ppl</code></td><td>two points mirrored about a line</td></tr><tr><td>fixed</td><td><code>coordinate_x</code>/<code>coordinate_y</code> on every point, plus the radius (and for an arc both angles)</td><td>see below</td></tr><tr><td>distance</td><td><code>p2p_distance</code></td><td>mm</td></tr><tr><td>pointLineDistance</td><td><code>p2l_distance</code></td><td>mm, unsigned</td></tr><tr><td>angle</td><td><code>l2l_angle_ll</code></td><td>radians, counter-clockwise from line a to line b, measured between the line directions (point a → point b)</td></tr><tr><td>radius</td><td><code>circle_radius</code>, <code>arc_radius</code></td><td>mm</td></tr></tbody></table></div>
+<p><strong>Fixed</strong> is written as one equation per degree of freedom (4 for a line, 3 for a circle, 5 for an arc), not as planegcs &quot;fixed points&quot;: planegcs silently ignores a constraint whose unknowns are all fixed, so a horizontal constraint on a fixed sloping line would &quot;solve&quot; with no error. With equations, such a contradiction is reported like any other. A fixed entity is never moved by a solve, even when the sketch is over-constrained.</p>
+<p><strong>Tangent at a shared end point</strong> (a fillet corner: a line or arc ending where an arc starts) is written the way FreeCAD's Sketcher does it: <code>angle_via_point</code> through the shared point, with the angle between the two curves' normals there set to 0 or π (whichever the current shape is closer to). The distance-based <code>tangent_la</code> / <code>tangent_aa</code> is degenerate when the tangency point is also the joined end point: planegcs reports it as redundant and it holds nothing. The end points count as shared when a coincident constraint joins an end of one to an end of the other, or when they lie within 1e-9 mm of each other; in the second case a coincident is added with the tangent.</p>
+<p>Two pairs are checked before solving, because planegcs accepts them by shrinking a line to a point: horizontal and vertical on the same line, and parallel and perpendicular on the same two lines. They are reported as a conflict; the later constraint of the pair is left out of the solve so the drawing stays as it was.</p>
+<p>Constraints that refer to geometry the solver does not handle (an ellipse, a polyline vertex that does not exist) are left out and listed in the message.</p>
+<h2 id="driving-dimensions">Driving dimensions</h2>
+<p>A dimension with a <code>driving</code> value adds a constraint on the geometry it measures. A dimension stores positions, not references, so its points are matched to entity points by coordinates: the first entity point (in drawing order) within 1e-9 mm of the dimension's point. When a point matches nothing, the dimension is not applied and the message says so.</p>
+<div class="table-wrap"><table><thead><tr><th>Dimension</th><th>Constraint</th></tr></thead><tbody><tr><td>linear, horizontal or vertical</td><td><code>difference</code> of the two points' x (or y), keeping the current sign</td></tr><tr><td>linear at another angle</td><td>not applied yet (planegcs has no projected distance)</td></tr><tr><td>aligned</td><td><code>p2p_distance</code></td></tr><tr><td>angular</td><td><code>l2l_angle_ll</code> between the lines through the vertex and each leg point; the value is in degrees, counter-clockwise from leg a to leg b, with π added when exactly one leg runs against its line's direction</td></tr><tr><td>radius / diameter</td><td><code>circle_radius</code> or <code>arc_radius</code> on the circle or arc with that centre and radius (value, or value / 2)</td></tr><tr><td>ordinate</td><td><code>difference</code> of x (or y) from the origin point to the measured point, signed as the ordinate is</td></tr></tbody></table></div>
+<p>Measure-only (non-driving) dimensions do not go to the solver at all: planegcs' non-driving constraints add an unknown of their own, which spoils the degree-of-freedom count, and its own documentation lists several that do not work.</p>
+<h2 id="groups-and-size">Groups and size</h2>
+<p>The solver works on one <strong>group of connected geometry</strong> at a time: entities linked by constraints or driving dimensions. Entities with no constraint are not sent at all (they are free, with the degrees of freedom in the table above). This keeps each solve small: planegcs analyses a system with a dense matrix in a fixed memory of about 21 MB, so one system with thousands of unrelated entities would be slow and soon run out of memory, while many small ones are fast (a chain of 100 joined lines solves in well under 100 ms on a laptop).</p>
+<p>One group may not exceed about 200,000 (unknowns × constraints): roughly a chain of 150 joined lines with a horizontal or vertical constraint each. A larger group is not solved; the message says so and suggests splitting it. Should planegcs still run out of memory, the worker starts a new copy of the engine for the next request.</p>
+<h2 id="what-the-message-says">What the message says</h2>
+<p>Every solve returns a diagnosis: <code>solved</code>, <code>conflicting</code>, <code>redundant</code>, <code>failed</code> or <code>empty</code>, the degrees of freedom left, the constraint ids involved, and a sentence for the command line, in English or Italian, for example:</p>
+<ul><li>&quot;Solved; fully constrained.&quot;</li><li>&quot;Solved. The sketch has 3 degrees of freedom left (for example line e7 can still move).&quot;</li><li>&quot;Over-constrained: the horizontal constraint on line l12 conflicts with the angle 30° between line l12 and line l7. Remove one of them.&quot;</li><li>&quot;Solved, but the horizontal constraint on line a is redundant: the other constraints already fix the same thing. You can delete it.&quot;</li></ul>
+<p>Entities are named by type and a short id (sequential ids as they are, random ids by their first four characters); the UI uses the ids in the diagnosis to highlight them on the drawing.</p>
+<p><code>failed</code> means planegcs found no solution without being able to point at the constraints: typically constraints that contradict each other only for the actual shape (an angle of 30° between two lines that are both horizontal), or geometry too far from the intended shape. On <code>failed</code> the group's entities are left unchanged. On <code>conflicting</code> the solver's best attempt is returned with the diagnosis.</p>
+<h2 id="dragging">Dragging</h2>
+<p>While the user drags a point, the solver adds a <strong>temporary</strong> constraint pulling that point towards the cursor. Temporary constraints give way to the real ones (planegcs switches to its SQP method), so the point follows the cursor as far as the sketch allows: dragging a corner of a 100 × 60 rectangle moves the whole rectangle, still 100 × 60.</p>
+<h2 id="degree-of-freedom-colouring">Degree-of-freedom colouring</h2>
+<p><code>freedom</code> tells, per entity, whether the solver can still move it (<code>free</code>), cannot (<code>constrained</code>), or does not know (<code>unknown</code>). Method:</p>
+<ol><li>Entities with no constraint are free; polylines with arcs are fixed.</li><li>Each group is solved. If it is over-constrained or the solve fails, its entities are <code>unknown</code>.</li><li>Every point of the group is pulled 1 mm in a different direction (golden-angle steps, so no two pulls line up) and every radius 1 mm larger, all with temporary constraints, and the group is solved again. The real constraints keep what they determine exactly in place; whatever can still move does. An entity is <code>free</code> when any of its points (or its radius) moved more than 1e-7 mm.</li></ol>
+<p>That is two solves per group instead of one per entity.</p>
+<p>Limits:</p>
+<ul><li>Above <code>maxEntities</code> solver entities (300 by default) everything is <code>unknown</code>, to keep the colouring cheap while editing.</li><li>The test looks at small movements: freedom that only exists far from the current shape (a mechanism that jams) is not seen.</li><li>In theory the pulls could cancel out for a particular degree of freedom; with irrational pull directions this does not happen in practice.</li></ul>
+        <p class="edit"><a href="https://github.com/mojeee/mechpilot/blob/main/docs/sketches.md">Source of this page on GitHub</a></p>
+      </article>
+      </div>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

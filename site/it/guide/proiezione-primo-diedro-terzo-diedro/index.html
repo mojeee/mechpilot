@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proiezione nel primo e nel terzo diedro · MechPilot</title>
+    <meta name="description" content="Metodo del primo diedro e del terzo diedro a confronto: dove va ogni vista rispetto alla vista frontale, il simbolo del metodo di proiezione, dove si usa l'uno o l'altro e come lo gestisce MechPilot." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/it/guide/proiezione-primo-diedro-terzo-diedro/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/guide/proiezione-primo-diedro-terzo-diedro/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/guides/first-angle-vs-third-angle-projection/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/guides/first-angle-vs-third-angle-projection/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content="Proiezione nel primo e nel terzo diedro · MechPilot" />
+    <meta property="og:description" content="Metodo del primo diedro e del terzo diedro a confronto: dove va ogni vista rispetto alla vista frontale, il simbolo del metodo di proiezione, dove si usa l'uno o l'altro e come lo gestisce MechPilot." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/it/guide/proiezione-primo-diedro-terzo-diedro/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="La finestra di MechPilot con l’esempio della staffa di fissaggio: una piastra quotata con fori, tolleranze e riquadri di tolleranza geometrica." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Vai al contenuto</a>
+    <header class="top">
+      <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Principale">
+        <a href="/it/documentazione/">Documentazione</a>
+        <a href="/it/norme/">Norme</a>
+        <a href="/it/guide/" aria-current="page">Guide</a>
+        <a href="/it/aziende/">Per le aziende</a>
+        <a href="/it/novita/">Novità</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/guides/first-angle-vs-third-angle-projection/" hreflang="en" lang="en">English</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Percorso"><ol><li><a href="/it/">Home</a></li><li><a href="/it/guide/">Guide</a></li><li aria-current="page">Proiezione nel primo e nel terzo diedro</li></ol></nav>
+      <article class="prose narrow">
+        <h1 id="proiezione-nel-primo-e-nel-terzo-diedro">Proiezione nel primo e nel terzo diedro</h1>
+<p>Un disegno di produzione mostra un pezzo in più viste ortogonali. Ogni vista guarda il pezzo lungo una direzione, perpendicolare a un piano di proiezione. I due metodi descritti qui producono esattamente le stesse viste; cambia solo <strong>dove ogni vista viene collocata sul foglio</strong>. Chi legge con il metodo sbagliato vede il pezzo specchiato, perciò ogni disegno dichiara il metodo che usa.</p>
+<p>I metodi sono definiti dalla <strong>ISO 5456-2</strong> (metodi di proiezione, rappresentazioni ortogonali). Le convenzioni di base per le viste, come la scelta della vista principale, sono nella <strong>ISO 128-30</strong>.</p>
+<h2 id="prima-di-tutto-la-vista-frontale">Prima di tutto la vista frontale</h2>
+<p>La vista più significativa del pezzo si disegna come vista frontale, detta anche vista principale. Le altre viste si dispongono intorno, e solo quante ne servono per definire il pezzo in modo completo e senza ambiguità.</p>
+<h2 id="metodo-del-primo-diedro">Metodo del primo diedro</h2>
+<p>Immagina il pezzo tra te e il piano di proiezione: ogni vista viene proiettata <em>attraverso</em> il pezzo sul piano che sta dietro. Rispetto alla vista frontale:</p>
+<ul><li>la vista dall'alto va <strong>sotto</strong>;</li><li>la vista dal basso va <strong>sopra</strong>;</li><li>la vista da sinistra va <strong>a destra</strong>;</li><li>la vista da destra va <strong>a sinistra</strong>.</li></ul>
+<p>In Italia è detto anche metodo europeo.</p>
+<h2 id="metodo-del-terzo-diedro">Metodo del terzo diedro</h2>
+<p>Immagina il piano di proiezione tra te e il pezzo, come se guardassi attraverso una finestra: ogni vista si disegna sulla finestra, dalla tua parte. Rispetto alla vista frontale:</p>
+<ul><li>la vista dall'alto va <strong>sopra</strong>;</li><li>la vista dal basso va <strong>sotto</strong>;</li><li>la vista da sinistra va <strong>a sinistra</strong>;</li><li>la vista da destra va <strong>a destra</strong>.</li></ul>
+<p>In Italia è detto anche metodo americano.</p>
+<figure class="figs">
+        <svg viewBox="0 0 420 240" role="img" aria-label="Primo diedro" class="fig">
+          <text x="210" y="24" class="fig-title">Primo diedro</text>
+          <rect x="150" y="50" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="90" class="fig-text">Frontale</text>
+          <rect x="150" y="150" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="190" class="fig-text">Dall’alto</text>
+          <rect x="285" y="50" width="120" height="70" rx="4" class="fig-box"/><text x="345" y="90" class="fig-text">Da sinistra</text>
+        </svg>
+        <svg viewBox="0 0 420 240" role="img" aria-label="Terzo diedro" class="fig">
+          <text x="210" y="24" class="fig-title">Terzo diedro</text>
+          <rect x="150" y="140" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="180" class="fig-text">Frontale</text>
+          <rect x="150" y="40" width="120" height="70" rx="4" class="fig-box"/><text x="210" y="80" class="fig-text">Dall’alto</text>
+          <rect x="15" y="140" width="120" height="70" rx="4" class="fig-box"/><text x="75" y="180" class="fig-text">Da sinistra</text>
+        </svg>
+        <figcaption>Dove vanno la vista dall’alto e la vista da sinistra rispetto alla vista frontale. Disegno semplificato.</figcaption>
+      </figure>
+<h2 id="il-simbolo-del-metodo-di-proiezione">Il simbolo del metodo di proiezione</h2>
+<p>Poiché le viste da sole non mostrano il metodo, il disegno riporta un simbolo grafico definito dalla ISO 5456-2: un tronco di cono rappresentato in due viste. Nel simbolo del primo diedro la vista di testa (due cerchi) sta a destra della vista laterale; nel simbolo del terzo diedro sta a sinistra. Il simbolo va vicino al cartiglio; la ISO 7200 non lo elenca tra i campi del cartiglio, si riporta fuori dal riquadro quando serve (<a href="/it/norme/iso-7200-cartiglio/">cartiglio ISO 7200</a>).</p>
+<figure class="figs">
+        <svg viewBox="0 0 230 160" role="img" aria-label="Simbolo del primo diedro" class="fig">
+          <text x="115" y="24" class="fig-title">Simbolo del primo diedro</text>
+          <path d="M30 75 L100 55 L100 125 L30 105 Z" class="fig-line"/><path d="M22 90 H108" class="fig-centre"/><circle cx="170" cy="90" r="35" class="fig-line"/><circle cx="170" cy="90" r="15" class="fig-line"/><path d="M127 90 H213 M170 47 V133" class="fig-centre"/>
+        </svg>
+        <svg viewBox="0 0 230 160" role="img" aria-label="Simbolo del terzo diedro" class="fig">
+          <text x="115" y="24" class="fig-title">Simbolo del terzo diedro</text>
+          <circle cx="60" cy="90" r="35" class="fig-line"/><circle cx="60" cy="90" r="15" class="fig-line"/><path d="M17 90 H103 M60 47 V133" class="fig-centre"/><path d="M130 75 L200 55 L200 125 L130 105 Z" class="fig-line"/><path d="M122 90 H208" class="fig-centre"/>
+        </svg>
+        <figcaption>I simboli del metodo di proiezione: lo stesso tronco di cono, con la vista di testa a destra (primo diedro) o a sinistra (terzo diedro). Disegno semplificato, non nelle proporzioni della ISO 5456-2.</figcaption>
+      </figure>
+<h2 id="quale-usare">Quale usare</h2>
+<p>Entrambi i metodi sono normati. Il primo diedro è la scelta abituale in gran parte d'Europa e in molti altri paesi; il terzo diedro è la scelta abituale in Nord America, dove la ASME Y14.3 lo usa come predefinito. Usa il metodo che si aspettano il tuo cliente o la tua azienda, riporta il suo simbolo e non mescolare mai i due metodi nello stesso disegno.</p>
+<p>Quando le posizioni abituali non vanno bene per un disegno, la ISO 5456-2 ammette anche il metodo delle frecce di riferimento: ogni vista è identificata da una lettera e una freccia su un'altra vista indica la direzione di osservazione, così le viste possono stare ovunque sul foglio.</p>
+<h2 id="in-mechpilot">In MechPilot</h2>
+<p>Ogni disegno ha un'impostazione del metodo di proiezione: primo diedro di default, terzo diedro come opzione (nel pannello Proprietà senza nulla selezionato; nel file è salvata come <code>&quot;projection&quot;: &quot;first&quot;</code> o <code>&quot;third&quot;</code>). Le viste frontale, dall'alto, laterale e isometrica generate dalle parti 3D, disposte secondo quell'impostazione, fanno parte del traguardo M5.</p>
+<p>Vedi anche: <a href="/it/guide/accoppiamenti-iso-spiegati/">gli accoppiamenti ISO spiegati</a>.</p>
+      </article>
+    </main>
+    <footer>
+      <nav aria-label="Piè di pagina">
+        <a href="/it/documentazione/">Documentazione</a> · <a href="/it/norme/">Norme</a> · <a href="/it/guide/">Guide</a> · <a href="/it/aziende/">Per le aziende</a> · <a href="/it/novita/">Novità</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussioni</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Versione 0.5.0.</p>
+      <p class="small">Questo sito non imposta cookie, non esegue script e non carica nulla da terze parti.</p>
+    </footer>
+  </body>
+</html>

@@ -3,62 +3,90 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MechPilot: open-source 2D/3D mechanical design</title>
-    <meta name="description" data-i18n-content="meta.description" content="Production drawings to ISO standards, with 3D parts built in. Free and open source, runs on your computer, your files stay yours. DXF, STEP and PDF." />
+    <title>MechPilot: open-source 2D/3D mechanical CAD for production drawings</title>
+    <meta name="description" content="Free, open-source desktop CAD for production drawings to ISO standards, with 3D parts built in. Runs on your computer, your files stay yours. DXF, STEP and PDF." />
     <link rel="canonical" href="https://mechpilot.agentflowbind.com/" />
     <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/" />
     <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/" />
     <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="MechPilot" />
-    <meta property="og:title" content="MechPilot: open-source 2D/3D mechanical design" />
-    <meta property="og:description" data-i18n-content="meta.description" content="Production drawings to ISO standards, with 3D parts built in. Free and open source, runs on your computer, your files stay yours. DXF, STEP and PDF." />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="MechPilot: open-source 2D/3D mechanical CAD for production drawings" />
+    <meta property="og:description" content="Free, open-source desktop CAD for production drawings to ISO standards, with 3D parts built in. Runs on your computer, your files stay yours. DXF, STEP and PDF." />
     <meta property="og:url" content="https://mechpilot.agentflowbind.com/" />
-    <meta property="og:image" content="https://mechpilot.agentflowbind.com/logo.svg" />
-    <link rel="stylesheet" href="/style.css?v=7c64697f23" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
     <header class="top">
       <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
-      <nav>
-        <a href="/companies/" data-i18n="nav.companies">For companies</a>
-        <a href="https://github.com/mojeee/mechpilot/blob/main/docs/getting-started.md" data-i18n="nav.docs">Docs</a>
-        <a href="https://github.com/mojeee/mechpilot/blob/main/CHANGELOG.md" data-i18n="nav.changelog">Changelog</a>
+      <nav aria-label="Main">
+        <a href="/docs/">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
         <a href="https://github.com/mojeee/mechpilot">GitHub</a>
-        <a href="https://mechpilot.agentflowbind.com/it/" hreflang="it">Italiano</a>
+        <a class="lang" href="/it/" hreflang="it" lang="it">Italiano</a>
       </nav>
     </header>
-
-    <main>
+    <main id="main">
       <section class="hero">
-        <h1 data-i18n="hero.title">Production drawings to ISO standards, with 3D parts built in.</h1>
-        <p class="lead" data-i18n="hero.lead">MechPilot is a desktop CAD app for mechanical design companies: draw, dimension and annotate to ISO 128, 129-1 and 7200, turn a sketch into a part, and keep the drawing linked to the model. Free and open source. Runs on your computer. Your files stay yours.</p>
-        <div class="cta">
-          <a class="btn primary" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes" data-i18n="hero.build">Build from source</a>
-          <a class="btn" href="https://github.com/mojeee/mechpilot/releases" data-i18n="hero.downloads">Downloads (coming with the first release)</a>
+        <div class="hero-text">
+          <p class="eyebrow" data-i18n="hero.eyebrow">Open-source mechanical CAD for macOS, Windows and Linux</p>
+          <h1 data-i18n="hero.title">Production drawings to ISO standards, with 3D parts built in.</h1>
+          <p class="lead" data-i18n="hero.lead">MechPilot is a desktop CAD app for mechanical design companies: draw, dimension and annotate to ISO 128, 129-1 and 7200, constrain your sketches, and export DXF and vector PDF. 3D parts with drawings linked to the model are being built next.</p>
+          <p class="promise" data-i18n="hero.promise">Free and open source. Runs on your computer. Your files stay yours.</p>
+          <div class="cta">
+            <a class="btn primary" href="#download" data-i18n="hero.download">Download</a>
+            <a class="btn" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes" data-i18n="hero.build">Build from source</a>
+          </div>
+          <p class="note">Version 0.5.0, in development: milestones M0–M4 of M0–M8 are done. The first release is not out yet.</p>
         </div>
-        <p class="note" data-i18n="hero.status">In development, milestone by milestone, in the open. Version 0.4.0.</p>
+        <figure class="hero-shot"><img src="/img/hero-dark.png?v=f2ee734f3b" width="1440" height="900" alt="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." /></figure>
       </section>
 
       <section class="pillars">
         <div>
-          <h2 data-i18n="p1.title">2D first</h2>
+          <h2><span data-i18n="p1.title">2D first</span> <span class="tag ok">Available</span></h2>
           <p data-i18n="p1.text">Lines, arcs, dimensions, tolerances and ISO 286 fits, surface texture, GD&amp;T frames, sheets A4 to A0 with frame and title block. Vector PDF and DXF out.</p>
         </div>
         <div>
-          <h2 data-i18n="p2.title">3D where it helps</h2>
+          <h2><span data-i18n="p2.title">3D where it helps</span> <span class="tag planned">In development (M5)</span></h2>
           <p data-i18n="p2.text">Extrude, revolve, holes, fillets, patterns on a parametric feature tree. Change a value and the part rebuilds; the drawing views follow. STEP in and out.</p>
         </div>
         <div>
-          <h2 data-i18n="p3.title">Checks on every change</h2>
-          <p data-i18n="p3.text">Under-constrained sketches, missing dimensions, fits that do not exist, empty title-block fields: each finding on the drawing, with a one-click fix.</p>
+          <h2><span data-i18n="p3.title">Checks on every change</span> <span class="tag planned">In development (M7)</span></h2>
+          <p data-i18n="p3.text">Under- and over-constrained sketches explained in plain words today; missing dimensions, fits that do not exist and empty title-block fields next, each on the drawing with a one-click fix.</p>
         </div>
       </section>
 
-      <section class="facts">
-        <h2 data-i18n="facts.title">What you can count on</h2>
-        <ul>
-          <li data-i18n="facts.local">Local-first: no account, no cloud, no telemetry. The optional AI assistant uses your own API key.</li>
+      <section class="gallery" id="screenshots">
+        <h2 data-i18n="shots.title">The real app</h2>
+        <p class="sub" data-i18n="shots.text">Screenshots of MechPilot with the sample drawing that ships with it, taken from the current build.</p>
+        <input type="radio" name="shot-theme" id="shot-dark" class="vh" checked />
+        <input type="radio" name="shot-theme" id="shot-light" class="vh" />
+        <p class="switch"><span>Theme:</span> <label for="shot-dark">Dark</label><label for="shot-light">Light</label></p>
+        <div class="shots">
+          <figure><img class="t-dark" src="/img/hero-dark.png?v=f2ee734f3b" width="1440" height="900" alt="The mounting bracket sample in model space: a 120 × 80 mm plate with holes, dimensions with tolerances, an H7 fit, a surface texture symbol, geometrical tolerance frames and datums." loading="lazy" decoding="async" /><img class="t-light" src="/img/hero-light.png?v=ea7643d568" width="1440" height="900" alt="The mounting bracket sample in model space: a 120 × 80 mm plate with holes, dimensions with tolerances, an H7 fit, a surface texture symbol, geometrical tolerance frames and datums. (Light theme.)" loading="lazy" decoding="async" /><figcaption>The drawing</figcaption></figure>
+          <figure><img class="t-dark" src="/img/sheet-dark.png?v=8b45b18b30" width="1440" height="900" alt="The same drawing on an A3 sheet to ISO 5457, with frame, grid zones and an ISO 7200 title block, ready for vector PDF export." loading="lazy" decoding="async" /><img class="t-light" src="/img/sheet-light.png?v=cd07085a55" width="1440" height="900" alt="The same drawing on an A3 sheet to ISO 5457, with frame, grid zones and an ISO 7200 title block, ready for vector PDF export. (Light theme.)" loading="lazy" decoding="async" /><figcaption>The sheet</figcaption></figure>
+          <figure><img class="t-dark" src="/img/sketch-dark.png?v=bd3ecd4306" width="1440" height="900" alt="The sketch solved by its constraints: fully constrained entities in green, the constraint list in the Checks tab, the degrees of freedom left in the status bar." loading="lazy" decoding="async" /><img class="t-light" src="/img/sketch-light.png?v=53ef36ff25" width="1440" height="900" alt="The sketch solved by its constraints: fully constrained entities in green, the constraint list in the Checks tab, the degrees of freedom left in the status bar. (Light theme.)" loading="lazy" decoding="async" /><figcaption>The constrained sketch</figcaption></figure>
+          <figure><img class="t-dark" src="/img/part-dark.png?v=b119fd26a8" width="1440" height="900" alt="The stepped shaft sample in the 3D tab: its half profile revolved and chamfered by the feature tree in the Features tab, with volume, size and centre of mass measured on the body." loading="lazy" decoding="async" /><img class="t-light" src="/img/part-light.png?v=2124612869" width="1440" height="900" alt="The stepped shaft sample in the 3D tab: its half profile revolved and chamfered by the feature tree in the Features tab, with volume, size and centre of mass measured on the body. (Light theme.)" loading="lazy" decoding="async" /><figcaption>The 3D part</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="band">
+        <h2 data-i18n="promise.title">Free and open source. Runs on your computer. Your files stay yours.</h2>
+        <ul class="facts">
+          <li data-i18n="facts.local">Local-first: no account, no cloud, no telemetry. The optional AI assistant will use your own API key.</li>
           <li data-i18n="facts.files">An open, documented, versioned file format (plain JSON) that diffs well in Git. Autosave and crash recovery.</li>
           <li data-i18n="facts.precision">Millimetres in double precision; nothing is rounded on save, load or export.</li>
           <li data-i18n="facts.standards">Every drawing rule and table value cites its standard and clause. ISO by default, ASME as an option.</li>
@@ -66,15 +94,70 @@
         </ul>
       </section>
 
-      <section class="compat">
+      <section id="formats">
         <h2 data-i18n="compat.title">Files that open everywhere</h2>
-        <p data-i18n="compat.text">DXF (R12 and 2000+ subset) for drawings, STEP for parts, vector PDF at true scale for the shop floor. DWG is not written (the only free library is GPL); DXF covers the exchange.</p>
+        <p class="sub" data-i18n="compat.text">DXF for drawings, STEP for parts, vector PDF at true scale for the shop floor, and a native format anyone can read.</p>
+        <div class="table-wrap"><table class="matrix">
+          <thead><tr><th scope="col">Format</th><th scope="col">Open</th><th scope="col">Save or export</th><th scope="col">Notes</th></tr></thead>
+          <tbody><tr><th scope="row">MechPilot drawing (.mechpilot.json)</th><td class="yes">Yes</td><td class="yes">Yes</td><td><a href="/docs/file-format/" hreflang="en">Open, documented JSON</a></td></tr>
+          <tr><th scope="row">DXF (R12 and 2000)</th><td class="yes">Yes</td><td class="yes">Yes</td><td><a href="/docs/dxf/" hreflang="en">For drawings; round-trip tested</a></td></tr>
+          <tr><th scope="row">PDF (vector, true scale)</th><td class="no">No</td><td class="yes">Yes</td><td><a href="/docs/pdf/" hreflang="en">For the shop floor; one page per sheet</a></td></tr>
+          <tr><th scope="row">STEP</th><td class="yes">Yes</td><td class="yes">Yes</td><td>For 3D parts</td></tr>
+          <tr><th scope="row">STL and 3MF</th><td class="no">No</td><td class="yes">Yes</td><td>For 3D printing</td></tr>
+          <tr><th scope="row">DWG</th><td class="no">No</td><td class="no">No</td><td>The only free DWG library is GPL; DXF covers the exchange.</td></tr></tbody>
+        </table></div>
+      </section>
+
+      <section id="download">
+        <h2 data-i18n="download.title">Download</h2>
+        <p class="notice"><strong>The first release is not out yet.</strong> Installers for macOS, Windows and Linux come with milestone M8; until then these buttons open an empty releases page. You can build MechPilot from source today: <a href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes">how to build it</a>.</p>
+        <div class="downloads">
+          <a class="btn dl" href="https://github.com/mojeee/mechpilot/releases/latest"><strong>macOS</strong><span>Apple silicon (arm64)</span></a>
+          <a class="btn dl" href="https://github.com/mojeee/mechpilot/releases/latest"><strong>macOS</strong><span>Intel (x64)</span></a>
+          <a class="btn dl" href="https://github.com/mojeee/mechpilot/releases/latest"><strong>Windows</strong><span>x64 installer</span></a>
+          <a class="btn dl" href="https://github.com/mojeee/mechpilot/releases/latest"><strong>Linux</strong><span>x64 AppImage</span></a>
+        </div>
+        <p class="small">Builds are unsigned for now: macOS and Windows will ask you to confirm the first start.</p>
+      </section>
+
+      <section id="compare">
+        <h2 data-i18n="compare.title">How it compares</h2>
+        <p class="sub" data-i18n="compare.text">An honest comparison with the tools engineers know. MechPilot is young: where a feature is not built yet, the table says so.</p>
+        <div class="table-wrap"><table class="matrix compare">
+          <thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col" class="us">MechPilot</th><th scope="col">AutoCAD LT</th><th scope="col">DraftSight</th><th scope="col">FreeCAD</th><th scope="col">LibreCAD</th><th scope="col">SolidWorks</th></tr></thead>
+          <tbody><tr><th scope="row">Licence and price</th><td class="yes">Apache-2.0, free</td><td class="plain">Proprietary, subscription</td><td class="plain">Proprietary, paid</td><td class="yes">LGPL-2.0-or-later, free</td><td class="yes">GPL-2.0, free</td><td class="plain">Proprietary, paid</td></tr>
+          <tr><th scope="row">Platforms</th><td class="plain">macOS, Windows, Linux</td><td class="plain">Windows, macOS</td><td class="plain">Windows</td><td class="plain">Windows, macOS, Linux</td><td class="plain">Windows, macOS, Linux</td><td class="plain">Windows</td></tr>
+          <tr><th scope="row">Open, documented native file format</th><td class="yes">Yes (JSON)</td><td class="no">No (DWG)</td><td class="no">No (DWG)</td><td class="yes">Yes (FCStd)</td><td class="yes">Yes (DXF)</td><td class="no">No</td></tr>
+          <tr><th scope="row">DXF in and out</th><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><th scope="row">Parametric sketches (constraints)</th><td class="yes">Yes</td><td class="unknown">—</td><td class="unknown">—</td><td class="yes">Yes</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><th scope="row">3D solid parts</th><td class="yes">Yes</td><td class="no">No</td><td class="unknown">—</td><td class="yes">Yes</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><th scope="row">STEP in and out</th><td class="yes">Yes</td><td class="unknown">—</td><td class="unknown">—</td><td class="yes">Yes</td><td class="no">No</td><td class="yes">Yes</td></tr>
+          <tr><th scope="row">ISO dimensioning</th><td class="yes">Yes (ISO 129-1)</td><td class="yes">Yes (ISO-25 style)</td><td class="unknown">—</td><td class="yes">Yes (TechDraw)</td><td class="unknown">—</td><td class="yes">Yes</td></tr>
+          <tr><th scope="row">Runs offline, no account</th><td class="yes">Yes</td><td class="no">No (Autodesk account)</td><td class="unknown">—</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="unknown">—</td></tr></tbody>
+        </table></div>
+        <p class="small">Other tools as described by their makers in October 2026; check their sites before you decide. “—” means we have not verified it, so we make no claim. “Planned” means not built yet: the milestone is in the roadmap. Corrections are welcome on GitHub.</p>
+      </section>
+
+      <section class="split">
+        <div>
+          <h2 data-i18n="learn.title">Standards, with their sources</h2>
+          <p data-i18n="learn.text">The tables MechPilot draws with, one page each, with the standard, the clause and how every value was checked: ISO 286 fits, sheet sizes, line types, lettering, GD&amp;T symbols, surface texture, scales and title blocks.</p>
+          <p class="cta"><a class="btn" href="/standards/" data-i18n="learn.tables">Standards tables</a> <a class="btn" href="/standards/iso-286-fits/" data-i18n="learn.fits">ISO 286 fits</a></p>
+          <p class="small"><span data-i18n="learn.guides">Guides:</span> <a href="/guides/iso-fits-explained/" data-i18n="learn.g1">ISO fits explained</a> · <a href="/guides/first-angle-vs-third-angle-projection/" data-i18n="learn.g2">First angle and third angle projection</a></p>
+        </div>
+        <div>
+          <h2 data-i18n="biz.title">For companies</h2>
+          <p data-i18n="biz.text">Support, training on your own parts, and custom features such as your title block, libraries and drawing rules, from the people who build MechPilot.</p>
+          <p class="cta"><a class="btn" href="/companies/" data-i18n="biz.btn">MechPilot for companies</a></p>
+        </div>
       </section>
     </main>
-
     <footer>
-      <p><span data-i18n="footer.copy">Copyright Mojtaba Amini. Apache-2.0.</span> <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions" data-i18n="footer.discuss">Discussions</a> · <a href="/companies/" data-i18n="nav.companies">For companies</a></p>
-      <p class="small" data-i18n="footer.privacy">This site sets no cookies and loads nothing from third parties.</p>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
     </footer>
   </body>
 </html>

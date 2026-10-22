@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ISO fits explained · MechPilot</title>
+    <meta name="description" content="What H7, g6 and H7/g6 mean: ISO 286 tolerance classes, standard tolerance grades, fundamental deviations, clearance, transition and interference fits, with a worked example." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/guides/iso-fits-explained/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/guides/iso-fits-explained/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/guide/accoppiamenti-iso-spiegati/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/guides/iso-fits-explained/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="ISO fits explained · MechPilot" />
+    <meta property="og:description" content="What H7, g6 and H7/g6 mean: ISO 286 tolerance classes, standard tolerance grades, fundamental deviations, clearance, transition and interference fits, with a worked example." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/guides/iso-fits-explained/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/" aria-current="page">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/guide/accoppiamenti-iso-spiegati/" hreflang="it" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/guides/">Guides</a></li><li aria-current="page">ISO fits explained</li></ol></nav>
+      <article class="prose narrow">
+        <h1 id="iso-fits-explained">ISO fits explained</h1>
+<p>A shaft that must turn freely in a bore, a pin that must stay put once pressed in, a bearing seat that must locate without play: each is a <em>fit</em> between a hole and a shaft. ISO 286 gives these a shared code, so that &quot;⌀25 H7/g6&quot; means the same thing in every drawing office and workshop.</p>
+<h2 id="the-two-parts-of-iso-286">The two parts of ISO 286</h2>
+<ul><li><strong>ISO 286-1</strong> sets out the system: standard tolerance grades, fundamental deviations, and how they combine into tolerance classes and fits.</li><li><strong>ISO 286-2</strong> tabulates the limit deviations of the tolerance classes for holes and shafts.</li></ul>
+<h2 id="a-tolerance-class-is-a-letter-and-a-number">A tolerance class is a letter and a number</h2>
+<p>A tolerance class such as <strong>H7</strong> or <strong>g6</strong> has two parts:</p>
+<ul><li>The <strong>letter</strong> is the <em>fundamental deviation</em>: where the tolerance zone sits relative to the nominal size. Capital letters are for holes (internal features), lower-case letters for shafts (external features).</li><li>The <strong>number</strong> is the <em>standard tolerance grade</em>: how wide the zone is. ISO 286 defines 20 grades, from IT01 and IT0 to IT18; a higher number means a wider zone.</li></ul>
+<p>The width also depends on the size: the same grade allows more on a larger part. IT7 is 21 µm for nominal sizes over 24 up to 30 mm, and 35 µm over 80 up to 100 mm. All the values: <a href="/standards/iso-286-tolerance-grades/">ISO 286 standard tolerance grades</a>.</p>
+<h2 id="where-the-zone-sits">Where the zone sits</h2>
+<ul><li>Hole <strong>H</strong>: the lower deviation EI is zero, so the zone starts at the nominal size and goes up.</li><li>Shaft <strong>h</strong>: the upper deviation es is zero, so the zone ends at the nominal size and goes down.</li><li>Shafts <strong>a to g</strong> lie below the nominal size, shafts <strong>k to zc</strong> above it; holes <strong>A to G</strong> lie above it. The further the letter from h (or H), the further the zone from the nominal size.</li><li><strong>js</strong> and <strong>JS</strong> are symmetric about the nominal size: plus and minus half the tolerance.</li></ul>
+<p>Capital ES and EI are the upper and lower deviations of a hole; lower-case es and ei those of a shaft.</p>
+<h2 id="hole-and-shaft-together-the-fit">Hole and shaft together: the fit</h2>
+<p>Put a hole class and a shaft class of the same nominal size together and you have a fit, written hole first: <strong>H7/g6</strong>. Depending on where the two zones lie, the fit is:</p>
+<ul><li>a <strong>clearance fit</strong>: there is always clearance; the smallest hole is at least as large as the largest shaft;</li><li>an <strong>interference fit</strong>: there is always interference; the largest hole is at most as large as the smallest shaft;</li><li>a <strong>transition fit</strong>: clearance or interference, depending on the actual sizes of the parts.</li></ul>
+<p>Most fits are chosen in the <strong>hole-basis system</strong>: every hole is H and the shaft letter selects the fit. The <strong>shaft-basis system</strong> does the opposite, with every shaft h. Hole-basis is often preferred because a hole is harder to make to many different sizes than a shaft; keeping it at H keeps the number of reamers and plug gauges down.</p>
+<h2 id="worked-example-25-h7g6">Worked example: ⌀25 H7/g6</h2>
+<p>At 25 mm (the size step over 24 up to 30 mm):</p>
+<ul><li>Hole <strong>25 H7</strong>: EI = 0 µm, ES = +21 µm, so the hole is 25.000 to 25.021 mm.</li><li>Shaft <strong>25 g6</strong>: es = −7 µm, ei = −20 µm, so the shaft is 24.980 to 24.993 mm.</li><li>The clearance is between 7 µm (smallest hole, largest shaft) and 41 µm (largest hole, smallest shaft): a clearance fit.</li></ul>
+<p>The same table for every size step: <a href="/standards/iso-286-fits/h7-g6/">H7/g6</a>. Other common fits: <a href="/standards/iso-286-fits/">ISO 286 fits</a>.</p>
+<h2 id="on-the-drawing">On the drawing</h2>
+<ul><li>On a part drawing the class follows the size: <strong>25 H7</strong> on the hole, <strong>25 g6</strong> on the shaft. The deviations need not be written next to a class unless they are needed (see <a href="/standards/iso-129-1-dimensioning/">ISO 129-1 dimensioning</a>).</li><li>On an assembly drawing the fit is written with the hole class first: <strong>25 H7/g6</strong>.</li><li>Limits and fits refer to the standard reference temperature of 20 °C.</li></ul>
+<h2 id="in-mechpilot">In MechPilot</h2>
+<p>Give a dimension a tolerance class such as H7 in the Properties panel and MechPilot writes the class and takes its deviations from its ISO 286 data (<code>library/fits/iso-286.json</code>, which cites ISO 286-1 and ISO 286-2 and says how each value was checked). A class that is not in that data is reported as such; it is never guessed.</p>
+      </article>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

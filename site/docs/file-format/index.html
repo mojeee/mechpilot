@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The MechPilot file format · MechPilot docs</title>
+    <meta name="description" content="A drawing is one JSON text file, name.mechpilot.json. It is yours: open, documented, versioned, and written in a stable order so it diffs well in Git…" />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/docs/file-format/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="The MechPilot file format · MechPilot docs" />
+    <meta property="og:description" content="A drawing is one JSON text file, name.mechpilot.json. It is yours: open, documented, versioned, and written in a stable order so it diffs well in Git…" />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/docs/file-format/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav aria-label="Main">
+        <a href="/docs/" aria-current="page">Docs</a>
+        <a href="/standards/">Standards</a>
+        <a href="/guides/">Guides</a>
+        <a href="/companies/">For companies</a>
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a class="lang" href="/it/" lang="it">Italiano</a>
+      </nav>
+    </header>
+    <main id="main">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/docs/">Docs</a></li><li aria-current="page">The MechPilot file format</li></ol></nav>
+      <div class="doc-layout">
+      <nav class="doc-nav" aria-label="Docs"><ul><li><a href="/docs/getting-started/">Getting started</a></li><li><a href="/docs/file-format/" aria-current="page">The MechPilot file format</a></li><li><a href="/docs/dxf/">DXF import and export</a></li><li><a href="/docs/pdf/">PDF export</a></li><li><a href="/docs/sketches/">Sketch constraints</a></li><li><a href="/docs/standards/">Standards used by MechPilot</a></li></ul></nav>
+      <article class="prose">
+        <h1>The MechPilot file format</h1>
+        <p>A drawing is one JSON text file, <code>name.mechpilot.json</code>. It is yours: open, documented, versioned, and written in a stable order so it diffs well in Git (product rule 3). Nothing is rounded on save or load: numbers are IEEE doubles written by <code>JSON.stringify</code>, which round-trips every value exactly (product rule 1).</p>
+<p>Reference implementation: <code>shared/doc/types.ts</code> (shapes), <code>shared/doc/file.ts</code> (serialize, parse, validate, migrations). Tests: <code>tests/file-format.test.ts</code>.</p>
+<h2 id="top-level-format-1">Top level (format 1)</h2>
+<pre><code class="language-json">{
+  &quot;format&quot;: &quot;mechpilot&quot;,
+  &quot;version&quot;: 1,
+  &quot;unit&quot;: &quot;mm&quot;,
+  &quot;name&quot;: &quot;Mounting bracket&quot;,
+  &quot;description&quot;: &quot;optional&quot;,
+  &quot;standard&quot;: &quot;iso&quot;,
+  &quot;projection&quot;: &quot;first&quot;,
+  &quot;layerOrder&quot;: [&quot;0&quot;, &quot;hidden&quot;, &quot;centre&quot;],
+  &quot;activeLayer&quot;: &quot;0&quot;,
+  &quot;layers&quot;: { &quot;0&quot;: { &quot;id&quot;: &quot;0&quot;, &quot;name&quot;: &quot;0&quot;, &quot;color&quot;: &quot;auto&quot;, &quot;lineType&quot;: &quot;01.2&quot;, &quot;lineWidth&quot;: 0.5, &quot;visible&quot;: true, &quot;locked&quot;: false } },
+  &quot;entityOrder&quot;: [&quot;e1&quot;, &quot;e2&quot;],
+  &quot;entities&quot;: { &quot;e1&quot;: { &quot;id&quot;: &quot;e1&quot;, &quot;type&quot;: &quot;line&quot;, &quot;layer&quot;: &quot;0&quot;, &quot;a&quot;: { &quot;x&quot;: 0, &quot;y&quot;: 0 }, &quot;b&quot;: { &quot;x&quot;: 120, &quot;y&quot;: 0 } } }
+}</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody><tr><td><code>format</code></td><td>always <code>&quot;mechpilot&quot;</code></td></tr><tr><td><code>version</code></td><td>the format version; older files are migrated on open, newer ones are refused with a plain message</td></tr><tr><td><code>unit</code></td><td>always <code>&quot;mm&quot;</code>: every length in the file is millimetres</td></tr><tr><td><code>standard</code></td><td><code>&quot;iso&quot;</code> (default) or <code>&quot;asme&quot;</code>: which drawing conventions the checker and the dimension styles follow</td></tr><tr><td><code>projection</code></td><td><code>&quot;first&quot;</code> (ISO 5456-2 default) or <code>&quot;third&quot;</code></td></tr><tr><td><code>layerOrder</code> / <code>layers</code></td><td>layers bottom to top; the map is keyed by id and written in that order</td></tr><tr><td><code>activeLayer</code></td><td>where new entities go</td></tr><tr><td><code>entityOrder</code> / <code>entities</code></td><td>drawing order; the map is keyed by id and written in that order</td></tr></tbody></table></div>
+<p>Ids are short strings, unique within the file. Keys inside a layer or an entity are written with <code>id</code>, <code>type</code> and <code>layer</code> first and the rest alphabetically.</p>
+<h2 id="layers">Layers</h2>
+<div class="table-wrap"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody><tr><td><code>color</code></td><td>a hex colour, or <code>&quot;auto&quot;</code>: the canvas foreground (white on a dark canvas, black on a white one)</td></tr><tr><td><code>lineType</code></td><td>a line type id from <code>library/line-types/iso-128-2.json</code>, e.g. <code>&quot;01.2&quot;</code> continuous wide</td></tr><tr><td><code>lineWidth</code></td><td>mm, from the ISO 128-2 series (0.13, 0.18, 0.25, 0.35, 0.5, 0.7, 1, 1.4, 2)</td></tr><tr><td><code>visible</code>, <code>locked</code></td><td>booleans; a locked layer cannot be edited</td></tr></tbody></table></div>
+<h2 id="entities-format-2">Entities (format 2)</h2>
+<p>Angles are radians, counter-clockwise, y up.</p>
+<div class="table-wrap"><table><thead><tr><th><code>type</code></th><th>Fields</th></tr></thead><tbody><tr><td><code>line</code></td><td><code>a</code>, <code>b</code>: points</td></tr><tr><td><code>circle</code></td><td><code>center</code>: point; <code>radius</code> &gt; 0</td></tr><tr><td><code>arc</code></td><td><code>center</code>, <code>radius</code>, <code>start</code>, <code>end</code>: from <code>start</code> to <code>end</code> counter-clockwise</td></tr><tr><td><code>polyline</code></td><td><code>points</code> (2 or more), <code>closed</code>; optional <code>bulges[i]</code> for segment i as in DXF: tan(θ/4), positive counter-clockwise, 0 straight. A rectangle is a closed polyline of four points.</td></tr><tr><td><code>ellipse</code></td><td><code>center</code>; <code>major</code>: vector from the centre to the major-axis end; <code>ratio</code> minor/major in (0, 1]; <code>start</code>, <code>end</code> parameters (0 and 2π = full)</td></tr><tr><td><code>spline</code></td><td>non-rational B-spline as in DXF: <code>degree</code>, <code>controlPoints</code>, clamped <code>knots</code> (controlPoints + degree + 1 values, non-decreasing), <code>closed</code>; optional <code>fitPoints</code> the user picked</td></tr><tr><td><code>text</code></td><td><code>position</code> (baseline left), <code>text</code>, <code>height</code> in mm, <code>rotation</code></td></tr></tbody></table></div>
+<p>Format 1 (M0) had line, circle and arc only; a format-1 file is upgraded to format 2 unchanged.</p>
+<h2 id="annotations-format-3">Annotations (format 3)</h2>
+<div class="table-wrap"><table><thead><tr><th><code>type</code></th><th>Fields</th></tr></thead><tbody><tr><td><code>dimension</code></td><td><code>kind</code> (<code>linear</code>, <code>aligned</code>, <code>angular</code>, <code>radius</code>, <code>diameter</code>, <code>ordinate</code>), <code>a</code>, <code>b</code> (measured points; for radius/diameter <code>a</code> is the centre and <code>b</code> a point on the curve; for ordinate <code>a</code> is the origin), <code>position</code> (the dimension line passes through it, or the leader ends there), <code>rotation</code> (direction of a linear or ordinate dimension), <code>center</code> (angular: the vertex); optional <code>text</code> (override, <code>&lt;&gt;</code> = measured value), <code>prefix</code>, <code>suffix</code>, <code>decimals</code>, <code>tolerance</code></td></tr><tr><td><code>tolerance</code></td><td><code>{ kind: &quot;deviation&quot;, upper, lower }</code> in mm, <code>{ kind: &quot;symmetric&quot;, value }</code>, <code>{ kind: &quot;limits&quot;, upper, lower }</code>, or <code>{ kind: &quot;fit&quot;, cls: &quot;H7&quot; }</code> (ISO 286 class; the deviations come from the library)</td></tr><tr><td><code>note</code></td><td><code>position</code>, <code>text</code> (lines separated by <code>\n</code>), <code>height</code>, <code>rotation</code>; optional <code>leader</code>: points from the arrow tip to the text</td></tr><tr><td><code>balloon</code></td><td><code>position</code> (circle centre), <code>text</code>, <code>leader</code> (arrow tip)</td></tr><tr><td><code>surface</code></td><td><code>position</code> (tip on the surface), <code>rotation</code>, <code>removal</code> (<code>any</code>, <code>required</code>, <code>prohibited</code>); optional <code>ra</code> (µm), <code>text</code>, <code>leader</code></td></tr><tr><td><code>gdt</code></td><td><code>position</code>, <code>rotation</code>, <code>characteristic</code> (id from <code>library/gdt/iso-1101.json</code>), <code>tolerance</code> (text), <code>datums</code> (up to three letters); optional <code>leader</code></td></tr><tr><td><code>datum</code></td><td><code>position</code> (triangle on the feature), <code>rotation</code>, <code>label</code></td></tr></tbody></table></div>
+<p>Annotations are drawn from the document's <code>dimStyle</code> (paper mm: <code>textHeight</code>, <code>arrowSize</code>, <code>extensionOvershoot</code>, <code>extensionGap</code>, <code>textGap</code>, <code>decimals</code>, <code>annotationScale</code>, <code>arrowhead</code>). The measured value is computed from the geometry when the drawing is shown, never stored, so a dimension can never disagree with what it measures.</p>
+<h2 id="sheets-format-3">Sheets (format 3)</h2>
+<p><code>sheetOrder</code> / <code>sheets</code>: each sheet has <code>name</code>, <code>size</code> (A0 to A4), <code>orientation</code>, <code>titleBlock</code> (ISO 7200 field id → text) and <code>views</code>: windows onto the model placed on the paper, each with <code>scale</code> (ratio: 0.5 for 1:2), <code>center</code> (model point at the centre of the viewport), <code>position</code>, <code>width</code>, <code>height</code> (paper mm) and <code>label</code> (draw &quot;SCALE 1:2&quot; under it). A format-2 file gets the default dimension style and no sheets.</p>
+<h2 id="sketch-constraints-format-4">Sketch constraints (format 4)</h2>
+<p><code>constraintOrder</code> / <code>constraints</code>: each constraint has an <code>id</code> and a <code>kind</code>, and refers to entities by id and to their points by a <code>PointRef</code> <code>{ &quot;entity&quot;: &quot;e1&quot;, &quot;point&quot;: &quot;a&quot; }</code> (<code>a</code>/<code>b</code> of a line, <code>center</code> of a circle or arc, <code>start</code>/<code>end</code> of an arc, or a vertex index of a polyline). Values are mm, angles radians.</p>
+<div class="table-wrap"><table><thead><tr><th><code>kind</code></th><th>Fields</th></tr></thead><tbody><tr><td><code>coincident</code></td><td><code>p1</code>, <code>p2</code></td></tr><tr><td><code>pointOnLine</code></td><td><code>p</code>, <code>line</code></td></tr><tr><td><code>horizontal</code>, <code>vertical</code></td><td><code>entity</code> (a line)</td></tr><tr><td><code>parallel</code>, <code>perpendicular</code></td><td><code>a</code>, <code>b</code> (lines)</td></tr><tr><td><code>angle</code></td><td><code>a</code>, <code>b</code>, <code>value</code> (radians, counter-clockwise from a to b)</td></tr><tr><td><code>tangent</code>, <code>equal</code></td><td><code>a</code>, <code>b</code> (lines, circles, arcs)</td></tr><tr><td><code>symmetric</code></td><td><code>p1</code>, <code>p2</code>, <code>line</code></td></tr><tr><td><code>fixed</code></td><td><code>entity</code></td></tr><tr><td><code>distance</code></td><td><code>p1</code>, <code>p2</code>, <code>value</code></td></tr><tr><td><code>pointLineDistance</code></td><td><code>p</code>, <code>line</code>, <code>value</code></td></tr><tr><td><code>radius</code></td><td><code>entity</code>, <code>value</code></td></tr></tbody></table></div>
+<p>A dimension with <code>driving</code> set (a number: mm, or degrees for angular) also constrains the geometry it measures. The solver (planegcs in a worker) moves the entities; the solved geometry is what the file stores, so a file opens exactly as it was saved even without solving. Deleting an entity deletes the constraints that refer to it (undo brings both back).</p>
+<h2 id="parts-format-5">Parts (format 5)</h2>
+<p><code>partOrder</code> / <code>parts</code>: a part has <code>name</code>, an optional <code>material</code> (id from <code>library/materials</code>) and <code>features</code>, an ordered list built one after the other by OpenCascade (through replicad) in a worker. Each feature has <code>id</code>, <code>name</code>, <code>kind</code> and optionally <code>suppressed</code>.</p>
+<div class="table-wrap"><table><thead><tr><th><code>kind</code></th><th>Fields</th></tr></thead><tbody><tr><td><code>sketch</code></td><td><code>plane</code> (<code>XY</code>, <code>XZ</code>, <code>YZ</code>), <code>offset</code> along the plane normal, <code>entities</code>: ids of 2D entities in model space that form closed loops (outer loop and holes)</td></tr><tr><td><code>extrude</code></td><td><code>sketch</code> (id of an earlier sketch feature), <code>distance</code> &gt; 0, <code>direction</code> (<code>normal</code>, <code>reverse</code>, <code>both</code>), <code>op</code> (<code>add</code>, <code>cut</code>)</td></tr><tr><td><code>revolve</code></td><td><code>sketch</code>, <code>axis</code> <code>{ a, b }</code> in sketch coordinates, <code>angle</code> in degrees (0, 360], <code>op</code></td></tr><tr><td><code>hole</code></td><td><code>sketch</code> (its circle centres, line ends and polyline vertices are hole positions), <code>spec</code> (<code>{ kind: &quot;simple&quot;, diameter }</code>, <code>{ kind: &quot;clearance&quot;, thread, series }</code> ISO 273, <code>{ kind: &quot;tapped&quot;, thread }</code> tap drill), <code>depth</code> in mm or <code>&quot;through&quot;</code></td></tr><tr><td><code>fillet</code></td><td><code>edges</code> selector, <code>radius</code></td></tr><tr><td><code>chamfer</code></td><td><code>edges</code> selector, <code>distance</code></td></tr><tr><td><code>shell</code></td><td><code>thickness</code>, <code>faces</code> to remove (selectors)</td></tr><tr><td><code>mirror</code></td><td><code>plane</code>, <code>offset</code></td></tr><tr><td><code>pattern</code></td><td><code>mode: &quot;linear&quot;</code> with <code>counts</code>, <code>spacing</code>, <code>axes</code>, or <code>mode: &quot;circular&quot;</code> with <code>axis</code>, <code>count</code>, <code>angle</code></td></tr><tr><td><code>import</code></td><td><code>format: &quot;step&quot;</code>, <code>data</code> (base64 of the STEP text), <code>sourceName</code></td></tr></tbody></table></div>
+<p>Edge selectors: <code>{ kind: &quot;all&quot; }</code>, <code>{ kind: &quot;parallelTo&quot;, axis }</code>, <code>{ kind: &quot;inPlane&quot;, plane, offset }</code>, <code>{ kind: &quot;ofLength&quot;, length }</code>, <code>{ kind: &quot;inBox&quot;, min, max }</code>. Face selectors: <code>{ kind: &quot;normal&quot;, direction: &quot;Z+&quot; }</code> or <code>{ kind: &quot;inPlane&quot;, plane, offset }</code>. The built solid is never stored: a file rebuilds from its features, so it stays small and diffable; meshes and mass properties are computed when the part is shown.</p>
+<p>Each addition bumps <code>version</code> and ships a migration.</p>
+<h2 id="migrations">Migrations</h2>
+<p><code>shared/doc/file.ts</code> keeps one function per version step. Opening a file of version n runs the steps n → n+1 → … → current, then validates. A file that fails validation is refused with the field that is wrong, never silently repaired.</p>
+        <p class="edit"><a href="https://github.com/mojeee/mechpilot/blob/main/docs/file-format.md">Source of this page on GitHub</a></p>
+      </article>
+      </div>
+    </main>
+    <footer>
+      <nav aria-label="Footer">
+        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
+      </nav>
+      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
+      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>
