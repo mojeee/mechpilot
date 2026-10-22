@@ -17,7 +17,8 @@ Never add a table value you cannot verify against the standard: list it in `docs
 | `fits/` | ISO 286 standard tolerance grades, fundamental deviations and Δ values | M2 |
 | `gdt/` | ISO 1101 geometrical characteristics, symbols, frame proportions | M2 |
 | `surface/` | ISO 21920-1 surface texture symbols and the Ra series | M2 |
-| `materials/` | density and properties with their source | M4 |
+| `holes/` | ISO 273 clearance holes (fine, medium, coarse) and ISO 2306 tap drills with ISO 261 pitches | M4 |
+| `materials/` | density with its source (EN 1993-1-2, EN 10088-1, EN 1999-1-1; supplier datasheets marked secondary) | M4 |
 | `parts/` | ISO 4762 screws, ISO 4032 nuts, ISO 7089 washers, ISO 15 bearings, aluminium profiles | M6 |
 
 Standards data files (M2 on) carry `verification` ("primary" = the standard's own text was seen,

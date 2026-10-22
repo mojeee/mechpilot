@@ -1,0 +1,156 @@
+{
+  "id": "common",
+  "name": "Common engineering materials: densities for mass properties",
+  "source": "see each material (densitySource)",
+  "unit": "kg/m3",
+  "verification": "secondary",
+  "verifiedFrom": [
+    "https://www.phd.eng.br/wp-content/uploads/2015/12/en.1993.1.2.2005.pdf (EN 1993-1-2:2005, Public.Resource.Org edition indexed at https://law.resource.org/pub/eu/eurocode.html: 3.2.2 and C.2.2 unit mass of steel)",
+    "https://www.phd.eng.br/wp-content/uploads/2015/12/en.1993.1.1.2005.pdf (EN 1993-1-1:2005, same edition: 3.1 Table 3.1 lists EN 10025-2 S 235 and S 355; 3.2.6 gives no density)",
+    "https://www.phd.eng.br/wp-content/uploads/2014/11/en.1999.1.1.2007.pdf (EN 1999-1-1:2007+A1:2009, same edition: 3.2.5 unit mass; Table 3.1a lists EN AW-5754 and EN AW-6082)",
+    "https://www.tubingchina.com/EN-10088-1.pdf (BS EN 10088-1:2005, unofficial copy: Annex A (informative) Table A.3, density of X5CrNi18-10 / 1.4301)",
+    "https://www.kippwerk.de/en/1.0503-qt-steel (KIPP material data 1.0503 / C45: density 7.85 g/cm3)",
+    "https://www.westyorkssteel.com/carbon-steel/c45/ (West Yorkshire Steel, C45 typical physical properties: density 7.85 kg/dm3)",
+    "https://asset.conrad.com/media10/add/160267/c1/-/de/000220645DS00/tehnicni-podatki-221792-medeninasta-cev-3-x-1-modelcraft.pdf (Deutsches Kupferinstitut, Werkstoff-Datenblatt CuZn37, 3.1: 8.44 g/cm3 at 20 °C)",
+    "https://www.diehl.com/cms/files/Diehl_Brass_Solutions_Werkstoffdatenblatt_023.pdf (Diehl Brass Solutions 023 = CuZn37 / CW508L: 8.44 g/cm3)",
+    "https://www.schlenk.de/fileadmin/editorsCMS/Medien/02_Maerkte_und_Produkte/SMF/TDS_und_Produktinformation/Deutsch/CuZn37.pdf (Schlenk CuZn37: 8.44 g/cm3)",
+    "https://www.schlenk.de/fileadmin/editorsCMS/Medien/02_Maerkte_und_Produkte/SMF/TDS_und_Produktinformation/Deutsch/Cu-ETP.pdf (Schlenk Cu-ETP: 8.93 g/cm3; tempers to EN 13599)",
+    "https://www.aurubis.com/dam/jcr:93f4c8d2-3e69-4301-a8db-f4098df38523/PNA%20211_Cu-ETP_C11000%20%5BRP%5D-DE.pdf (Aurubis PNA 211 Cu-ETP / CW004A: 8.9 g/cm3 at 20 °C)",
+    "https://www.kemper-group.com/media/de-at/content/04-produkte/walzprodukte/datenblaetter/cu-etp.pdf (KME/Kemper Cu-ETP / CW004A: 8.9 g/cm3)",
+    "https://www.kippwerk.de/en/en-gjl-250 (KIPP material data EN-GJL-250 / 5.1301: density 7.20 g/cm3)",
+    "https://www.mfgrobots.com/Article/material/metal/39356.html (EN 1561 GJL-250 property summary: density 7.2 g/cm3 at 20 °C; aggregator site)",
+    "https://www.roechling.com/industrial/materials/thermoplastics/engineering-plastics/pom-c/sustarin-c-dws-natural-591344 (Röchling Sustarin C DWS natural, POM-C: 1.41 g/cm3, DIN EN ISO 1183-1)",
+    "https://www.ensingerplastics.com/en/shapes/acetal-tecaform-ah-natural (Ensinger TECAFORM AH natural, POM-C: 1.41 g/cm3)",
+    "https://www.roechling.com/us/industrial/materials/thermoplastics/engineering-plastics/pa/pa-6/sustamid-6-red-591406 (Röchling Sustamid 6, PA 6: 1.14 g/cm3, DIN EN ISO 1183-1)",
+    "https://technischekunststoffe24.de/downloads/datenblaetter/PA%206.pdf (BW Kunststoffe, PA 6 extruded: 1.14 g/cm3, ISO 1183)",
+    "https://sunclear.fr/img/medias/bt/POLYOLEFINES_PE_HD_300__SIMONA_joncs_naturel_fiche_technique_130923.pdf (SIMONA PE-HD naturel, rev. 29.04.2022: 0.950 g/cm3, DIN EN ISO 1183)",
+    "https://www.oadbyplastics.co.uk/wp-content/uploads/2025/11/PE-HD-300-Technical-Datasheet.pdf (Oadby Plastics PE-HD 300: 0.95 g/cm3, DIN EN ISO 1183)"
+  ],
+  "verificationNotes": [
+    "primary = the density was read in the standard's own text; secondary = two or more independent manufacturer or supplier datasheets agree (listed in docs/to-verify.md). The file is marked secondary because that is its weakest entry.",
+    "All values were read on 2026-10-22.",
+    "EN 1993-1-1:2005, 3.2.6 lists E, G, Poisson's ratio and the thermal expansion coefficient for structural steel but no density; the 7850 kg/m3 value is EN 1993-1-2:2005, 3.2.2."
+  ],
+  "materials": [
+    {
+      "id": "s235jr",
+      "name": "Structural steel S235JR",
+      "nameIt": "Acciaio strutturale S235JR",
+      "standard": "EN 10025-2",
+      "density": 7850,
+      "densitySource": "EN 1993-1-2:2005, 3.2.2 (unit mass of carbon steel ρa = 7850 kg/m³); S 235 to EN 10025-2 is a steel covered by EN 1993-1-1:2005, 3.1, Table 3.1",
+      "verification": "primary"
+    },
+    {
+      "id": "s355j2",
+      "name": "Structural steel S355J2",
+      "nameIt": "Acciaio strutturale S355J2",
+      "standard": "EN 10025-2",
+      "density": 7850,
+      "densitySource": "EN 1993-1-2:2005, 3.2.2 (unit mass of carbon steel ρa = 7850 kg/m³); S 355 to EN 10025-2 is a steel covered by EN 1993-1-1:2005, 3.1, Table 3.1",
+      "verification": "primary"
+    },
+    {
+      "id": "c45",
+      "name": "Carbon steel C45 (1.0503)",
+      "nameIt": "Acciaio al carbonio C45 (1.0503)",
+      "standard": "EN 10083-2",
+      "density": 7850,
+      "densitySource": "KIPP material data 1.0503 / C45 (7.85 g/cm³) and West Yorkshire Steel C45 typical physical properties (7.85 kg/dm³). EN 10083-2 was not seen to give a density; C45 is not a structural steel in the scope of EN 1993-1-2, so that standard's 7850 kg/m³ is not cited for C45.",
+      "verification": "secondary"
+    },
+    {
+      "id": "x5crni18-10",
+      "name": "Stainless steel X5CrNi18-10 (1.4301)",
+      "nameIt": "Acciaio inossidabile X5CrNi18-10 (1.4301)",
+      "standard": "EN 10088-1",
+      "density": 7900,
+      "densitySource": "EN 10088-1:2005, Annex A (informative), Table A.3 (guidance data on physical properties of austenitic corrosion resisting steels: X5CrNi18-10 / 1.4301, density 7.9 kg/dm³)",
+      "verification": "primary",
+      "densityNote": "Read in the 2005 edition (an unofficial copy of BS EN 10088-1:2005); the current edition is EN 10088-1:2023. EN 1993-1-2:2005, C.2.2 uses 7850 kg/m³ for stainless steel in fire design; MechPilot uses the EN 10088-1 material value."
+    },
+    {
+      "id": "en-aw-6082",
+      "name": "Aluminium alloy EN AW-6082",
+      "nameIt": "Lega di alluminio EN AW-6082",
+      "standard": "EN 573-3",
+      "density": 2700,
+      "densitySource": "EN 1999-1-1:2007+A1:2009, 3.2.5 (unit mass ρ = 2 700 kg/m³ for the aluminium alloys covered by EN 1999-1-1; EN AW-6082 is in Table 3.1a)",
+      "verification": "primary",
+      "densityNote": "EN 1999-1-1 gives one design value for all the alloys it covers, not a per-alloy density."
+    },
+    {
+      "id": "en-aw-5754",
+      "name": "Aluminium alloy EN AW-5754",
+      "nameIt": "Lega di alluminio EN AW-5754",
+      "standard": "EN 573-3",
+      "density": 2700,
+      "densitySource": "EN 1999-1-1:2007+A1:2009, 3.2.5 (unit mass ρ = 2 700 kg/m³ for the aluminium alloys covered by EN 1999-1-1; EN AW-5754 is in Table 3.1a)",
+      "verification": "primary",
+      "densityNote": "EN 1999-1-1 gives one design value for all the alloys it covers, not a per-alloy density (see docs/to-verify.md)."
+    },
+    {
+      "id": "cuzn37",
+      "name": "Brass CuZn37 (CW508L)",
+      "nameIt": "Ottone CuZn37 (CW508L)",
+      "standard": "EN 1652 / EN 12163",
+      "density": 8440,
+      "densitySource": "Deutsches Kupferinstitut, Werkstoff-Datenblatt CuZn37, 3.1 (8.44 g/cm³ at 20 °C); Diehl Brass Solutions datasheet 023 (8.44 g/cm³); Schlenk CuZn37 datasheet (8.44 g/cm³)",
+      "verification": "secondary"
+    },
+    {
+      "id": "cu-etp",
+      "name": "Copper Cu-ETP (CW004A)",
+      "nameIt": "Rame Cu-ETP (CW004A)",
+      "standard": "EN 13599",
+      "density": 8900,
+      "densitySource": "Aurubis datasheet PNA 211 Cu-ETP (8.9 g/cm³ at 20 °C); KME/Kemper Cu-ETP datasheet (8.9 g/cm³)",
+      "verification": "secondary",
+      "densityNote": "Schlenk's Cu-ETP datasheet gives 8.93 g/cm³; the two datasheets that agree give 8.9 to one decimal."
+    },
+    {
+      "id": "en-gjl-250",
+      "name": "Grey cast iron EN-GJL-250",
+      "nameIt": "Ghisa grigia EN-GJL-250",
+      "standard": "EN 1561",
+      "density": 7200,
+      "densitySource": "KIPP material data EN-GJL-250 (7.20 g/cm³); EN 1561 GJL-250 property summary on mfgrobots.com (7.2 g/cm³ at 20 °C). EN 1561's own text was not seen.",
+      "verification": "secondary",
+      "densityNote": "The weakest-sourced entry in this file (one supplier datasheet plus an aggregator site), see docs/to-verify.md."
+    },
+    {
+      "id": "pom-c",
+      "name": "Polyoxymethylene copolymer (POM-C)",
+      "nameIt": "Poliossimetilene copolimero (POM-C)",
+      "standard": "ISO 1043-1 (symbol POM)",
+      "density": 1410,
+      "densitySource": "Röchling Sustarin C DWS natural (1.41 g/cm³, DIN EN ISO 1183-1); Ensinger TECAFORM AH natural (1.41 g/cm³)",
+      "verification": "secondary"
+    },
+    {
+      "id": "pa6",
+      "name": "Polyamide 6 (PA 6), extruded",
+      "nameIt": "Poliammide 6 (PA 6), estrusa",
+      "standard": "ISO 1043-1 (symbol PA)",
+      "density": 1140,
+      "densitySource": "Röchling Sustamid 6 (1.14 g/cm³, DIN EN ISO 1183-1); BW Kunststoffe PA 6 extruded (1.14 g/cm³, ISO 1183)",
+      "verification": "secondary",
+      "densityNote": "Cast PA 6 is slightly denser (BW Kunststoffe gives 1.15 g/cm³ for cast PA 6)."
+    },
+    {
+      "id": "pe-hd",
+      "name": "High-density polyethylene (PE-HD, PE 300)",
+      "nameIt": "Polietilene ad alta densità (PE-HD, PE 300)",
+      "standard": "ISO 1043-1 (symbol PE-HD)",
+      "density": 950,
+      "densitySource": "SIMONA PE-HD naturel datasheet rev. 29.04.2022 (0.950 g/cm³, DIN EN ISO 1183); Oadby Plastics PE-HD 300 datasheet (0.95 g/cm³, DIN EN ISO 1183)",
+      "verification": "secondary",
+      "densityNote": "Ensinger TECAFINE PE300 natural gives 0.96 g/cm³ and Röchling Polystone G HD natural > 0.95 g/cm³; the value depends on the grade."
+    }
+  ],
+  "notes": [
+    "Densities vary with alloy, temper, casting and grade (plastics also with filler and processing). MechPilot computes mass from these values and shows it as approximate, with the material and the source of its density.",
+    "nameIt is MechPilot's own Italian translation; it was not taken from the Italian editions of the standards.",
+    "PTFE is not in this file: the datasheets read disagree (Ensinger TECAFLON PTFE natural 2.15 g/cm³, Plastock extruded virgin PTFE 2.16 g/cm³, BW Kunststoffe 2.15 to 2.25 g/cm³). See docs/to-verify.md."
+  ]
+}

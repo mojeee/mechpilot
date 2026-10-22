@@ -9,7 +9,7 @@ clause; values that could not be checked are left out and listed in [to-verify.m
 free previews published by iTeh (standards.iteh.ai), or the Indian Standards that adopt an ISO
 standard word for word and are published by Public.Resource.Org (law.resource.org). Some of those
 adoptions are of an older edition; where that is the case it is said below. "Secondary" would mean
-two independent handbooks or catalogues agree; no value in the library relies on that at present.
+two independent handbooks or catalogues agree; only some material densities rely on that (see "Holes and materials" below).
 
 | Standard | What MechPilot takes from it | Data file | Checked against |
 | --- | --- | --- | --- |
@@ -28,3 +28,18 @@ two independent handbooks or catalogues agree; no value in the library relies on
 
 Not yet covered here: ISO 5456-2 (projections), ASME Y14.5 and Y14.3, ISO 14405-1 (meaning of
 size tolerances). The open questions for each standard above are in [to-verify.md](to-verify.md).
+
+## Holes and materials
+
+| Standard | What MechPilot takes from it | Data file | Checked against |
+| --- | --- | --- | --- |
+| ISO 273:1979 (clearance holes) | Clearance hole diameters for the fine, medium and coarse series, M1.6 to M64; H12 / H13 / H14 for information. Medium is MechPilot's default series (the standard names none) | `library/holes/iso-273.json` | Standard text (IS 1821:1987, identical adoption) |
+| ISO 2306:1972 (drills before tapping) | Tap drill diameters for metric coarse threads M1.6 to M56, and the rule drill ≈ nominal diameter − pitch | `library/holes/tap-drills.json` | Standard text (IS 10952:1984, identical adoption). M60 and M64 are not in its Table 1: not stored |
+| ISO 261:1998 (metric threads, general plan) | Coarse pitches of the tap-drill table (cross-check) | same file | Standard text (IS 4218 (Part 2):2001, identical adoption). ISO 262 (selected sizes) not read |
+| EN 10025-2, EN 1993-1-1 and EN 1993-1-2:2005 (structural steel) | S235JR and S355J2; density 7850 kg/m³ from EN 1993-1-2, 3.2.2 (EN 1993-1-1:2005, 3.2.6 gives no density) | `library/materials/common.json` | Standard text (first-generation Eurocodes) |
+| EN 10088-1:2005 (stainless steels) | X5CrNi18-10 (1.4301), density 7.9 kg/dm³ (Annex A, Table A.3) | same file | Standard text of the 2005 edition (unofficial copy); the 2023 edition not seen |
+| EN 1999-1-1:2007 (aluminium) | EN AW-6082 and EN AW-5754, density 2700 kg/m³ (3.2.5, one value for all alloys) | same file | Standard text |
+| EN 10083-2 (C45), EN 1652 / EN 12163 (CuZn37), EN 13599 (Cu-ETP), EN 1561 (EN-GJL-250), POM-C, PA 6, PE-HD | Material designations; densities from manufacturer and supplier datasheets | same file | Secondary: two or more datasheets agree for each (EN-GJL-250 is the weakest). PTFE left out: sources disagree |
+
+Mass in MechPilot is shown as approximate: densities vary with alloy, temper and grade. The open
+questions are in [to-verify.md](to-verify.md).

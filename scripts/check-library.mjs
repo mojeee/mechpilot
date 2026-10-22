@@ -28,6 +28,12 @@ const fraction = (s) => {
   return m ? Number(m[1]) / Number(m[2]) : NaN;
 };
 
+/** "M1.6" -> 1.6 (metric thread nominal diameter, mm), or NaN */
+const threadDiameter = (s) => {
+  const m = /^M(\d+(?:\.\d+)?)$/.exec(String(s));
+  return m ? Number(m[1]) : NaN;
+};
+
 /** Standards data files (M2 on) say how they were verified: "primary" = the standard's own text was
  *  seen, "secondary" = two independent secondary sources agree (and docs/to-verify.md lists it). */
 function checkVerification(d, err) {
@@ -371,6 +377,81 @@ const RULES = {
     }
     if (!isObj(d.rules) || !Object.values(d.rules).every(isStr)) err('rules: object of strings, each citing its clause');
   },
+
+  holes: (d, err) => {
+    checkVerification(d, err);
+    if (d.unit !== 'mm') err('unit must be "mm"');
+    /** threads unique and listed from the smallest nominal diameter to the largest; returns d per entry */
+    const sizes = (list, tag) => {
+      const out = [];
+      const seen = new Set();
+      for (const e of list) {
+        const nominal = threadDiameter(e.thread);
+        if (!(nominal > 0)) {
+          err(`${tag}: thread "${e.thread}" must be "M<d>" (e.g. "M6", "M1.6")`);
+          out.push(NaN);
+          continue;
+        }
+        if (seen.has(e.thread)) err(`${tag} ${e.thread}: duplicate thread`);
+        seen.add(e.thread);
+        out.push(nominal);
+      }
+      if (!increasing(out.filter((v) => !Number.isNaN(v)))) err(`${tag}: list the threads sorted by nominal diameter, without duplicates`);
+      return out;
+    };
+    if (d.holes === undefined && d.threads === undefined) return err('holes (clearance holes) or threads (tap drills): non-empty array');
+    if (d.holes !== undefined) {
+      if (!Array.isArray(d.holes) || d.holes.length === 0) return err('holes: non-empty array');
+      const nominal = sizes(d.holes, 'holes');
+      d.holes.forEach((h, i) => {
+        const tag = `hole ${h.thread}`;
+        if (![h.fine, h.medium, h.coarse].every(isPos)) return err(`${tag}: fine, medium and coarse diameters (mm)`);
+        // ISO 273:1979, clause 2: the fine, medium and coarse series give successively larger clearance
+        if (!(h.fine < h.medium && h.medium < h.coarse)) err(`${tag}: expected fine < medium < coarse`);
+        // a clearance hole is larger than the thread's nominal diameter
+        if (!(h.fine > nominal[i])) err(`${tag}: the fine hole ${h.fine} must be larger than the nominal diameter ${nominal[i]}`);
+      });
+      if (d.defaultSeries !== undefined && !['fine', 'medium', 'coarse'].includes(d.defaultSeries)) err('defaultSeries must be fine, medium or coarse');
+    }
+    if (d.threads !== undefined) {
+      if (!Array.isArray(d.threads) || d.threads.length === 0) return err('threads: non-empty array');
+      const nominal = sizes(d.threads, 'threads');
+      d.threads.forEach((t, i) => {
+        const tag = `thread ${t.thread}`;
+        if (!isPos(t.pitch)) err(`${tag}: pitch must be > 0`);
+        if (!isPos(t.drill)) return err(`${tag}: drill diameter must be > 0`);
+        if (!(t.drill < nominal[i])) err(`${tag}: the tap drill ${t.drill} must be smaller than the nominal diameter ${nominal[i]}`);
+        // ISO 2306:1972, clause 1: drill diameter approximately nominal diameter minus pitch (gross check)
+        else if (isPos(t.pitch) && Math.abs(t.drill - (nominal[i] - t.pitch)) > 0.1 + 1e-9) {
+          err(`${tag}: drill ${t.drill} is far from d - P = ${Number((nominal[i] - t.pitch).toFixed(3))} (ISO 2306, clause 1)`);
+        }
+      });
+      if (d.rule !== undefined && !isStr(d.ruleSource)) err('rule needs ruleSource (standard and clause)');
+    }
+  },
+
+  materials: (d, err) => {
+    checkVerification(d, err);
+    if (d.unit !== 'kg/m3') err('unit must be "kg/m3" (densities)');
+    if (!Array.isArray(d.materials) || d.materials.length === 0) return err('materials: non-empty array');
+    const ids = new Set();
+    let weakest = 'primary';
+    for (const m of d.materials) {
+      if (!isStr(m.id)) {
+        err('material without id');
+        continue;
+      }
+      if (ids.has(m.id)) err(`material ${m.id}: duplicate id`);
+      ids.add(m.id);
+      for (const k of ['name', 'nameIt', 'standard', 'densitySource']) if (!isStr(m[k])) err(`material ${m.id}: ${k}`);
+      if (!isPos(m.density)) err(`material ${m.id}: density must be > 0 (kg/m3)`);
+      // plausibility only: no engineering solid is lighter than 100 or denser than 25 000 kg/m3
+      else if (m.density < 100 || m.density > 25000) err(`material ${m.id}: density ${m.density} kg/m3 is not plausible (unit?)`);
+      if (!['primary', 'secondary'].includes(m.verification)) err(`material ${m.id}: verification must be "primary" or "secondary"`);
+      else if (m.verification === 'secondary') weakest = 'secondary';
+    }
+    if (d.verification !== weakest) err(`verification must be "${weakest}", the weakest among the materials`);
+  },
 };
 
 let errors = 0;
@@ -391,8 +472,9 @@ for (const file of jsonFiles(libDir)) {
   }
   if (d.id !== basename(file, '.json')) err(`id "${d.id}" must equal the file name`);
   if (!isStr(d.source)) err('source is required (standard and clause, or catalogue)');
-  if (d.unit !== undefined && d.unit !== 'mm') err('unit must be "mm" when present (product rule 1)');
   const kind = rel.split('/')[1];
+  // lengths are always mm (product rule 1); material densities are kg/m3
+  if (d.unit !== undefined && d.unit !== 'mm' && !(kind === 'materials' && d.unit === 'kg/m3')) err('unit must be "mm" when present (product rule 1)');
   const rule = RULES[kind];
   if (!rule) err(`unknown library kind "${kind}" (add its rules to scripts/check-library.mjs)`);
   else rule(d, err);

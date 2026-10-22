@@ -28,6 +28,11 @@ export interface SampleInfo {
   description: string;
 }
 
+export interface FileFilter {
+  name: string;
+  extensions: string[];
+}
+
 export interface OpenedFile {
   path: string;
   text: string;
@@ -60,6 +65,10 @@ export interface MechPilotApi {
     saveDxf(text: string, suggestedName: string): Promise<Result<{ path: string } | null>>;
     /** Save-as dialog for PDF bytes. null when cancelled. */
     savePdf(bytes: Uint8Array, suggestedName: string): Promise<Result<{ path: string } | null>>;
+    /** Open dialog for a text file with the given filters (STEP, …). null when cancelled. */
+    openText(filters: FileFilter[]): Promise<Result<OpenedFile | null>>;
+    /** Save-as dialog for bytes with the given extension (step, stl, 3mf, …). null when cancelled. */
+    saveBytes(bytes: Uint8Array, suggestedName: string, extension: string): Promise<Result<{ path: string } | null>>;
     /** Crash recovery: write the dirty document to the app data folder (product rule 3). */
     autosave(text: string, originalPath: string | null): Promise<void>;
     /** Is there an autosave from an earlier run? */

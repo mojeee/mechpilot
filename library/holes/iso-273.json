@@ -1,0 +1,61 @@
+{
+  "id": "iso-273",
+  "name": "ISO 273 clearance holes for bolts and screws",
+  "source": "ISO 273:1979 Fasteners - Clearance holes for bolts and screws, clause 2 (Dimensions, table of clearance hole diameters d_h for the fine, medium and coarse series)",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://law.resource.org/pub/in/bis/S01/is.1821.1987.pdf (IS 1821:1987, identical with ISO 273:1979: clause 1 scope, clause 2 table and notes; read from the rendered page on 2026-10-22)"
+  ],
+  "verificationNotes": [
+    "Every diameter below was read from the table in ISO 273:1979 clause 2 (IS 1821:1987, an identical adoption). The national foreword uses the decimal point; the table itself uses the decimal comma.",
+    "ISO 273:1979 lists thread diameters from 1 mm to 150 mm. MechPilot stores M1.6 to M64; M1, M1.2, M1.4 and M68 to M150 are in the standard but not stored here (not needed by the kernel yet)."
+  ],
+  "holesSource": "ISO 273:1979, clause 2, table: thread diameter d and clearance hole d_h, series fine / medium / coarse",
+  "holes": [
+    { "thread": "M1.6", "fine": 1.7, "medium": 1.8, "coarse": 2 },
+    { "thread": "M1.8", "fine": 2, "medium": 2.1, "coarse": 2.2 },
+    { "thread": "M2", "fine": 2.2, "medium": 2.4, "coarse": 2.6 },
+    { "thread": "M2.5", "fine": 2.7, "medium": 2.9, "coarse": 3.1 },
+    { "thread": "M3", "fine": 3.2, "medium": 3.4, "coarse": 3.6 },
+    { "thread": "M3.5", "fine": 3.7, "medium": 3.9, "coarse": 4.2 },
+    { "thread": "M4", "fine": 4.3, "medium": 4.5, "coarse": 4.8 },
+    { "thread": "M4.5", "fine": 4.8, "medium": 5, "coarse": 5.3 },
+    { "thread": "M5", "fine": 5.3, "medium": 5.5, "coarse": 5.8 },
+    { "thread": "M6", "fine": 6.4, "medium": 6.6, "coarse": 7 },
+    { "thread": "M7", "fine": 7.4, "medium": 7.6, "coarse": 8 },
+    { "thread": "M8", "fine": 8.4, "medium": 9, "coarse": 10 },
+    { "thread": "M10", "fine": 10.5, "medium": 11, "coarse": 12 },
+    { "thread": "M12", "fine": 13, "medium": 13.5, "coarse": 14.5 },
+    { "thread": "M14", "fine": 15, "medium": 15.5, "coarse": 16.5 },
+    { "thread": "M16", "fine": 17, "medium": 17.5, "coarse": 18.5 },
+    { "thread": "M18", "fine": 19, "medium": 20, "coarse": 21 },
+    { "thread": "M20", "fine": 21, "medium": 22, "coarse": 24 },
+    { "thread": "M22", "fine": 23, "medium": 24, "coarse": 26 },
+    { "thread": "M24", "fine": 25, "medium": 26, "coarse": 28 },
+    { "thread": "M27", "fine": 28, "medium": 30, "coarse": 32 },
+    { "thread": "M30", "fine": 31, "medium": 33, "coarse": 35 },
+    { "thread": "M33", "fine": 34, "medium": 36, "coarse": 38 },
+    { "thread": "M36", "fine": 37, "medium": 39, "coarse": 42 },
+    { "thread": "M39", "fine": 40, "medium": 42, "coarse": 45 },
+    { "thread": "M42", "fine": 43, "medium": 45, "coarse": 48 },
+    { "thread": "M45", "fine": 46, "medium": 48, "coarse": 52 },
+    { "thread": "M48", "fine": 50, "medium": 52, "coarse": 56 },
+    { "thread": "M52", "fine": 54, "medium": 56, "coarse": 62 },
+    { "thread": "M56", "fine": 58, "medium": 62, "coarse": 66 },
+    { "thread": "M60", "fine": 62, "medium": 66, "coarse": 70 },
+    { "thread": "M64", "fine": 66, "medium": 70, "coarse": 74 }
+  ],
+  "toleranceClasses": {
+    "fine": "H12",
+    "medium": "H13",
+    "coarse": "H14",
+    "source": "ISO 273:1979, clause 2, note below the table: tolerance fields given for information only, for use where it is desirable to specify tolerances"
+  },
+  "defaultSeries": "medium",
+  "notes": [
+    "Default series: medium. ISO 273:1979 does not name a default series; medium is the usual choice for general-purpose bolted joints and is MechPilot's own choice. The user can switch to fine or coarse per hole.",
+    "ISO 273:1979, clause 1: the values are for general-purpose applications and come from bearing-area calculations with the ISO bolt and nut product standards; clearance holes for special applications are chosen from the design requirements.",
+    "ISO 273:1979, clause 2, last note: where the edge of the hole would interfere with the underhead fillet of the bolt, a chamfer is recommended."
+  ]
+}

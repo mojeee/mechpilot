@@ -176,3 +176,35 @@ Planned (added in the milestone that needs them, each as a separate, replaceable
   twin of the serializer's ordering; `tests/samples.test.ts` checks the result with the real one.
 - **Site output is committed.** As in BoardPilot, `scripts/build-site.mjs` writes `site/` and the
   result is committed so Cloudflare Pages can serve the folder as it is without a build step.
+- **three.js through @react-three/fiber and drei for the 3D viewer** (MIT). The viewer only
+  consumes `PartMesh` from `shared/cad/protocol.ts` (flat arrays), so the kernel can change
+  without touching it. `@react-three/fiber` lists Expo and React Native as optional peers and
+  npm 11 tries to install them; `.npmrc` sets `legacy-peer-deps=true` so `npm ci` and
+  `npm install` skip those optional peers on every machine and in CI.
+- **One generic file dialog pair for 3D formats** (`files.openText(filters)` and
+  `files.saveBytes(bytes, name, extension)`) instead of one IPC channel per format: STEP, STL
+  and 3MF all go through them, and the e2e save-folder override applies to all of them.
+- **3D kernel: `replicad@1.1.0` (MIT) on `replicad-opencascadejs@1.1.0`** (OpenCascade 8.0 as a
+  single-threaded WebAssembly build, LGPL-2.1-only, no SharedArrayBuffer), pinned exactly like
+  planegcs, in its own worker (`app/workers/kernel`, `NOTICE.md` with the licence text unchanged)
+  behind `KernelSpec`. The wasm is imported by its relative `dist/` path because the package's
+  export map hides it from Vite's `?url` import.
+- **Per-part body cache by feature prefix.** The kernel keeps the body after every feature of a
+  part (16 parts at most); a rebuild reuses the leading features that did not change, so editing
+  the last feature costs that feature only (product rule 8). Messages are translated in the
+  worker: the build request carries `lang` like the solver's.
+- **Feature semantics fixed in code and tests:** a "through" hole is drilled along −normal of its
+  sketch plane only, and a hole that misses the body fails with the direction in the message
+  instead of flipping silently; a cut that removes nothing or everything fails; a circular pattern
+  at 360° spreads the copies evenly, at a smaller angle the last copy sits at that angle (1000
+  copies at most); a shell with no open face is the body minus its inner offset; every new body
+  passes `BRepCheck_Analyzer` and must have a volume; splines become exact Bézier pieces; hidden
+  projection lines that lie on visible ones are dropped.
+- **Exchange formats:** STEP AP214 in mm written through XCAF with the part name and no colours
+  (replicad's assembly writer always adds a colour); STL binary at 0.01 mm / 0.1 rad (display
+  meshes at 0.05 mm / 0.3 rad); 3MF as a hand-written stored ZIP with a fixed 1980-01-01 date so
+  files are reproducible, vertices welded so the mesh is manifold.
+- **Library data from secondary sources is marked.** `library/materials/common.json` mixes
+  primary densities (EN 1993-1-2, EN 10088-1, EN 1999-1-1) with supplier datasheets for C45,
+  brass, copper, cast iron and plastics; each entry carries its own `verification` and the file's
+  is its weakest. PTFE is left out because sources disagree; M60/M64 have no ISO 2306 tap drill.

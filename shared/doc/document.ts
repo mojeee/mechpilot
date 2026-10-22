@@ -42,6 +42,8 @@ export function newDocument(name = 'Untitled'): Document {
     sheetOrder: [],
     constraints: {},
     constraintOrder: [],
+    parts: {},
+    partOrder: [],
   };
 }
 

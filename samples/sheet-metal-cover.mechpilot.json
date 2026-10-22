@@ -1,0 +1,243 @@
+{
+  "format": "mechpilot",
+  "version": 5,
+  "unit": "mm",
+  "name": "Sheet-metal cover",
+  "description": "A 120 × 80 × 25 mm cover with 1.5 mm walls, R5 corners and four Ø4.5 clearance holes for M4 screws (ISO 273 medium series) on top: a box extruded from the outline, filleted, shelled with the bottom open, then drilled at the circle centres.",
+  "standard": "iso",
+  "projection": "first",
+  "dimStyle": {
+    "annotationScale": 1,
+    "arrowSize": 3.5,
+    "arrowhead": "closed-filled",
+    "decimals": 2,
+    "extensionGap": 2,
+    "extensionOvershoot": 2,
+    "textGap": 1,
+    "textHeight": 3.5
+  },
+  "layerOrder": [
+    "0",
+    "centre",
+    "dimensions"
+  ],
+  "activeLayer": "0",
+  "layers": {
+    "0": {
+      "id": "0",
+      "color": "auto",
+      "lineType": "01.2",
+      "lineWidth": 0.5,
+      "locked": false,
+      "name": "0",
+      "visible": true
+    },
+    "centre": {
+      "id": "centre",
+      "color": "#4da3ff",
+      "lineType": "04.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "centre",
+      "visible": true
+    },
+    "dimensions": {
+      "id": "dimensions",
+      "color": "#52c98b",
+      "lineType": "01.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "dimensions",
+      "visible": true
+    }
+  },
+  "entityOrder": [
+    "o1",
+    "o2",
+    "o3",
+    "o4",
+    "h1",
+    "h2",
+    "h3",
+    "h4"
+  ],
+  "entities": {
+    "o1": {
+      "id": "o1",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": 0
+      },
+      "b": {
+        "x": 120,
+        "y": 0
+      }
+    },
+    "o2": {
+      "id": "o2",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": 0
+      },
+      "b": {
+        "x": 120,
+        "y": 80
+      }
+    },
+    "o3": {
+      "id": "o3",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": 80
+      },
+      "b": {
+        "x": 0,
+        "y": 80
+      }
+    },
+    "o4": {
+      "id": "o4",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": 80
+      },
+      "b": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "h1": {
+      "id": "h1",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 15,
+        "y": 15
+      },
+      "radius": 2.25
+    },
+    "h2": {
+      "id": "h2",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 105,
+        "y": 15
+      },
+      "radius": 2.25
+    },
+    "h3": {
+      "id": "h3",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 15,
+        "y": 65
+      },
+      "radius": 2.25
+    },
+    "h4": {
+      "id": "h4",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 105,
+        "y": 65
+      },
+      "radius": 2.25
+    }
+  },
+  "constraintOrder": [],
+  "constraints": {},
+  "partOrder": [
+    "cover"
+  ],
+  "parts": {
+    "cover": {
+      "id": "cover",
+      "features": [
+        {
+          "entities": [
+            "o1",
+            "o2",
+            "o3",
+            "o4"
+          ],
+          "id": "sk1",
+          "kind": "sketch",
+          "name": "Outline",
+          "offset": 0,
+          "plane": "XY"
+        },
+        {
+          "direction": "normal",
+          "distance": 25,
+          "id": "ex1",
+          "kind": "extrude",
+          "name": "Box",
+          "op": "add",
+          "sketch": "sk1"
+        },
+        {
+          "edges": {
+            "axis": "Z",
+            "kind": "parallelTo"
+          },
+          "id": "f1",
+          "kind": "fillet",
+          "name": "Corner fillets",
+          "radius": 5
+        },
+        {
+          "faces": [
+            {
+              "direction": "Z-",
+              "kind": "normal"
+            }
+          ],
+          "id": "sh1",
+          "kind": "shell",
+          "name": "Walls",
+          "thickness": 1.5
+        },
+        {
+          "entities": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "id": "sk2",
+          "kind": "sketch",
+          "name": "Hole centres",
+          "offset": 25,
+          "plane": "XY"
+        },
+        {
+          "depth": "through",
+          "id": "ho1",
+          "kind": "hole",
+          "name": "M4 clearance holes",
+          "sketch": "sk2",
+          "spec": {
+            "kind": "clearance",
+            "series": "medium",
+            "thread": "M4"
+          }
+        }
+      ],
+      "material": "en-aw-5754",
+      "name": "Sheet-metal cover"
+    }
+  },
+  "sheetOrder": [],
+  "sheets": {}
+}

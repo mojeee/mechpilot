@@ -78,12 +78,33 @@ Node 24 is required. The first `npm install` downloads Electron (about 100 MB).
 
 If MechPilot ever closes unexpectedly, the next start offers to recover the autosaved drawing.
 
+## 3D parts
+
+- **From outline to body:** draw a closed outline in Model (lines, arcs, circles; polylines too),
+  select it and type `SKETCH` (optionally `SKETCH XZ 20` for another plane and an offset). Then
+  `EXTRUDE 10` (or `EXTRUDE 5 CUT`, `EXTRUDE 8 BOTH`), or `REVOLVE` (360° around the sketch's
+  X axis by default; edit the axis in the Features tab). A 3D tab opens with the part.
+- **More features:** `HOLE M6` drills ISO 273 clearance holes at the circle centres of the last
+  sketch (`HOLE M8 TAP` a tapped hole with its tap drill, `HOLE 6.6 12` a plain hole 12 deep),
+  `FILLET 2`, `CHAMFER 1`, `SHELL 1.5`, `MIRROR3D YZ`, `PATTERN 3 2 20 15` (3 × 2 grid) or
+  `PATTERN C 6` (6 around Z). Every value can be changed later in the Features tab; the part
+  rebuilds in the background and never freezes the window.
+- **Reading the tree:** a red feature could not be built and says why; the body continues without
+  it. Suppress a feature with ● / ◌, reorder with the arrows, `U` undoes any change.
+- **Looking at it:** drag to orbit, wheel to zoom, right-drag to pan; the view cube snaps to the
+  standard views. Section (Features tab) cuts the body with a plane; Measure takes the distance
+  between two clicked points. Volume, surface, size and centre of mass are listed under the tree.
+- **Exchange:** `EXPORT STEP`, `EXPORT STL`, `EXPORT 3MF`; `STEP` imports a STEP file as a new
+  part.
+
 ## Keyboard
 
 | Key | Action |
 | --- | --- |
 | `L`, `PL`, `REC`, `C`, `A`, `EL`, `SPL`, `T` | line, polyline, rectangle, circle, arc, ellipse, spline, text |
 | `M`, `CO`, `RO`, `SC`, `MI`, `O`, `TR`, `EX`, `F`, `CHA`, `AR` | move, copy, rotate, scale, mirror, offset, trim, extend, fillet, chamfer, array |
+| `SKETCH`, `EXTRUDE`, `REVOLVE`, `HOLE`, `FILLET`, `CHAMFER`, `SHELL`, `MIRROR3D`, `PATTERN` | 3D features from the selected outline (see above) |
+| `PART`, `STEP`, `EXPORT STEP` / `STL` / `3MF`, `MEASURE` | new part, import STEP, export the part, measure in 3D |
 | `U`, `REDO` | undo, redo |
 | `E` or Delete | erase the selection |
 | `ZE`, `ZW` | zoom extents, zoom to the selection |

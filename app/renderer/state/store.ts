@@ -6,11 +6,12 @@ import { create } from 'zustand';
 import type { Command } from '@shared/commands';
 import { canRedo, canUndo, DEFAULT_HISTORY_LIMIT, editorState, execute, markSaved, redo as redoState, undo as undoState, type EditorState } from '@shared/commands/history';
 import { explain, type SketchDiagnosis } from '@shared/sketch/model';
-import { solverWorker } from '../workers';
+import { kernelWorker, solverWorker } from '../workers';
 import { documentBox, entityBox, pick } from '@shared/doc/document';
 import { newDocument } from '@shared/doc/document';
 import { parse, serialize } from '@shared/doc/file';
-import type { Document, Entity, Id, Sheet, SheetSize } from '@shared/doc/types';
+import type { Document, Entity, Feature, HoleSpec, Id, Part, Sheet, SheetSize, SketchPlane } from '@shared/doc/types';
+import type { BuildResult } from '@shared/cad/protocol';
 import { newSheet, sheetPaper } from '@shared/draw/sheet';
 import { sheetPage } from '@shared/draw/pages';
 import { type Box, type Vec2 } from '@shared/geometry/vec2';
@@ -86,6 +87,29 @@ export interface Store {
   /** Solve the constraints now and apply the moved geometry as part of the last undo step. */
   solveNow(): Promise<void>;
 
+  /** M4: the part shown in the 3D view (null = 2D model or a sheet), its build, section and measuring. */
+  activePart: Id | null;
+  build: BuildResult | null;
+  building: boolean;
+  section: { plane: SketchPlane; offset: number } | null;
+  measure: boolean;
+  measurePoints: [number, number, number][];
+  setActivePart(id: Id | null): void;
+  addPart(name?: string): Id;
+  updatePart(part: Part): void;
+  deletePart(id: Id): void;
+  addFeature(partId: Id, feature: Feature): void;
+  updateFeature(partId: Id, feature: Feature): void;
+  deleteFeature(partId: Id, featureId: Id): void;
+  /** A sketch feature from the selected 2D entities on a plane (and a part when there is none). */
+  makeSketch(plane: SketchPlane, offset?: number): Id | null;
+  rebuild(): Promise<void>;
+  exportPart(format: 'step' | 'stl' | '3mf'): Promise<void>;
+  importStepFile(): Promise<void>;
+  setSection(section: { plane: SketchPlane; offset: number } | null): void;
+  toggleMeasure(): void;
+  addMeasurePoint(p: [number, number, number]): void;
+
   run(cmd: Command): boolean;
   undo(): void;
   redo(): void;
@@ -146,6 +170,7 @@ export interface Store {
 
   say(message: Message | null): void;
   runCommandLine(text: string): void;
+  runPartCommand(upper: string): boolean;
 }
 
 const FIT_PADDING = 40;
@@ -217,7 +242,13 @@ export const useStore = create<Store>((set, get) => {
   const setEditor = (editor: EditorState, extra: Partial<Store> = {}) => {
     const ids = new Set(Object.keys(editor.doc.entities));
     const s = get();
-    set({ editor, index: s.editor.doc === editor.doc ? s.index : buildIndex(editor.doc), selection: s.selection.filter((id) => ids.has(id)), hover: s.hover && ids.has(s.hover) ? s.hover : null, ...extra });
+    const changed = s.editor.doc !== editor.doc;
+    set({ editor, index: changed ? buildIndex(editor.doc) : s.index, selection: s.selection.filter((id) => ids.has(id)), hover: s.hover && ids.has(s.hover) ? s.hover : null, ...extra });
+    // The 3D part follows every document change (a feature edit, an entity of a sketch moved, undo).
+    if (changed && s.activePart) {
+      if (editor.doc.parts[s.activePart]) void get().rebuild();
+      else get().setActivePart(null);
+    }
   };
 
   const first = editorState(newDocument(t('Untitled')));
@@ -283,8 +314,135 @@ export const useStore = create<Store>((set, get) => {
       }
     },
 
+    activePart: null,
+    build: null,
+    building: false,
+    section: null,
+    measure: false,
+    measurePoints: [],
+
+    setActivePart(id) {
+      set({ activePart: id, activeSheet: null, selection: [], tool: 'select', toolState: null, cursor: null, snap: null, hover: null, measure: false, measurePoints: [] });
+      if (id) void get().rebuild();
+    },
+    addPart(name) {
+      const s = get();
+      const n = s.editor.doc.partOrder.length + 1;
+      const part: Part = { id: randomId(), name: name ?? t('Part {n}', { n }), features: [] };
+      s.run({ kind: 'addPart', part });
+      return part.id;
+    },
+    updatePart(part) {
+      get().run({ kind: 'updatePart', part });
+    },
+    deletePart(id) {
+      const s = get();
+      if (s.run({ kind: 'deletePart', id }) && s.activePart === id) s.setActivePart(null);
+    },
+    addFeature(partId, feature) {
+      const part = get().editor.doc.parts[partId];
+      if (!part) return;
+      get().run({ kind: 'updatePart', part: { ...part, features: [...part.features, feature] } });
+    },
+    updateFeature(partId, feature) {
+      const part = get().editor.doc.parts[partId];
+      if (!part) return;
+      get().run({ kind: 'updatePart', part: { ...part, features: part.features.map((f) => (f.id === feature.id ? feature : f)) } });
+    },
+    deleteFeature(partId, featureId) {
+      const part = get().editor.doc.parts[partId];
+      if (!part) return;
+      get().run({ kind: 'updatePart', part: { ...part, features: part.features.filter((f) => f.id !== featureId) } });
+    },
+    makeSketch(plane, offset = 0) {
+      const s = get();
+      const doc = s.editor.doc;
+      const ids = s.selection.filter((id) => {
+        const e = doc.entities[id];
+        return e && ['line', 'arc', 'circle', 'polyline', 'ellipse', 'spline'].includes(e.type);
+      });
+      if (ids.length === 0) {
+        s.say({ kind: 'warn', text: t('Select the lines, arcs or circles of a closed outline first, then type SKETCH.') });
+        return null;
+      }
+      const partId = s.activePart ?? doc.partOrder[doc.partOrder.length - 1] ?? s.addPart();
+      const part = get().editor.doc.parts[partId];
+      const n = part.features.filter((f) => f.kind === 'sketch').length + 1;
+      const feature: Feature = { id: randomId(), name: t('Sketch {n}', { n }), kind: 'sketch', plane, offset, entities: ids };
+      get().addFeature(partId, feature);
+      get().say({ kind: 'info', text: t('Sketch "{name}" made from {n} entities on the {plane} plane. Now EXTRUDE <distance> or REVOLVE, or use the Features tab.', { name: feature.name, n: ids.length, plane }) });
+      return feature.id;
+    },
+    async rebuild() {
+      const s = get();
+      const partId = s.activePart;
+      if (!partId) return;
+      const doc = s.editor.doc;
+      if (!doc.parts[partId]) return;
+      if (s.building) return;
+      set({ building: true });
+      try {
+        const r = await kernelWorker().call('build', { doc, partId, lang: s.settings.lang }, 120_000);
+        if (get().editor.doc !== doc && get().activePart === partId) {
+          set({ building: false, build: r });
+          void get().rebuild();
+          return;
+        }
+        set({ build: r });
+        if (r.errors.length) set({ message: { kind: 'warn', text: r.errors[0].message, hint: r.errors[0].hint } });
+      } catch (e) {
+        set({ build: null, message: { kind: 'error', text: t('The 3D kernel did not answer: {reason}', { reason: e instanceof Error ? e.message : String(e) }) } });
+      } finally {
+        set({ building: false });
+      }
+    },
+    async exportPart(format) {
+      const s = get();
+      const partId = s.activePart;
+      if (!partId) {
+        s.say({ kind: 'info', text: t('Open a part in the 3D tab first.') });
+        return;
+      }
+      const doc = s.editor.doc;
+      const name = doc.parts[partId]?.name ?? doc.name;
+      try {
+        let bytes: Uint8Array;
+        if (format === 'step') bytes = new TextEncoder().encode((await kernelWorker().call('exportStep', { doc, partId }, 120_000)).text);
+        else if (format === 'stl') bytes = (await kernelWorker().call('exportStl', { doc, partId, binary: true }, 120_000)).data;
+        else bytes = (await kernelWorker().call('export3mf', { doc, partId }, 120_000)).data;
+        const r = await api().files.saveBytes(bytes, name, format);
+        if (!r.ok) {
+          s.say({ kind: 'error', text: r.error.message, hint: r.error.hint });
+          return;
+        }
+        if (r.value) s.say({ kind: 'info', text: t('Exported {path}.', { path: r.value.path }) });
+      } catch (e) {
+        s.say({ kind: 'error', text: t('Export failed: {reason}', { reason: e instanceof Error ? e.message : String(e) }) });
+      }
+    },
+    async importStepFile() {
+      const s = get();
+      const r = await api().files.openText([{ name: 'STEP', extensions: ['step', 'stp'] }]);
+      if (!r.ok) {
+        s.say({ kind: 'error', text: r.error.message, hint: r.error.hint });
+        return;
+      }
+      if (!r.value) return;
+      const name = r.value.path.replace(/^.*[\\/]/, '');
+      const partId = get().addPart(name.replace(/\.(step|stp)$/i, ''));
+      const data = btoa(unescape(encodeURIComponent(r.value.text)));
+      get().addFeature(partId, { id: randomId(), name: t('Imported {name}', { name }), kind: 'import', format: 'step', data, sourceName: name });
+      get().setActivePart(partId);
+    },
+    setSection: (section) => set({ section }),
+    toggleMeasure: () => set({ measure: !get().measure, measurePoints: [] }),
+    addMeasurePoint(p) {
+      const pts = get().measurePoints;
+      set({ measurePoints: pts.length >= 2 ? [p] : [...pts, p] });
+    },
+
     setActiveSheet(id) {
-      set({ activeSheet: id, selection: [], tool: 'select', toolState: null, cursor: null, snap: null, hover: null });
+      set({ activeSheet: id, activePart: null, selection: [], tool: 'select', toolState: null, cursor: null, snap: null, hover: null });
       get().zoomExtents();
     },
     addSheet(size = 'A3') {
@@ -589,7 +747,7 @@ export const useStore = create<Store>((set, get) => {
         if (!r.ok) return;
         setEditor(path ? markSaved(r.state) : r.state);
       }
-      set({ filePath: path, selection: [], tool: 'select', toolState: null, activeSheet: null, diagnosis: null, freedom: {}, message: { kind: 'info', text: label } });
+      set({ filePath: path, selection: [], tool: 'select', toolState: null, activeSheet: null, activePart: null, build: null, section: null, measure: false, measurePoints: [], diagnosis: null, freedom: {}, message: { kind: 'info', text: label } });
       get().zoomExtents();
       queueMicrotask(() => void get().solveNow());
     },
@@ -764,14 +922,160 @@ export const useStore = create<Store>((set, get) => {
         case 'SA':
         case 'SELECT ALL':
           return s.select(s.editor.doc.entityOrder);
+        case 'PART':
+          return s.setActivePart(s.addPart());
+        case 'REBUILD':
+          return void s.rebuild();
+        case 'STEP':
+        case 'IMPORT STEP':
+          return void s.importStepFile();
+        case 'EXPORT STEP':
+          return void s.exportPart('step');
+        case 'EXPORT STL':
+          return void s.exportPart('stl');
+        case 'EXPORT 3MF':
+          return void s.exportPart('3mf');
+        case 'MEASURE':
+          return s.toggleMeasure();
         default: {
+          if (s.runPartCommand(upper)) return;
           const n = parseLength(raw);
           if (n !== null) {
             s.say({ kind: 'info', text: t('Start a tool first (for example L, C or O), then type values.') });
             return;
           }
-          s.say({ kind: 'warn', text: t('Unknown command "{cmd}".', { cmd: raw }), hint: t('Try L, PL, REC, C, A, EL, SPL, T (draw); M, CO, RO, SC, MI, O, TR, EX, F, CHA, AR (edit); U, E, ZE, GRID, SNAP, OSNAP.') });
+          s.say({ kind: 'warn', text: t('Unknown command "{cmd}".', { cmd: raw }), hint: t('Try L, PL, REC, C, A, EL, SPL, T (draw); M, CO, RO, SC, MI, O, TR, EX, F, CHA, AR (edit); SKETCH, EXTRUDE, REVOLVE, HOLE, FILLET, CHAMFER, SHELL (3D); U, E, ZE, GRID, SNAP, OSNAP.') });
         }
+      }
+    },
+
+    /** 3D commands with arguments: SKETCH [XY|XZ|YZ] [offset], EXTRUDE <mm> [CUT|BOTH], REVOLVE [deg], HOLE <M6|6.6> [depth], FILLET <r>, CHAMFER <d>, SHELL <t>, MIRROR3D [XY|XZ|YZ] [offset], PATTERN <nx> <ny> <dx> <dy> | PATTERN C <n> [axis]. */
+    runPartCommand(upper: string): boolean {
+      const s = get();
+      const [cmd, ...args] = upper.split(/\s+/);
+      const num = (i: number, fallback: number | null = null): number | null => {
+        const v = args[i] === undefined ? null : parseLength(args[i]);
+        return v === null ? fallback : v;
+      };
+      const plane = (i: number): SketchPlane | null => (args[i] === 'XY' || args[i] === 'XZ' || args[i] === 'YZ' ? args[i] : null);
+      const needPart = (): Part | null => {
+        const doc = s.editor.doc;
+        const id = s.activePart ?? doc.partOrder[doc.partOrder.length - 1];
+        const part = id ? doc.parts[id] : null;
+        if (!part) s.say({ kind: 'warn', text: t('No part yet. Select a closed outline in Model and type SKETCH first.') });
+        return part;
+      };
+      const lastSketch = (part: Part): Id | null => {
+        const sk = part.features.filter((f) => f.kind === 'sketch');
+        if (!sk.length) s.say({ kind: 'warn', text: t('Add a sketch first: select a closed outline in Model and type SKETCH.') });
+        return sk.length ? sk[sk.length - 1].id : null;
+      };
+      const count = (part: Part, kind: Feature['kind']) => part.features.filter((f) => f.kind === kind).length + 1;
+      const done = (part: Part, f: Feature) => {
+        s.addFeature(part.id, f);
+        if (s.activePart !== part.id) s.setActivePart(part.id);
+        s.say({ kind: 'info', text: t('{name} added. Change its values in the Features tab; U undoes it.', { name: f.name }) });
+        return true;
+      };
+      switch (cmd) {
+        case 'SKETCH': {
+          const p = plane(0) ?? 'XY';
+          s.makeSketch(p, num(plane(0) ? 1 : 0, 0) ?? 0);
+          return true;
+        }
+        case 'EXTRUDE':
+        case 'EXT': {
+          const part = needPart();
+          if (!part) return true;
+          const sk = lastSketch(part);
+          if (!sk) return true;
+          const d = num(0);
+          if (d === null || d <= 0) {
+            s.say({ kind: 'warn', text: t('EXTRUDE needs a distance in mm, for example EXTRUDE 10 or EXTRUDE 5 CUT.') });
+            return true;
+          }
+          const cut = args.includes('CUT');
+          return done(part, { id: randomId(), name: t('Extrude {n}', { n: count(part, 'extrude') }), kind: 'extrude', sketch: sk, distance: d, direction: args.includes('BOTH') ? 'both' : args.includes('REVERSE') ? 'reverse' : 'normal', op: cut ? 'cut' : 'add' });
+        }
+        case 'REVOLVE':
+        case 'REV': {
+          const part = needPart();
+          if (!part) return true;
+          const sk = lastSketch(part);
+          if (!sk) return true;
+          const angle = num(0, 360) ?? 360;
+          return done(part, { id: randomId(), name: t('Revolve {n}', { n: count(part, 'revolve') }), kind: 'revolve', sketch: sk, axis: { a: { x: 0, y: 0 }, b: { x: 0, y: 1 } }, angle, op: args.includes('CUT') ? 'cut' : 'add' });
+        }
+        case 'HOLE': {
+          const part = needPart();
+          if (!part) return true;
+          const sk = lastSketch(part);
+          if (!sk) return true;
+          const a0 = args[0] ?? '';
+          let spec: HoleSpec;
+          if (/^M\d+(\.\d+)?$/.test(a0)) spec = args.includes('TAP') ? { kind: 'tapped', thread: a0 } : { kind: 'clearance', thread: a0, series: args.includes('FINE') ? 'fine' : args.includes('COARSE') ? 'coarse' : 'medium' };
+          else {
+            const d = parseLength(a0);
+            if (d === null || d <= 0) {
+              s.say({ kind: 'warn', text: t('HOLE needs a thread or a diameter: HOLE M6, HOLE M8 TAP, HOLE 6.6 [depth].') });
+              return true;
+            }
+            spec = { kind: 'simple', diameter: d };
+          }
+          const depth = args.slice(1).map((a) => parseLength(a)).find((v): v is number => v !== null && v > 0);
+          return done(part, { id: randomId(), name: t('Hole {n}', { n: count(part, 'hole') }), kind: 'hole', sketch: sk, spec, depth: depth ?? 'through' });
+        }
+        case 'FILLET3D':
+        case 'FILLET': {
+          const part = needPart();
+          if (!part) return true;
+          const r = num(0);
+          if (r === null || r <= 0) {
+            s.say({ kind: 'warn', text: t('FILLET needs a radius in mm, for example FILLET 2.') });
+            return true;
+          }
+          return done(part, { id: randomId(), name: t('Fillet {n}', { n: count(part, 'fillet') }), kind: 'fillet', edges: { kind: 'all' }, radius: r });
+        }
+        case 'CHAMFER3D':
+        case 'CHAMFER': {
+          const part = needPart();
+          if (!part) return true;
+          const d = num(0);
+          if (d === null || d <= 0) {
+            s.say({ kind: 'warn', text: t('CHAMFER needs a distance in mm, for example CHAMFER 1.') });
+            return true;
+          }
+          return done(part, { id: randomId(), name: t('Chamfer {n}', { n: count(part, 'chamfer') }), kind: 'chamfer', edges: { kind: 'all' }, distance: d });
+        }
+        case 'SHELL': {
+          const part = needPart();
+          if (!part) return true;
+          const th = num(0);
+          if (th === null || th <= 0) {
+            s.say({ kind: 'warn', text: t('SHELL needs a wall thickness in mm, for example SHELL 2.') });
+            return true;
+          }
+          return done(part, { id: randomId(), name: t('Shell {n}', { n: count(part, 'shell') }), kind: 'shell', thickness: th, faces: [{ kind: 'normal', direction: 'Z+' }] });
+        }
+        case 'MIRROR3D': {
+          const part = needPart();
+          if (!part) return true;
+          return done(part, { id: randomId(), name: t('Mirror {n}', { n: count(part, 'mirror') }), kind: 'mirror', plane: plane(0) ?? 'YZ', offset: num(plane(0) ? 1 : 0, 0) ?? 0 });
+        }
+        case 'PATTERN': {
+          const part = needPart();
+          if (!part) return true;
+          if (args[0] === 'C') {
+            const n = num(1, 6) ?? 6;
+            const axis = args[2] === 'X' || args[2] === 'Y' || args[2] === 'Z' ? args[2] : 'Z';
+            return done(part, { id: randomId(), name: t('Pattern {n}', { n: count(part, 'pattern') }), kind: 'pattern', mode: 'circular', axis, count: Math.max(1, Math.round(n)), angle: 360 });
+          }
+          const nx = num(0, 2) ?? 2;
+          const ny = num(1, 1) ?? 1;
+          return done(part, { id: randomId(), name: t('Pattern {n}', { n: count(part, 'pattern') }), kind: 'pattern', mode: 'linear', counts: [Math.max(1, Math.round(nx)), Math.max(1, Math.round(ny))], spacing: [num(2, 20) ?? 20, num(3, 20) ?? 20], axes: ['X', 'Y'] });
+        }
+        default:
+          return false;
       }
     },
   };

@@ -774,6 +774,8 @@ export function readDxf(text: string, opts: { name?: string; ids?: IdGen } = {})
     sheetOrder: [],
     constraints: {},
     constraintOrder: [],
+    parts: {},
+    partOrder: [],
   };
   return { ok: true, doc, warnings: warn.list() };
 }

@@ -2,7 +2,7 @@
 // command: plain data applied by a pure function that returns the new document and the inverse
 // command. Undo, autosave, scripting and AI all go through here; nothing else edits a document.
 
-import type { Constraint, DimStyle, Document, Entity, Id, Layer, Projection, Sheet, Standard } from '../doc/types';
+import type { Constraint, DimStyle, Document, Entity, Id, Layer, Part, Projection, Sheet, Standard } from '../doc/types';
 
 export type Command =
   /** `order`, when given, is the full entityOrder to restore (undo of a delete keeps the drawing order). */
@@ -29,12 +29,17 @@ export type Command =
   /** `order`, when given, is the full constraintOrder to restore (undo of a delete keeps the order). */
   | { kind: 'addConstraints'; constraints: Constraint[]; order?: Id[] }
   | { kind: 'deleteConstraints'; ids: Id[] }
-  | { kind: 'updateConstraints'; constraints: Constraint[] };
+  | { kind: 'updateConstraints'; constraints: Constraint[] }
+  /* M4: parts and their feature trees. */
+  | { kind: 'addPart'; part: Part; index?: number }
+  | { kind: 'deletePart'; id: Id }
+  /** Replace a part (name, material, the whole feature list). */
+  | { kind: 'updatePart'; part: Part };
 
 export type CommandKind = Command['kind'];
 
 export interface CommandError {
-  code: 'unknown-entity' | 'unknown-layer' | 'unknown-sheet' | 'unknown-constraint' | 'duplicate-id' | 'layer-not-empty' | 'last-layer' | 'layer-locked' | 'empty';
+  code: 'unknown-entity' | 'unknown-layer' | 'unknown-sheet' | 'unknown-constraint' | 'unknown-part' | 'duplicate-id' | 'layer-not-empty' | 'last-layer' | 'layer-locked' | 'empty';
   message: string;
   hint?: string;
 }
@@ -197,6 +202,25 @@ export function apply(doc: Document, cmd: Command): ApplyResult {
       const removed = doc.constraintOrder.filter((id) => gone.has(id)).map((id) => doc.constraints[id]);
       return { ok: true, doc: { ...doc, constraints, constraintOrder: doc.constraintOrder.filter((id) => !gone.has(id)) }, inverse: { kind: 'addConstraints', constraints: removed, order: doc.constraintOrder } };
     }
+    case 'addPart': {
+      if (doc.parts[cmd.part.id]) return fail('duplicate-id', `A part with id ${cmd.part.id} already exists.`);
+      const partOrder = [...doc.partOrder];
+      partOrder.splice(cmd.index ?? partOrder.length, 0, cmd.part.id);
+      return { ok: true, doc: { ...doc, parts: { ...doc.parts, [cmd.part.id]: cmd.part }, partOrder }, inverse: { kind: 'deletePart', id: cmd.part.id } };
+    }
+    case 'deletePart': {
+      const part = doc.parts[cmd.id];
+      if (!part) return fail('unknown-part', `Part "${cmd.id}" does not exist.`);
+      const parts = { ...doc.parts };
+      delete parts[cmd.id];
+      const index = doc.partOrder.indexOf(cmd.id);
+      return { ok: true, doc: { ...doc, parts, partOrder: doc.partOrder.filter((id) => id !== cmd.id) }, inverse: { kind: 'addPart', part, index } };
+    }
+    case 'updatePart': {
+      const old = doc.parts[cmd.part.id];
+      if (!old) return fail('unknown-part', `Part "${cmd.part.id}" does not exist.`);
+      return { ok: true, doc: { ...doc, parts: { ...doc.parts, [cmd.part.id]: cmd.part } }, inverse: { kind: 'updatePart', part: old } };
+    }
     case 'updateConstraints': {
       if (cmd.constraints.length === 0) return fail('empty', 'Nothing to change.');
       const constraints = { ...doc.constraints };
@@ -274,5 +298,11 @@ export function labelOf(cmd: Command): string {
       return cmd.ids.length === 1 ? 'Delete constraint' : `Delete ${cmd.ids.length} constraints`;
     case 'updateConstraints':
       return cmd.constraints.length === 1 ? `Edit ${cmd.constraints[0].kind} constraint` : `Edit ${cmd.constraints.length} constraints`;
+    case 'addPart':
+      return `Add part ${cmd.part.name}`;
+    case 'deletePart':
+      return 'Delete part';
+    case 'updatePart':
+      return `Edit part ${cmd.part.name}`;
   }
 }

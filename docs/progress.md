@@ -3,6 +3,51 @@
 Short entries after each milestone: what works, what is left, anything the owner must do by hand.
 Newest first.
 
+## 2026-10-22 — M4 3D parts done; website built (M8-Website pulled forward)
+
+**What works**
+
+- 3D parts: select a closed outline in Model, `SKETCH`, then `EXTRUDE` / `REVOLVE` / `HOLE` /
+  `FILLET` / `CHAMFER` / `SHELL` / `MIRROR3D` / `PATTERN` on the command line or from the
+  Features tab. A 3D tab per part shows the body (three.js): orbit, view cube, section plane,
+  point-to-point measure, volume / surface / size / centre of mass. The feature tree shows which
+  feature built, failed (with the reason in plain words) or was skipped; reorder, suppress, edit any
+  value and the part rebuilds in the kernel worker (replicad on opencascade.js, LGPL, in
+  `app/workers/kernel`), never freezing the window; unchanged leading features are reused from a
+  per-part cache. Undo covers every feature edit. File format 5.
+- STEP, STL and 3MF export, STEP import as a part's base body. Library: ISO 273 clearance holes,
+  ISO 2306 tap drills (ISO 261 pitches), materials with density and source (primary where a
+  standard gives it, supplier datasheets marked secondary). Samples: stepped shaft, sheet-metal
+  cover. 308 unit tests, 7 end-to-end tests (parts: sketch → extrude → hole → undo → failed
+  fillet explained → both samples build).
+- Website (`site/`, 70 pages, English and Italian): landing with real screenshots, feature
+  status read from the roadmap, download buttons (release not out yet, said on the page), honest
+  comparison table, "For companies", docs and changelog pages rendered from `docs/`, one page
+  per standard table in the library (ISO 286 fits per class, sheets, line types, lettering,
+  GD&T, surface, scales, holes, materials), two guides (ISO fits, first vs third angle), sitemap,
+  robots, 404, strict headers, no JavaScript, no third-party requests. `scripts/check-site.mjs`
+  checks links, titles, hreflang and the sitemap at every build. `docs/website.md` explains the
+  build and the Cloudflare Pages setup.
+
+**Plan change (owner's request).** The next work is the AI assistant (M7-AI in the roadmap: a
+complex part designed step by step from written requests, a face / part / corner picked in the
+viewer or drawing dropped into the chat as a reference, changes requested on it, previews with
+Accept / Reject, the PDF drawing at the end), with the same walkthrough as a demo page on the
+website. Then M5, M6, M7-Checks, M8-Release.
+
+**What's left in M4**
+
+- Edge and face picking in the viewer for fillets and chamfers (today: selectors by axis, plane,
+  length or box, set in the Features tab). Planned with the assistant's "select a face" work.
+- Hidden-line projection exists in the kernel (`project`) and is used by M5.
+
+**For the owner to do by hand**
+
+- Cloudflare Pages: connect the repo (Git integration, production branch `main`, build command
+  empty, output directory `site`, root `/`) and add the custom domain
+  `mechpilot.agentflowbind.com`; the steps and the header checks are in `docs/website.md`.
+- The assistant's real-key test will read `ANTHROPIC_API_KEY` from `.env.local` (git-ignored).
+
 ## 2026-10-22 — M3 Parametric sketches done
 
 **What works**

@@ -4,8 +4,20 @@
 import { portOf, WorkerClient, type SmokeSpec } from '@shared/worker-protocol';
 import type { SolverSpec } from '@shared/sketch/protocol';
 
+import type { KernelSpec } from '@shared/cad/protocol';
+
 let smoke: WorkerClient<SmokeSpec> | null = null;
 let solver: WorkerClient<SolverSpec> | null = null;
+let kernel: WorkerClient<KernelSpec> | null = null;
+
+/** The 3D kernel (replicad on opencascade.js, LGPL, app/workers/kernel): created on first use. */
+export function kernelWorker(): WorkerClient<KernelSpec> {
+  if (!kernel) {
+    const w = new Worker(new URL('../workers/kernel/index.ts', import.meta.url), { type: 'module' });
+    kernel = new WorkerClient<KernelSpec>(portOf(w));
+  }
+  return kernel;
+}
 
 /** The sketch constraint solver (planegcs, LGPL, app/workers/solver): created on first use. */
 export function solverWorker(): WorkerClient<SolverSpec> {

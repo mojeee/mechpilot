@@ -1,0 +1,413 @@
+{
+  "format": "mechpilot",
+  "version": 5,
+  "unit": "mm",
+  "name": "Stepped shaft",
+  "description": "A 200 mm stepped shaft with two bearing seats (Ø25 and Ø20) and a Ø30 shoulder, drawn as a half profile and revolved around the X axis; 1 mm chamfers at both ends. Open the 3D tab to see the part; the Features tab edits every value and the part rebuilds.",
+  "standard": "iso",
+  "projection": "first",
+  "dimStyle": {
+    "annotationScale": 1,
+    "arrowSize": 3.5,
+    "arrowhead": "closed-filled",
+    "decimals": 2,
+    "extensionGap": 2,
+    "extensionOvershoot": 2,
+    "textGap": 1,
+    "textHeight": 3.5
+  },
+  "layerOrder": [
+    "0",
+    "centre",
+    "dimensions"
+  ],
+  "activeLayer": "0",
+  "layers": {
+    "0": {
+      "id": "0",
+      "color": "auto",
+      "lineType": "01.2",
+      "lineWidth": 0.5,
+      "locked": false,
+      "name": "0",
+      "visible": true
+    },
+    "centre": {
+      "id": "centre",
+      "color": "#4da3ff",
+      "lineType": "04.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "centre",
+      "visible": true
+    },
+    "dimensions": {
+      "id": "dimensions",
+      "color": "#52c98b",
+      "lineType": "01.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "dimensions",
+      "visible": true
+    }
+  },
+  "entityOrder": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "s8",
+    "s9",
+    "s10",
+    "m1",
+    "m2",
+    "m3",
+    "m4",
+    "m5",
+    "m6",
+    "m7",
+    "m8",
+    "m9",
+    "cl"
+  ],
+  "entities": {
+    "s1": {
+      "id": "s1",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": 0
+      },
+      "b": {
+        "x": 0,
+        "y": 12.5
+      }
+    },
+    "s2": {
+      "id": "s2",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": 12.5
+      },
+      "b": {
+        "x": 30,
+        "y": 12.5
+      }
+    },
+    "s3": {
+      "id": "s3",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 30,
+        "y": 12.5
+      },
+      "b": {
+        "x": 30,
+        "y": 15
+      }
+    },
+    "s4": {
+      "id": "s4",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 30,
+        "y": 15
+      },
+      "b": {
+        "x": 120,
+        "y": 15
+      }
+    },
+    "s5": {
+      "id": "s5",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": 15
+      },
+      "b": {
+        "x": 120,
+        "y": 14
+      }
+    },
+    "s6": {
+      "id": "s6",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": 14
+      },
+      "b": {
+        "x": 170,
+        "y": 14
+      }
+    },
+    "s7": {
+      "id": "s7",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 170,
+        "y": 14
+      },
+      "b": {
+        "x": 170,
+        "y": 10
+      }
+    },
+    "s8": {
+      "id": "s8",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 170,
+        "y": 10
+      },
+      "b": {
+        "x": 200,
+        "y": 10
+      }
+    },
+    "s9": {
+      "id": "s9",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 200,
+        "y": 10
+      },
+      "b": {
+        "x": 200,
+        "y": 0
+      }
+    },
+    "s10": {
+      "id": "s10",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 200,
+        "y": 0
+      },
+      "b": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "m1": {
+      "id": "m1",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": 0
+      },
+      "b": {
+        "x": 0,
+        "y": -12.5
+      }
+    },
+    "m2": {
+      "id": "m2",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": -12.5
+      },
+      "b": {
+        "x": 30,
+        "y": -12.5
+      }
+    },
+    "m3": {
+      "id": "m3",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 30,
+        "y": -12.5
+      },
+      "b": {
+        "x": 30,
+        "y": -15
+      }
+    },
+    "m4": {
+      "id": "m4",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 30,
+        "y": -15
+      },
+      "b": {
+        "x": 120,
+        "y": -15
+      }
+    },
+    "m5": {
+      "id": "m5",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": -15
+      },
+      "b": {
+        "x": 120,
+        "y": -14
+      }
+    },
+    "m6": {
+      "id": "m6",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": -14
+      },
+      "b": {
+        "x": 170,
+        "y": -14
+      }
+    },
+    "m7": {
+      "id": "m7",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 170,
+        "y": -14
+      },
+      "b": {
+        "x": 170,
+        "y": -10
+      }
+    },
+    "m8": {
+      "id": "m8",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 170,
+        "y": -10
+      },
+      "b": {
+        "x": 200,
+        "y": -10
+      }
+    },
+    "m9": {
+      "id": "m9",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 200,
+        "y": -10
+      },
+      "b": {
+        "x": 200,
+        "y": 0
+      }
+    },
+    "cl": {
+      "id": "cl",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": -10,
+        "y": 0
+      },
+      "b": {
+        "x": 210,
+        "y": 0
+      }
+    }
+  },
+  "constraintOrder": [],
+  "constraints": {},
+  "partOrder": [
+    "shaft"
+  ],
+  "parts": {
+    "shaft": {
+      "id": "shaft",
+      "features": [
+        {
+          "entities": [
+            "s1",
+            "s2",
+            "s3",
+            "s4",
+            "s5",
+            "s6",
+            "s7",
+            "s8",
+            "s9",
+            "s10"
+          ],
+          "id": "sk1",
+          "kind": "sketch",
+          "name": "Half profile",
+          "offset": 0,
+          "plane": "XY"
+        },
+        {
+          "angle": 360,
+          "axis": {
+            "a": {
+              "x": 0,
+              "y": 0
+            },
+            "b": {
+              "x": 1,
+              "y": 0
+            }
+          },
+          "id": "rev1",
+          "kind": "revolve",
+          "name": "Revolve",
+          "op": "add",
+          "sketch": "sk1"
+        },
+        {
+          "distance": 1,
+          "edges": {
+            "kind": "inPlane",
+            "offset": 0,
+            "plane": "YZ"
+          },
+          "id": "ch1",
+          "kind": "chamfer",
+          "name": "Chamfer left end"
+        },
+        {
+          "distance": 1,
+          "edges": {
+            "kind": "inPlane",
+            "offset": 200,
+            "plane": "YZ"
+          },
+          "id": "ch2",
+          "kind": "chamfer",
+          "name": "Chamfer right end"
+        }
+      ],
+      "material": "c45",
+      "name": "Stepped shaft"
+    }
+  },
+  "sheetOrder": [],
+  "sheets": {}
+}

@@ -5,6 +5,27 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## 0.5.0 — 2026-10-22 — M4 3D parts
+
+### Added
+
+- 3D parts built by replicad on opencascade.js (OpenCascade as WebAssembly, LGPL, in its own
+  worker, `app/workers/kernel`): a closed outline in the Model becomes a sketch on the XY, XZ or
+  YZ plane (`SKETCH`), then `EXTRUDE`, `REVOLVE`, `HOLE` (plain, ISO 273 clearance or tapped
+  with the tap drill from the library), `FILLET`, `CHAMFER`, `SHELL`, `MIRROR3D`, `PATTERN`.
+  Every feature is a command: undo, redo and the file format (version 5) cover the feature tree.
+- A 3D tab per part with a three.js viewer: orbit, view cube, grid, section plane on any
+  principal plane, point-to-point measuring, and the part's volume, surface, bounding box and
+  centre of mass.
+- Features tab: the feature tree with status per feature (built, failed with the reason in plain
+  words, skipped), reorder, suppress, edit every parameter and the part rebuilds; the body keeps
+  building past a failed feature.
+- STEP, STL and 3MF export; STEP import as a part's base body (kept inside the document).
+- Library: ISO 273 clearance holes (fine, medium, coarse) and tap drills; common materials with
+  density and source.
+- Samples: a stepped shaft (half profile revolved, chamfered ends) and a sheet-metal cover (box,
+  R5 corners, 1.5 mm shell, four M4 clearance holes).
+
 ## 0.4.0 — 2026-10-22 — M3 Parametric sketches
 
 ### Added

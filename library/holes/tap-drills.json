@@ -1,0 +1,59 @@
+{
+  "id": "tap-drills",
+  "name": "Tap drill diameters for ISO metric coarse threads",
+  "source": "ISO 2306:1972 Drills for use prior to tapping screw threads, clause 3.1 and Table 1 (coarse pitch series); pitches cross-checked with ISO 261:1998 ISO general purpose metric screw threads - General plan, Table 2 (coarse column)",
+  "unit": "mm",
+  "verification": "primary",
+  "verifiedFrom": [
+    "https://law.resource.org/pub/in/bis/S01/is.10952.1984.pdf (IS 10952:1984, identical with ISO 2306:1972: clauses 0, 1 and 3.1, Table 1; read from the rendered page on 2026-10-22)",
+    "https://law.resource.org/pub/in/bis/S01/is.4218.2.2001.pdf (IS 4218 (Part 2):2001, identical with ISO 261:1998: clause 5, Table 2; read from the rendered pages on 2026-10-22)"
+  ],
+  "verificationNotes": [
+    "pitch and drill were read from ISO 2306:1972 Table 1 (nominal diameter, pitch, minor diameter limits for 5H/6H/7H, drill diameter). Every pitch agrees with the coarse column of ISO 261:1998 Table 2.",
+    "ISO 2306:1972 Table 1 ends at M56. M60 (pitch 5.5) and M64 (pitch 6) have coarse pitches in ISO 261:1998 Table 2 but no drill in ISO 2306; they are left out (see docs/to-verify.md). Use `rule` for them only with the user's confirmation.",
+    "ISO 262 (selected sizes for bolts, screws and nuts) was not read; the sizes here are the ones ISO 2306 lists, which include second- and third-choice diameters (M1.8, M2.2, M3.5, M4.5, M7, M9, M11, ...) of ISO 261."
+  ],
+  "pitchSource": "ISO 261:1998, Table 2, column 'coarse'; same values in ISO 2306:1972, Table 1",
+  "drillSource": "ISO 2306:1972, Table 1, column 'Drill diameter'",
+  "rule": "drill diameter ≈ nominal diameter − pitch",
+  "ruleSource": "ISO 2306:1972, clause 1: the sizes of drills for parallel screw threads of normal length of engagement, the drill diameter being approximately equal to the nominal diameter of the thread minus the pitch",
+  "threads": [
+    { "thread": "M1.6", "pitch": 0.35, "drill": 1.25 },
+    { "thread": "M1.8", "pitch": 0.35, "drill": 1.45 },
+    { "thread": "M2", "pitch": 0.4, "drill": 1.6 },
+    { "thread": "M2.2", "pitch": 0.45, "drill": 1.75 },
+    { "thread": "M2.5", "pitch": 0.45, "drill": 2.05 },
+    { "thread": "M3", "pitch": 0.5, "drill": 2.5 },
+    { "thread": "M3.5", "pitch": 0.6, "drill": 2.9 },
+    { "thread": "M4", "pitch": 0.7, "drill": 3.3 },
+    { "thread": "M4.5", "pitch": 0.75, "drill": 3.7 },
+    { "thread": "M5", "pitch": 0.8, "drill": 4.2 },
+    { "thread": "M6", "pitch": 1, "drill": 5 },
+    { "thread": "M7", "pitch": 1, "drill": 6 },
+    { "thread": "M8", "pitch": 1.25, "drill": 6.8 },
+    { "thread": "M9", "pitch": 1.25, "drill": 7.8 },
+    { "thread": "M10", "pitch": 1.5, "drill": 8.5 },
+    { "thread": "M11", "pitch": 1.5, "drill": 9.5 },
+    { "thread": "M12", "pitch": 1.75, "drill": 10.2 },
+    { "thread": "M14", "pitch": 2, "drill": 12 },
+    { "thread": "M16", "pitch": 2, "drill": 14 },
+    { "thread": "M18", "pitch": 2.5, "drill": 15.5 },
+    { "thread": "M20", "pitch": 2.5, "drill": 17.5 },
+    { "thread": "M22", "pitch": 2.5, "drill": 19.5 },
+    { "thread": "M24", "pitch": 3, "drill": 21 },
+    { "thread": "M27", "pitch": 3, "drill": 24 },
+    { "thread": "M30", "pitch": 3.5, "drill": 26.5 },
+    { "thread": "M33", "pitch": 3.5, "drill": 29.5 },
+    { "thread": "M36", "pitch": 4, "drill": 32 },
+    { "thread": "M39", "pitch": 4, "drill": 35 },
+    { "thread": "M42", "pitch": 4.5, "drill": 37.5 },
+    { "thread": "M45", "pitch": 4.5, "drill": 40.5 },
+    { "thread": "M48", "pitch": 5, "drill": 43 },
+    { "thread": "M52", "pitch": 5, "drill": 47 },
+    { "thread": "M56", "pitch": 5.5, "drill": 50.5 }
+  ],
+  "notes": [
+    "ISO 2306:1972, clause 0: the hole a drill makes depends on the drill point, the material, the lubricant and the machining conditions; in soft materials the tapped minor diameter can end up smaller than the drill. The table is a guide for conventional (cutting) tapping; it does not apply to thread forming.",
+    "ISO 2306:1972, clause 1: the drill diameters, except four sizes the standard marks with an asterisk, are selected from the ISO/R 235 twist drill sizes; stocked drill diameters should be used whenever possible (clause 0)."
+  ]
+}

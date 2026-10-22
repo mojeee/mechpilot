@@ -8,8 +8,10 @@ export type Id = string;
 /** Bumped on every change of shape; shared/doc/file.ts migrates older files.
  *  1: M0 (line, circle, arc). 2: M1 adds polyline, ellipse, spline, text.
  *  3: M2 adds dimensions, notes, balloons, surface and GD&T symbols, datums, dimStyle and sheets.
- *  4: M3 adds sketch constraints and driving dimensions. */
-export const FORMAT_VERSION = 4;
+ *  4: M3 adds sketch constraints and driving dimensions.
+ *  5: M4 adds parts with a parametric feature tree (sketch, extrude, revolve, hole, fillet, chamfer,
+ *     shell, mirror, pattern, import). */
+export const FORMAT_VERSION = 5;
 export const FORMAT_NAME = 'mechpilot';
 
 export type Standard = 'iso' | 'asme';
@@ -275,6 +277,74 @@ export type Constraint = { id: Id } & (
 );
 export type ConstraintKind = Constraint['kind'];
 
+/* ---------- M4: parts with a parametric feature tree (built by replicad/OpenCascade in a worker) ---------- */
+
+/** A sketch plane: one of the three principal planes at an offset along its normal. The 2D model
+ *  space of the drawing is mapped onto it: sketch x → the plane's first axis, sketch y → the second. */
+export type SketchPlane = 'XY' | 'XZ' | 'YZ';
+
+/** Which edges a fillet or chamfer applies to (replicad finders), without clicking in 3D. */
+export type EdgeSelector =
+  | { kind: 'all' }
+  /** Edges parallel to an axis. */
+  | { kind: 'parallelTo'; axis: 'X' | 'Y' | 'Z' }
+  /** Edges lying in a principal plane at an offset (e.g. the top face's outline). */
+  | { kind: 'inPlane'; plane: SketchPlane; offset: number }
+  /** Edges of a given length (within 1e-6 mm). */
+  | { kind: 'ofLength'; length: number }
+  /** Edges inside an axis-aligned box (mm). */
+  | { kind: 'inBox'; min: [number, number, number]; max: [number, number, number] };
+
+/** Which faces a shell removes (replicad finders). */
+export type FaceSelector =
+  /** Faces whose normal points along +X, −X, +Y, −Y, +Z or −Z. */
+  | { kind: 'normal'; direction: 'X+' | 'X-' | 'Y+' | 'Y-' | 'Z+' | 'Z-' }
+  | { kind: 'inPlane'; plane: SketchPlane; offset: number };
+
+/** A hole to drill at every circle centre (or point) of a sketch. Sizes from library/holes. */
+export type HoleSpec =
+  /** Plain hole of a given diameter. */
+  | { kind: 'simple'; diameter: number }
+  /** ISO 273 clearance hole for a metric thread, fine / medium / coarse series. */
+  | { kind: 'clearance'; thread: string; series: 'fine' | 'medium' | 'coarse' }
+  /** Tapped hole: the tap drill diameter of the thread (ISO 262 / ISO 724 coarse pitch). */
+  | { kind: 'tapped'; thread: string };
+
+export type Feature = { id: Id; name: string; suppressed?: boolean } & (
+  /** A closed profile drawn in the 2D model space, placed on a plane: the entity ids are lines,
+   *  arcs, circles, polylines, ellipses and splines that form one or more closed loops (the outer
+   *  loop and holes). `offset` moves the plane along its normal. */
+  | { kind: 'sketch'; plane: SketchPlane; offset: number; entities: Id[] }
+  /** Extrude a sketch by `distance` along the plane normal (`both` = symmetric, `reverse` = −normal);
+   *  `op` adds to or cuts from the body built so far. */
+  | { kind: 'extrude'; sketch: Id; distance: number; direction: 'normal' | 'reverse' | 'both'; op: 'add' | 'cut' }
+  /** Revolve a sketch around an axis in sketch coordinates (two points), by `angle` degrees. */
+  | { kind: 'revolve'; sketch: Id; axis: { a: Vec2; b: Vec2 }; angle: number; op: 'add' | 'cut' }
+  /** Holes at the circle centres (and polyline vertices / line end points) of a sketch, drilled
+   *  along −normal of the sketch plane from its offset; `depth` in mm or 'through'. */
+  | { kind: 'hole'; sketch: Id; spec: HoleSpec; depth: number | 'through' }
+  | { kind: 'fillet'; edges: EdgeSelector; radius: number }
+  | { kind: 'chamfer'; edges: EdgeSelector; distance: number }
+  /** Hollow the body to `thickness`, removing the selected faces (none = closed hollow). */
+  | { kind: 'shell'; thickness: number; faces: FaceSelector[] }
+  /** Mirror the body built so far across a principal plane at an offset and union both halves. */
+  | { kind: 'mirror'; plane: SketchPlane; offset: number }
+  /** Repeat the body built so far: a grid along two axes, or around an axis. */
+  | { kind: 'pattern'; mode: 'linear'; counts: [number, number]; spacing: [number, number]; axes: ['X' | 'Y' | 'Z', 'X' | 'Y' | 'Z'] }
+  | { kind: 'pattern'; mode: 'circular'; axis: 'X' | 'Y' | 'Z'; count: number; angle: number }
+  /** A STEP file kept inside the document (base64 of the file text), as the base body. */
+  | { kind: 'import'; format: 'step'; data: string; sourceName: string }
+);
+export type FeatureKind = Feature['kind'];
+
+export interface Part {
+  id: Id;
+  name: string;
+  /** Material id from library/materials (density and source); absent = no mass properties. */
+  material?: string;
+  features: Feature[];
+}
+
 /* ---------- M2: sheets (ISO 5457, ISO 7200, ISO 5455) ---------- */
 
 export type SheetSize = 'A0' | 'A1' | 'A2' | 'A3' | 'A4';
@@ -327,4 +397,7 @@ export interface Document {
   /** M3: sketch constraints between entities, solved whenever they change. */
   constraints: Record<Id, Constraint>;
   constraintOrder: Id[];
+  /** M4: parts built from the 2D sketches by their feature trees. */
+  parts: Record<Id, Part>;
+  partOrder: Id[];
 }

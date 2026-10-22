@@ -3,7 +3,7 @@
 // round-trips every double exactly, so nothing is rounded on save or load (product rule 1).
 
 import { DEFAULT_DIM_STYLE } from '../draw/annotations';
-import { FORMAT_NAME, FORMAT_VERSION, type Constraint, type DimensionKind, type DimStyle, type Document, type Entity, type Layer, type PointRef, type Sheet, type SheetView, type Tolerance } from './types';
+import { FORMAT_NAME, FORMAT_VERSION, type Constraint, type DimensionKind, type DimStyle, type Document, type EdgeSelector, type Entity, type FaceSelector, type Feature, type HoleSpec, type Layer, type Part, type PointRef, type Sheet, type SheetView, type SketchPlane, type Tolerance } from './types';
 
 export interface FileError {
   code: 'not-json' | 'not-mechpilot' | 'newer-version' | 'invalid';
@@ -15,7 +15,7 @@ export type ParseResult = { ok: true; doc: Document; migratedFrom?: number } | {
 export const FILE_EXTENSION = '.mechpilot.json';
 
 /** Fixed key order for the top level; other objects get their keys sorted. */
-const TOP_ORDER: (keyof Document)[] = ['format', 'version', 'unit', 'name', 'description', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'constraintOrder', 'constraints', 'sheetOrder', 'sheets'];
+const TOP_ORDER: (keyof Document)[] = ['format', 'version', 'unit', 'name', 'description', 'standard', 'projection', 'dimStyle', 'layerOrder', 'activeLayer', 'layers', 'entityOrder', 'entities', 'constraintOrder', 'constraints', 'partOrder', 'parts', 'sheetOrder', 'sheets'];
 /** Entities and layers: id and type first, then the rest alphabetically, so a diff reads naturally. */
 const FIRST_KEYS = ['id', 'type', 'kind', 'layer'];
 
@@ -58,6 +58,10 @@ export function serialize(doc: Document): string {
       const m: Record<string, unknown> = {};
       for (const id of doc.constraintOrder) if (doc.constraints[id]) m[id] = canonical(doc.constraints[id], FIRST_KEYS);
       out[k] = m;
+    } else if (k === 'parts') {
+      const m: Record<string, unknown> = {};
+      for (const id of doc.partOrder) if (doc.parts[id]) m[id] = canonical(doc.parts[id], FIRST_KEYS);
+      out[k] = m;
     } else out[k] = canonical(v);
   }
   return JSON.stringify(out, null, 2) + '\n';
@@ -72,6 +76,8 @@ const migrations: Record<number, Migration> = {
   2: (raw) => ({ ...raw, version: 3, dimStyle: { ...DEFAULT_DIM_STYLE }, sheets: {}, sheetOrder: [] }),
   // 3 → 4 (M3): sketch constraints (none yet) and driving dimensions (none yet).
   3: (raw) => ({ ...raw, version: 4, constraints: {}, constraintOrder: [] }),
+  // 4 → 5 (M4): parts (none yet).
+  4: (raw) => ({ ...raw, version: 5, parts: {}, partOrder: [] }),
 };
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -318,6 +324,165 @@ function validateConstraint(v: unknown, id: string, entities: Record<string, Ent
   }
 }
 
+const PLANES = ['XY', 'XZ', 'YZ'];
+const AXES = ['X', 'Y', 'Z'];
+
+function validateEdgeSelector(v: unknown, where: string): EdgeSelector | string {
+  if (!isObj(v)) return `${where}: edges selector`;
+  switch (v.kind) {
+    case 'all':
+      return { kind: 'all' };
+    case 'parallelTo':
+      if (!isStr(v.axis) || !AXES.includes(v.axis)) return `${where}: axis must be X, Y or Z`;
+      return { kind: 'parallelTo', axis: v.axis as 'X' | 'Y' | 'Z' };
+    case 'inPlane':
+      if (!isStr(v.plane) || !PLANES.includes(v.plane) || !isNum(v.offset)) return `${where}: inPlane needs plane and offset`;
+      return { kind: 'inPlane', plane: v.plane as SketchPlane, offset: v.offset };
+    case 'ofLength':
+      if (!isNum(v.length) || v.length <= 0) return `${where}: length > 0`;
+      return { kind: 'ofLength', length: v.length };
+    case 'inBox': {
+      const ok = (a: unknown): a is [number, number, number] => Array.isArray(a) && a.length === 3 && a.every(isNum);
+      if (!ok(v.min) || !ok(v.max)) return `${where}: inBox needs min and max [x, y, z]`;
+      return { kind: 'inBox', min: [v.min[0], v.min[1], v.min[2]], max: [v.max[0], v.max[1], v.max[2]] };
+    }
+    default:
+      return `${where}: unknown edges selector "${String(v.kind)}"`;
+  }
+}
+
+function validateFaceSelector(v: unknown, where: string): FaceSelector | string {
+  if (!isObj(v)) return `${where}: face selector`;
+  if (v.kind === 'normal') {
+    if (!isStr(v.direction) || !['X+', 'X-', 'Y+', 'Y-', 'Z+', 'Z-'].includes(v.direction)) return `${where}: direction must be X+, X-, Y+, Y-, Z+ or Z-`;
+    return { kind: 'normal', direction: v.direction as FaceSelector extends { direction: infer D } ? D : never };
+  }
+  if (v.kind === 'inPlane') {
+    if (!isStr(v.plane) || !PLANES.includes(v.plane) || !isNum(v.offset)) return `${where}: inPlane needs plane and offset`;
+    return { kind: 'inPlane', plane: v.plane as SketchPlane, offset: v.offset };
+  }
+  return `${where}: unknown face selector "${String(v.kind)}"`;
+}
+
+function validateFeature(v: unknown, where: string, entities: Record<string, Entity>, sketchIds: Set<string>): Feature | string {
+  if (!isObj(v) || !isStr(v.id) || !isStr(v.name)) return `${where}: a feature needs id and name`;
+  const base = { id: v.id, name: v.name, ...(v.suppressed === true ? { suppressed: true } : {}) };
+  const w = `${where} ${v.id}`;
+  const sketchRef = (): string | null => (isStr(v.sketch) && sketchIds.has(v.sketch) ? null : `${w}: sketch must be the id of an earlier sketch feature`);
+  const op = (): 'add' | 'cut' | string => (v.op === 'add' || v.op === 'cut' ? v.op : `${w}: op must be add or cut`);
+  switch (v.kind) {
+    case 'sketch': {
+      if (!isStr(v.plane) || !PLANES.includes(v.plane) || !isNum(v.offset)) return `${w}: sketch needs plane (XY, XZ, YZ) and offset`;
+      if (!Array.isArray(v.entities) || !v.entities.every(isStr) || v.entities.length === 0) return `${w}: sketch needs entity ids`;
+      for (const eid of v.entities) if (!entities[eid]) return `${w}: entity ${eid} does not exist`;
+      return { ...base, kind: 'sketch', plane: v.plane as SketchPlane, offset: v.offset, entities: v.entities.slice() };
+    }
+    case 'extrude': {
+      const bad = sketchRef();
+      if (bad) return bad;
+      if (!isNum(v.distance) || v.distance <= 0) return `${w}: distance > 0`;
+      if (!['normal', 'reverse', 'both'].includes(String(v.direction))) return `${w}: direction must be normal, reverse or both`;
+      const o = op();
+      if (o !== 'add' && o !== 'cut') return o;
+      return { ...base, kind: 'extrude', sketch: v.sketch as string, distance: v.distance, direction: v.direction as 'normal' | 'reverse' | 'both', op: o };
+    }
+    case 'revolve': {
+      const bad = sketchRef();
+      if (bad) return bad;
+      if (!isObj(v.axis) || !isVec(v.axis.a) || !isVec(v.axis.b)) return `${w}: axis needs points a and b`;
+      if (!isNum(v.angle) || v.angle <= 0 || v.angle > 360) return `${w}: angle in (0, 360]`;
+      const o = op();
+      if (o !== 'add' && o !== 'cut') return o;
+      return { ...base, kind: 'revolve', sketch: v.sketch as string, axis: { a: vec(v.axis.a), b: vec(v.axis.b) }, angle: v.angle, op: o };
+    }
+    case 'hole': {
+      const bad = sketchRef();
+      if (bad) return bad;
+      if (!isObj(v.spec)) return `${w}: hole spec`;
+      let spec: HoleSpec;
+      if (v.spec.kind === 'simple') {
+        if (!isNum(v.spec.diameter) || v.spec.diameter <= 0) return `${w}: diameter > 0`;
+        spec = { kind: 'simple', diameter: v.spec.diameter };
+      } else if (v.spec.kind === 'clearance') {
+        if (!isStr(v.spec.thread) || !['fine', 'medium', 'coarse'].includes(String(v.spec.series))) return `${w}: clearance hole needs thread (e.g. M6) and series fine, medium or coarse`;
+        spec = { kind: 'clearance', thread: v.spec.thread, series: v.spec.series as 'fine' | 'medium' | 'coarse' };
+      } else if (v.spec.kind === 'tapped') {
+        if (!isStr(v.spec.thread)) return `${w}: tapped hole needs thread (e.g. M6)`;
+        spec = { kind: 'tapped', thread: v.spec.thread };
+      } else return `${w}: unknown hole kind "${String(v.spec.kind)}"`;
+      if (v.depth !== 'through' && !(isNum(v.depth) && v.depth > 0)) return `${w}: depth > 0 or "through"`;
+      return { ...base, kind: 'hole', sketch: v.sketch as string, spec, depth: v.depth as number | 'through' };
+    }
+    case 'fillet':
+    case 'chamfer': {
+      const edges = validateEdgeSelector(v.edges, w);
+      if (typeof edges === 'string') return edges;
+      if (v.kind === 'fillet') {
+        if (!isNum(v.radius) || v.radius <= 0) return `${w}: radius > 0`;
+        return { ...base, kind: 'fillet', edges, radius: v.radius };
+      }
+      if (!isNum(v.distance) || v.distance <= 0) return `${w}: distance > 0`;
+      return { ...base, kind: 'chamfer', edges, distance: v.distance };
+    }
+    case 'shell': {
+      if (!isNum(v.thickness) || v.thickness <= 0) return `${w}: thickness > 0`;
+      if (!Array.isArray(v.faces)) return `${w}: faces must be a list`;
+      const faces: FaceSelector[] = [];
+      for (const f of v.faces) {
+        const r = validateFaceSelector(f, w);
+        if (typeof r === 'string') return r;
+        faces.push(r);
+      }
+      return { ...base, kind: 'shell', thickness: v.thickness, faces };
+    }
+    case 'mirror':
+      if (!isStr(v.plane) || !PLANES.includes(v.plane) || !isNum(v.offset)) return `${w}: mirror needs plane and offset`;
+      return { ...base, kind: 'mirror', plane: v.plane as SketchPlane, offset: v.offset };
+    case 'pattern': {
+      if (v.mode === 'linear') {
+        const counts = v.counts;
+        const spacing = v.spacing;
+        const axes = v.axes;
+        if (!Array.isArray(counts) || counts.length !== 2 || !counts.every((c) => Number.isInteger(c) && (c as number) >= 1)) return `${w}: counts [n1, n2] of integers >= 1`;
+        if (!Array.isArray(spacing) || spacing.length !== 2 || !spacing.every(isNum)) return `${w}: spacing [d1, d2] in mm`;
+        if (!Array.isArray(axes) || axes.length !== 2 || !axes.every((a) => isStr(a) && AXES.includes(a))) return `${w}: axes [X|Y|Z, X|Y|Z]`;
+        return { ...base, kind: 'pattern', mode: 'linear', counts: [counts[0] as number, counts[1] as number], spacing: [spacing[0] as number, spacing[1] as number], axes: [axes[0] as 'X' | 'Y' | 'Z', axes[1] as 'X' | 'Y' | 'Z'] };
+      }
+      if (v.mode === 'circular') {
+        if (!isStr(v.axis) || !AXES.includes(v.axis) || !Number.isInteger(v.count) || (v.count as number) < 2 || !isNum(v.angle) || v.angle <= 0 || v.angle > 360) return `${w}: circular pattern needs axis, count >= 2, angle in (0, 360]`;
+        return { ...base, kind: 'pattern', mode: 'circular', axis: v.axis as 'X' | 'Y' | 'Z', count: v.count as number, angle: v.angle };
+      }
+      return `${w}: pattern mode must be linear or circular`;
+    }
+    case 'import':
+      if (v.format !== 'step' || !isStr(v.data) || !isStr(v.sourceName)) return `${w}: import needs format "step", data and sourceName`;
+      return { ...base, kind: 'import', format: 'step', data: v.data, sourceName: v.sourceName };
+    default:
+      return `${w}: unknown feature kind "${String(v.kind)}"`;
+  }
+}
+
+function validatePart(v: unknown, id: string, entities: Record<string, Entity>): Part | string {
+  if (!isObj(v)) return `part ${id} is not an object`;
+  if (v.id !== id) return `part ${id} has id "${String(v.id)}"`;
+  if (!isStr(v.name)) return `part ${id}: name`;
+  if (!Array.isArray(v.features)) return `part ${id}: features must be a list`;
+  const features: Feature[] = [];
+  const sketchIds = new Set<string>();
+  const seen = new Set<string>();
+  for (const f of v.features) {
+    const r = validateFeature(f, `part ${id}: feature`, entities, sketchIds);
+    if (typeof r === 'string') return r;
+    if (seen.has(r.id)) return `part ${id}: duplicate feature id ${r.id}`;
+    seen.add(r.id);
+    if (r.kind === 'sketch') sketchIds.add(r.id);
+    features.push(r);
+  }
+  const part: Part = { id, name: v.name, features };
+  if (isStr(v.material) && v.material) part.material = v.material;
+  return part;
+}
+
 function validateDimStyle(v: unknown): DimStyle | string {
   if (!isObj(v)) return 'dimStyle is missing';
   const positive: (keyof DimStyle)[] = ['textHeight', 'arrowSize', 'annotationScale'];
@@ -409,6 +574,17 @@ export function validate(raw: Record<string, unknown>): Document | string {
     constraintOrder.push(id);
   }
   for (const id of Object.keys(raw.constraints)) if (!constraints[id]) return `constraint ${id} is not in constraintOrder`;
+  if (!isObj(raw.parts) || !Array.isArray(raw.partOrder)) return 'parts and partOrder are missing';
+  const parts: Record<string, Part> = {};
+  const partOrder: string[] = [];
+  for (const id of raw.partOrder) {
+    if (!isStr(id)) return 'partOrder must contain ids';
+    const p = validatePart(raw.parts[id], id, entities);
+    if (typeof p === 'string') return p;
+    parts[id] = p;
+    partOrder.push(id);
+  }
+  for (const id of Object.keys(raw.parts)) if (!parts[id]) return `part ${id} is not in partOrder`;
   const doc: Document = {
     format: FORMAT_NAME,
     version: FORMAT_VERSION,
@@ -426,6 +602,8 @@ export function validate(raw: Record<string, unknown>): Document | string {
     sheetOrder,
     constraints,
     constraintOrder,
+    parts,
+    partOrder,
   };
   if (isStr(raw.description)) doc.description = raw.description;
   return doc;

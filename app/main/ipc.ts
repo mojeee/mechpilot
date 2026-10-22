@@ -6,7 +6,7 @@ import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
-import type { AutosaveInfo, OpenedFile, Result, SampleInfo, Settings } from '@shared/api';
+import type { AutosaveInfo, FileFilter, OpenedFile, Result, SampleInfo, Settings } from '@shared/api';
 import { FILE_EXTENSION } from '@shared/doc/file';
 import { setLanguage, t } from '@shared/i18n';
 import type { SettingsStore } from './settings';
@@ -136,6 +136,43 @@ export function registerIpc(deps: IpcDeps): void {
     else {
       const win = BrowserWindow.fromWebContents(e.sender) ?? undefined;
       const r = await dialog.showSaveDialog(win as BrowserWindow, { title: t('Export PDF'), defaultPath: name + '.pdf', filters: [{ name: 'PDF', extensions: ['pdf'] }] });
+      if (r.canceled || !r.filePath) return { ok: true, value: null };
+      target = r.filePath;
+    }
+    try {
+      await writeFile(target, bytes);
+      return { ok: true, value: { path: target } };
+    } catch (ex) {
+      return err('write-failed', t('Could not save {name}: {reason}', { name: basename(target), reason: reason(ex) }), t('Check that the folder exists and is not read-only.'));
+    }
+  });
+
+  ipcMain.handle('files:openText', async (e, filters: unknown): Promise<Result<OpenedFile | null>> => {
+    const list = Array.isArray(filters) ? (filters as FileFilter[]).filter((f) => f && typeof f.name === 'string' && Array.isArray(f.extensions)) : [];
+    const win = BrowserWindow.fromWebContents(e.sender) ?? undefined;
+    const r = await dialog.showOpenDialog(win as BrowserWindow, {
+      title: t('Open'),
+      filters: list.length ? list.map((f) => ({ name: f.name, extensions: f.extensions.map(String) })) : undefined,
+      properties: ['openFile'],
+    });
+    if (r.canceled || r.filePaths.length === 0) return { ok: true, value: null };
+    const target = r.filePaths[0];
+    try {
+      return { ok: true, value: { path: target, text: await readFile(target, 'utf8') } };
+    } catch (ex) {
+      return err('read-failed', t('Could not read {name}: {reason}', { name: basename(target), reason: reason(ex) }), t('Check that the file exists and you can read it.'));
+    }
+  });
+
+  ipcMain.handle('files:saveBytes', async (e, bytes: unknown, suggestedName: unknown, extension: unknown): Promise<Result<{ path: string } | null>> => {
+    if (!(bytes instanceof Uint8Array)) return err('bad-request', t('Nothing to save.'));
+    const ext = (typeof extension === 'string' ? extension : 'bin').replace(/[^a-z0-9]/gi, '').toLowerCase() || 'bin';
+    const name = (typeof suggestedName === 'string' && suggestedName ? suggestedName : 'part').replace(/[\\/:*?"<>|]/g, '_');
+    let target: string;
+    if (deps.saveDirOverride) target = join(deps.saveDirOverride, name + '.' + ext);
+    else {
+      const win = BrowserWindow.fromWebContents(e.sender) ?? undefined;
+      const r = await dialog.showSaveDialog(win as BrowserWindow, { title: t('Export {format}', { format: ext.toUpperCase() }), defaultPath: name + '.' + ext, filters: [{ name: ext.toUpperCase(), extensions: [ext] }] });
       if (r.canceled || !r.filePath) return { ok: true, value: null };
       target = r.filePath;
     }

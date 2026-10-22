@@ -5,6 +5,13 @@ Milestones from `docs/brief.md`, as checklists. Every milestone ends the same wa
 pass, the sample projects work, there is a `CHANGELOG.md` entry, one commit, pushed, and a short
 entry in `docs/progress.md`.
 
+**Order of work (changed on 2026-10-22 for a demo).** The owner wants to demonstrate the AI
+assistant (make a design from a sentence, select something and ask for a change) and the website
+before the rest. So after M4 the order is: **M7-AI** (the assistant, previews with Accept / Reject)
+→ **M8-Website** (screenshots from the real app, comparison, SEO pages, Cloudflare Pages) →
+M5 → M6 → M7-Checks → M8-Release. Milestone numbers stay as in the brief so every document and the
+website keep pointing at the same names.
+
 ## M0 Scaffold
 
 - [x] Repo: CLAUDE.md, this roadmap, `docs/decisions.md`, `docs/progress.md`, `docs/to-verify.md`
@@ -52,15 +59,15 @@ entry in `docs/progress.md`.
 
 ## M4 3D parts
 
-- [ ] replicad/opencascade.js in a worker (LGPL notice, replaceable module); rebuilds never freeze
-- [ ] Sketch on a plane
-- [ ] Features: extrude, revolve, cut, hole (ISO clearance and tapped), fillet, chamfer, shell,
+- [x] replicad/opencascade.js in a worker (LGPL notice, replaceable module); rebuilds never freeze
+- [x] Sketch on a plane
+- [x] Features: extrude, revolve, cut, hole (ISO clearance and tapped), fillet, chamfer, shell,
       mirror, pattern
-- [ ] Feature tree; edit any parameter and the part rebuilds
-- [ ] Material library with density and source; mass, volume, centre of gravity
-- [ ] Section view and measuring in 3D
-- [ ] STEP and STL/3MF export, STEP import, with round-trip tests
-- [ ] Samples: stepped shaft with a bearing seat; sheet-metal cover
+- [x] Feature tree; edit any parameter and the part rebuilds
+- [x] Material library with density and source; mass, volume, centre of gravity
+- [x] Section view and measuring in 3D
+- [x] STEP and STL/3MF export, STEP import, with round-trip tests
+- [x] Samples: stepped shaft with a bearing seat; sheet-metal cover
 
 ## M5 Drawings from 3D
 
@@ -78,19 +85,43 @@ entry in `docs/progress.md`.
 - [ ] BOM with part numbers, a BOM table on the drawing, exploded view
 - [ ] Sample: bearing-housing assembly with a BOM
 
-## M7 Checks and AI
+## M7-AI Assistant (pulled forward for the demo)
+
+- [ ] Optional AI assistant: Claude, OpenAI or Gemini with the user's key, main process only;
+      key stored in the OS keychain / app data, never in the renderer or in git
+- [ ] Context: model, sketches, dimensions, parts, check results; tools to read, measure, check,
+      propose commands
+- [ ] "Make a design from a sentence": the assistant drafts a 2D outline or a 3D part from a
+      description (for example "a 120 × 80 plate with four M6 holes on a 100 × 60 pattern and R10
+      corners"), shown as a preview
+- [ ] "Select something and ask for a change": the selection is the context ("make this 5 mm
+      thicker", "add a chamfer here", "dimension these"); the answer is a preview on the drawing
+- [ ] Proposals as highlighted previews with Accept / Reject, one undo step; every claim with its
+      source (measured, standard and clause, library entry, or "suggestion")
+- [ ] Assistant panel with the conversation, the proposal list and the provider settings
+- [ ] Fake provider in CI; real-key test written and skipped without a key
+- [ ] Demo sample: a prompt-to-part walkthrough in `docs/getting-started.md`
+- [ ] Demo script (owner's request, 2026-10-22): default demo model Claude Opus 5.5 for the
+      impression; a complex part built step by step from written requests; pick a face, part or
+      corner in the viewer or the drawing and it appears as a reference chip in the chat; ask for
+      a change on it; finish with the PDF drawing of the design. The same walkthrough goes on the
+      website as a demo page with screenshots (and a clip when recorded).
+
+## M7-Checks
 
 - [ ] Drawing checker (rule 6) on every change, warnings banner, one-click fixes
-- [ ] Optional AI assistant: Claude, OpenAI or Gemini with the user's key, main process only
-- [ ] Context: model, sketches, dimensions, check results; tools to read, measure, check, propose
-- [ ] Proposals as highlighted previews with Accept / Reject, in undo
-- [ ] Fake provider in CI; real-key test written and skipped without a key
+
+## M8-Website (pulled forward for the demo)
+
+- [x] Website with screenshots from the real app, comparison page, docs and changelog pages, SEO
+      pages from the library, two guides, English and Italian
+- [x] Cloudflare Pages: `site/` served as it is, `_headers`, `_redirects`, setup steps in
+      `docs/website.md` (connecting the repo and the domain is the owner's action)
 
 ## M8 Release
 
 - [ ] Release builds from a git tag: macOS dmg (arm64, x64), Windows installer, Linux AppImage
       (unsigned, ready for signing). Tagging is the owner's action.
-- [ ] Website with screenshots from the real app, comparison page, SEO pages from the library
 - [ ] Docs: getting started, file format, DXF and STEP notes
 - [ ] End-to-end tests of every main workflow
 - [ ] Launch checklist

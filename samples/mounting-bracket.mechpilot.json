@@ -1,6 +1,6 @@
 {
   "format": "mechpilot",
-  "version": 4,
+  "version": 5,
   "unit": "mm",
   "name": "Mounting bracket",
   "description": "A 120 x 80 mm plate with R10 corners, four 9 mm holes for M8 screws (ISO 273 medium series) and a 30 mm H7 bore, dimensioned to ISO 129-1 with an ISO 286 fit, a surface texture symbol, a flatness tolerance and a datum, on an A3 sheet at 1:1. The outline is a constrained sketch: tangent corner arcs, equal radii, the bottom edge is fixed and the 80 height dimension drives it.",
@@ -927,6 +927,8 @@
       "entity": "e1"
     }
   },
+  "partOrder": [],
+  "parts": {},
   "sheetOrder": [
     "s1"
   ],

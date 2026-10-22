@@ -8,6 +8,7 @@ import { TopBar } from './components/TopBar';
 import { SheetTabs } from './components/SheetTabs';
 import { ToolPalette } from './components/ToolPalette';
 import { Canvas2D } from './components/Canvas2D';
+import { Viewer3D } from './components/Viewer3D';
 import { RightPanel } from './components/RightPanel';
 import { CommandLine } from './components/CommandLine';
 import { StatusBar } from './components/StatusBar';
@@ -25,6 +26,7 @@ export function App() {
   const recovery = useStore((s) => s.recovery);
   const recover = useStore((s) => s.recover);
   const dismiss = useStore((s) => s.dismissRecovery);
+  const activePart = useStore((s) => s.activePart);
   return (
     <div className="app">
       <TopBar />
@@ -42,7 +44,7 @@ export function App() {
       <SheetTabs />
       <div className="middle">
         <ToolPalette />
-        <Canvas2D />
+        {activePart ? <Viewer3D /> : <Canvas2D />}
         <RightPanel />
       </div>
       <CommandLine />

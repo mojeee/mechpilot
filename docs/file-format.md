@@ -117,7 +117,32 @@ geometry it measures. The solver (planegcs in a worker) moves the entities; the 
 what the file stores, so a file opens exactly as it was saved even without solving. Deleting an
 entity deletes the constraints that refer to it (undo brings both back).
 
-Parts arrive with M4. Each addition bumps `version` and ships a migration.
+## Parts (format 5)
+
+`partOrder` / `parts`: a part has `name`, an optional `material` (id from `library/materials`) and
+`features`, an ordered list built one after the other by OpenCascade (through replicad) in a worker.
+Each feature has `id`, `name`, `kind` and optionally `suppressed`.
+
+| `kind` | Fields |
+| --- | --- |
+| `sketch` | `plane` (`XY`, `XZ`, `YZ`), `offset` along the plane normal, `entities`: ids of 2D entities in model space that form closed loops (outer loop and holes) |
+| `extrude` | `sketch` (id of an earlier sketch feature), `distance` > 0, `direction` (`normal`, `reverse`, `both`), `op` (`add`, `cut`) |
+| `revolve` | `sketch`, `axis` `{ a, b }` in sketch coordinates, `angle` in degrees (0, 360], `op` |
+| `hole` | `sketch` (its circle centres, line ends and polyline vertices are hole positions), `spec` (`{ kind: "simple", diameter }`, `{ kind: "clearance", thread, series }` ISO 273, `{ kind: "tapped", thread }` tap drill), `depth` in mm or `"through"` |
+| `fillet` | `edges` selector, `radius` |
+| `chamfer` | `edges` selector, `distance` |
+| `shell` | `thickness`, `faces` to remove (selectors) |
+| `mirror` | `plane`, `offset` |
+| `pattern` | `mode: "linear"` with `counts`, `spacing`, `axes`, or `mode: "circular"` with `axis`, `count`, `angle` |
+| `import` | `format: "step"`, `data` (base64 of the STEP text), `sourceName` |
+
+Edge selectors: `{ kind: "all" }`, `{ kind: "parallelTo", axis }`, `{ kind: "inPlane", plane, offset }`,
+`{ kind: "ofLength", length }`, `{ kind: "inBox", min, max }`. Face selectors: `{ kind: "normal",
+direction: "Z+" }` or `{ kind: "inPlane", plane, offset }`. The built solid is never stored: a file
+rebuilds from its features, so it stays small and diffable; meshes and mass properties are computed
+when the part is shown.
+
+Each addition bumps `version` and ships a migration.
 
 ## Migrations
 
