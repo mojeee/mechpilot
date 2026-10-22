@@ -22,60 +22,129 @@
     <meta property="og:image:height" content="900" />
     <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+    <link rel="stylesheet" href="/style.css?v=48b1b5a0ca" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <header class="top">
-      <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
-      <nav aria-label="Main">
-        <a href="/docs/">Docs</a>
-        <a href="/standards/">Standards</a>
-        <a href="/guides/">Guides</a>
-        <a href="/companies/" aria-current="page">For companies</a>
-        <a href="/changelog/">Changelog</a>
-        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
-        <a class="lang" href="/it/aziende/" hreflang="it" lang="it">Italiano</a>
-      </nav>
+      <div class="wrap top-in">
+        <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+        <nav class="main-nav" aria-label="Main">
+          <a href="/demo/">Demo</a>
+          <a href="/docs/">Docs</a>
+          <a href="/standards/">Standards</a>
+          <a href="/guides/">Guides</a>
+          <a href="/companies/" aria-current="page">For companies</a>
+          <a href="/changelog/">Changelog</a>
+          <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+          <a class="lang" href="/it/aziende/" hreflang="it" lang="it">Italiano</a>
+        </nav>
+        <a class="btn primary sm top-dl" href="/#download">Download</a>
+      </div>
     </header>
     <main id="main">
-      <div class="narrow">
-        <h1 data-i18n="companies.title">MechPilot for companies</h1>
-        <p class="lead" data-i18n="companies.lead">MechPilot is free and open source, and it stays that way. Companies that want more than the public issue tracker can get support, training and custom features from the people who build it.</p>
-
-        <div class="offer">
-          <div>
-            <h2 data-i18n="companies.support">Support</h2>
-            <p data-i18n="companies.support.text">Priority answers on DXF and STEP exchange problems with your customers and suppliers, drawing-standard questions, deployment on your workstations, and migration of existing drawings.</p>
-          </div>
-          <div>
-            <h2 data-i18n="companies.training">Training</h2>
-            <p data-i18n="companies.training.text">Half-day sessions for your drafters, on your own parts: 2D drafting to ISO, parametric sketches, 3D parts and drawings from them, the checker, the library of standard parts.</p>
-          </div>
-          <div>
-            <h2 data-i18n="companies.custom">Custom features</h2>
-            <p data-i18n="companies.custom.text">Your title block and frames, your material and part libraries, company drawing rules in the checker, export profiles for your machines. Built in the open when it helps everyone, kept private when it is yours.</p>
+      <section class="hero hero-sub">
+        <div class="wrap">
+          <p class="eyebrow" data-i18n="companies.eyebrow">For engineering companies</p>
+          <h1 data-i18n="companies.title">MechPilot for companies</h1>
+          <p class="lead" data-i18n="companies.lead">MechPilot is free and open source, and it stays that way. Companies that want more than the public issue tracker can get support, training and custom features from the people who build it.</p>
+          <div class="cta">
+            <a class="btn primary lg" href="https://github.com/mojeee/mechpilot/discussions" data-i18n="companies.contact.btn">Open GitHub Discussions</a>
+            <a class="btn lg" href="#offer"><span data-i18n="companies.see">What we offer</span> <span aria-hidden="true">↓</span></a>
           </div>
         </div>
+      </section>
 
-        <h2 data-i18n="companies.why">Why it is safe to build on</h2>
-        <ul>
-          <li data-i18n="companies.why.licence">Apache-2.0: you may use, change and redistribute MechPilot, also inside your company, without fees.</li>
-          <li data-i18n="companies.why.files">Your drawings are plain, documented JSON files on your own disks, with DXF and PDF export; nothing depends on our servers.</li>
-          <li data-i18n="companies.why.open">Development happens in public: the roadmap, every decision and every change are in the repository.</li>
-        </ul>
+      <section class="sec light" id="offer" aria-labelledby="offer-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">01 · <span data-i18n="companies.offer.label">What we offer</span></p>
+            <h2 id="offer-h" data-i18n="companies.offer.title">Support, training, custom features.</h2>
+          </div>
+          <div class="offer">
+            <div class="card">
+              <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="15"/><circle cx="20" cy="20" r="7"/><path d="M9.4 9.4L15 15M30.6 9.4L25 15M9.4 30.6L15 25M30.6 30.6L25 25"/></svg>
+              <h3 data-i18n="companies.support">Support</h3>
+              <p data-i18n="companies.support.text">Priority answers on DXF and STEP exchange problems with your customers and suppliers, drawing-standard questions, deployment on your workstations, and migration of existing drawings.</p>
+            </div>
+            <div class="card">
+              <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><rect x="5" y="7" width="30" height="20" rx="2"/><path d="M20 27V34M13 34H27M10 21L16 15L21 19L29 12"/></svg>
+              <h3 data-i18n="companies.training">Training</h3>
+              <p data-i18n="companies.training.text">Half-day sessions for your drafters, on your own parts: 2D drafting to ISO, parametric sketches, 3D parts and drawings from them, the checker, the library of standard parts.</p>
+            </div>
+            <div class="card">
+              <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><rect x="4" y="9" width="32" height="22" rx="1.5"/><path d="M4 22H36M18 22V31M27 22V31M18 26.5H36"/></svg>
+              <h3 data-i18n="companies.custom">Custom features</h3>
+              <p data-i18n="companies.custom.text">Your title block and frames, your material and part libraries, company drawing rules in the checker, export profiles for your machines. Built in the open when it helps everyone, kept private when it is yours.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <h2 data-i18n="companies.contact">Get in touch</h2>
-        <p data-i18n="companies.contact.text">Start a thread in GitHub Discussions and say what you need. For a bug or a missing feature, open an issue. There is no form and no newsletter.</p>
-        <p class="cta"><a class="btn primary" href="https://github.com/mojeee/mechpilot/discussions" data-i18n="companies.contact.btn">Open GitHub Discussions</a> <a class="btn" href="https://github.com/mojeee/mechpilot/issues" data-i18n="companies.contact.issues">Open an issue</a></p>
-      </div>
+      <section class="sec why" aria-labelledby="why-h">
+        <div class="wrap why-grid">
+          <div>
+            <p class="label">02 · <span data-i18n="why.label">For engineering companies</span></p>
+            <h2 id="why-h" data-i18n="why.title">Why MechPilot</h2>
+          </div>
+          <div>
+            <p class="big" data-i18n="why.text">Your drawings outlive any software licence. MechPilot is made for the drawing office that exchanges DXF and STEP with customers every day, signs drawings to ISO and must still open them in ten years: an open, documented file format on your own disks, standards with their sources, no fee per seat, and support from the people who build it when you need it.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec light alt" aria-labelledby="safe-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">03 · <span data-i18n="companies.safe.label">No lock-in</span></p>
+            <h2 id="safe-h" data-i18n="companies.why">Why it is safe to build on</h2>
+          </div>
+          <ul class="checks">
+            <li data-i18n="companies.why.licence">Apache-2.0: you may use, change and redistribute MechPilot, also inside your company, without fees.</li>
+            <li data-i18n="companies.why.files">Your drawings are plain, documented JSON files on your own disks, with DXF and PDF export; nothing depends on our servers.</li>
+            <li data-i18n="companies.why.open">Development happens in public: the roadmap, every decision and every change are in the repository.</li>
+            <li data-i18n="companies.why.ai">The optional AI assistant works with your company’s own Claude, OpenAI or Gemini account. There is no MechPilot server in between, and the app is fully usable without it.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec contact" aria-labelledby="contact-h">
+        <div class="wrap">
+          <div class="contact-box">
+            <h2 id="contact-h" data-i18n="companies.contact">Get in touch</h2>
+            <p class="big" data-i18n="companies.contact.text">Start a thread in GitHub Discussions and say what you need. For a bug or a missing feature, open an issue. There is no form and no newsletter.</p>
+            <p class="cta"><a class="btn primary lg" href="https://github.com/mojeee/mechpilot/discussions" data-i18n="companies.contact.btn2">Open GitHub Discussions</a> <a class="btn lg" href="https://github.com/mojeee/mechpilot/issues" data-i18n="companies.contact.issues">Open an issue</a></p>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer>
-      <nav aria-label="Footer">
-        <a href="/docs/">Docs</a> · <a href="/standards/">Standards</a> · <a href="/guides/">Guides</a> · <a href="/companies/">For companies</a> · <a href="/changelog/">Changelog</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a>
-      </nav>
-      <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.5.0.</p>
-      <p class="small">This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+            <p>Mechanical CAD for production drawings, with 3D parts built in. Free and open source. Runs on your computer. Your files stay yours.</p>
+          </div>
+          <nav class="foot-nav" aria-label="Footer">
+            <div>
+              <p class="foot-h">Product</p>
+              <ul><li><a href="/demo/">Demo</a></li><li><a href="/#download">Download</a></li><li><a href="/#compare">How it compares</a></li><li><a href="/companies/">For companies</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Learn</p>
+              <ul><li><a href="/docs/">Docs</a></li><li><a href="/standards/">Standards</a></li><li><a href="/guides/">Guides</a></li><li><a href="/changelog/">Changelog</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Project</p>
+              <ul><li><a href="https://github.com/mojeee/mechpilot">GitHub</a></li><li><a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a></li><li><a href="https://github.com/mojeee/mechpilot/releases">Releases</a></li></ul>
+            </div>
+          </nav>
+        </div>
+        <div class="foot-base">
+          <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.6.0.</p>
+          <p>This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

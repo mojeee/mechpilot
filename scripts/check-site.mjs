@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Checks the generated website in site/: every internal link and asset resolves to a file in site/
 // (anchors included), every page has a language, a title, one h1, a description and a canonical
-// link (or noindex), hreflang pairs point at each other, nothing loads from another origin, no
-// page carries a script or an email address. scripts/build-site.mjs runs it after every build; it
+// link (or noindex), hreflang pairs point at each other, nothing loads from another origin (the
+// demo video in site/video/ is an internal asset like the images), no page carries a script or an
+// email address. scripts/build-site.mjs runs it after every build; it
 // also runs on its own: node scripts/check-site.mjs
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
@@ -55,7 +56,7 @@ export function checkSite(siteDir, site) {
     if (/<script\b/i.test(html)) err('has a <script>: the site runs no JavaScript');
     if (/\son[a-z]+="/i.test(html)) err('has an inline event handler');
     if (/mailto:|[\w.+-]+@[\w-]+\.[a-z]{2,}/i.test(html)) err('has an email address');
-    if (/(?:src|srcset)="(?:https?:)?\/\//.test(html) || /<link[^>]+rel="(?:stylesheet|preload|icon)"[^>]+href="(?:https?:)?\/\//.test(html)) err('loads something from another origin');
+    if (/(?:src|srcset|poster)="(?:https?:)?\/\//.test(html) || /<link[^>]+rel="(?:stylesheet|preload|icon)"[^>]+href="(?:https?:)?\/\//.test(html)) err('loads something from another origin');
     const noindex = /<meta name="robots" content="noindex" \/>/.test(html);
     if (!is404) {
       if (!/<meta name="description" content="[^"]{20,}" \/>/.test(html)) err('no meta description');
@@ -79,8 +80,9 @@ export function checkSite(siteDir, site) {
         else if (!htmlOf(target).includes(`hreflang="${(/lang="(en|it)"/.exec(html) ?? [])[1]}" href="${site}${self}"`)) err(`hreflang ${l} -> ${href} does not point back`);
       }
     }
-    // Every internal reference resolves, with its anchor.
-    for (const m of html.matchAll(/\s(href|src|content)="([^"]*)"/g)) {
+    // Every internal reference resolves, with its anchor: links, images, and the demo's <video>
+    // poster and <source> files (site/video/*.webm, *.mp4), which must exist like any asset.
+    for (const m of html.matchAll(/\s(href|src|poster|content)="([^"]*)"/g)) {
       let ref = m[2].replace(/&amp;/g, '&');
       if (m[1] === 'content' && !ref.startsWith(site)) continue;
       if (ref.startsWith(site)) ref = ref.slice(site.length) || '/';

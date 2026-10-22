@@ -1,32 +1,80 @@
 <!-- title: MechPilot for companies: support, training, custom features -->
 <!-- description: Support, training and custom features for engineering companies using MechPilot, the open-source 2D/3D mechanical design app. Contact through GitHub Discussions. -->
-<div class="narrow">
-        <h1 data-i18n="companies.title">MechPilot for companies</h1>
-        <p class="lead" data-i18n="companies.lead">MechPilot is free and open source, and it stays that way. Companies that want more than the public issue tracker can get support, training and custom features from the people who build it.</p>
-
-        <div class="offer">
-          <div>
-            <h2 data-i18n="companies.support">Support</h2>
-            <p data-i18n="companies.support.text">Priority answers on DXF and STEP exchange problems with your customers and suppliers, drawing-standard questions, deployment on your workstations, and migration of existing drawings.</p>
-          </div>
-          <div>
-            <h2 data-i18n="companies.training">Training</h2>
-            <p data-i18n="companies.training.text">Half-day sessions for your drafters, on your own parts: 2D drafting to ISO, parametric sketches, 3D parts and drawings from them, the checker, the library of standard parts.</p>
-          </div>
-          <div>
-            <h2 data-i18n="companies.custom">Custom features</h2>
-            <p data-i18n="companies.custom.text">Your title block and frames, your material and part libraries, company drawing rules in the checker, export profiles for your machines. Built in the open when it helps everyone, kept private when it is yours.</p>
+<section class="hero hero-sub">
+        <div class="wrap">
+          <p class="eyebrow" data-i18n="companies.eyebrow">For engineering companies</p>
+          <h1 data-i18n="companies.title">MechPilot for companies</h1>
+          <p class="lead" data-i18n="companies.lead">MechPilot is free and open source, and it stays that way. Companies that want more than the public issue tracker can get support, training and custom features from the people who build it.</p>
+          <div class="cta">
+            <a class="btn primary lg" href="{{REPO}}/discussions" data-i18n="companies.contact.btn">Open GitHub Discussions</a>
+            <a class="btn lg" href="#offer"><span data-i18n="companies.see">What we offer</span> <span aria-hidden="true">↓</span></a>
           </div>
         </div>
+      </section>
 
-        <h2 data-i18n="companies.why">Why it is safe to build on</h2>
-        <ul>
-          <li data-i18n="companies.why.licence">Apache-2.0: you may use, change and redistribute MechPilot, also inside your company, without fees.</li>
-          <li data-i18n="companies.why.files">Your drawings are plain, documented JSON files on your own disks, with DXF and PDF export; nothing depends on our servers.</li>
-          <li data-i18n="companies.why.open">Development happens in public: the roadmap, every decision and every change are in the repository.</li>
-        </ul>
+      <section class="sec light" id="offer" aria-labelledby="offer-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">01 · <span data-i18n="companies.offer.label">What we offer</span></p>
+            <h2 id="offer-h" data-i18n="companies.offer.title">Support, training, custom features.</h2>
+          </div>
+          <div class="offer">
+            <div class="card">
+              <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="15"/><circle cx="20" cy="20" r="7"/><path d="M9.4 9.4L15 15M30.6 9.4L25 15M9.4 30.6L15 25M30.6 30.6L25 25"/></svg>
+              <h3 data-i18n="companies.support">Support</h3>
+              <p data-i18n="companies.support.text">Priority answers on DXF and STEP exchange problems with your customers and suppliers, drawing-standard questions, deployment on your workstations, and migration of existing drawings.</p>
+            </div>
+            <div class="card">
+              <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><rect x="5" y="7" width="30" height="20" rx="2"/><path d="M20 27V34M13 34H27M10 21L16 15L21 19L29 12"/></svg>
+              <h3 data-i18n="companies.training">Training</h3>
+              <p data-i18n="companies.training.text">Half-day sessions for your drafters, on your own parts: 2D drafting to ISO, parametric sketches, 3D parts and drawings from them, the checker, the library of standard parts.</p>
+            </div>
+            <div class="card">
+              <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><rect x="4" y="9" width="32" height="22" rx="1.5"/><path d="M4 22H36M18 22V31M27 22V31M18 26.5H36"/></svg>
+              <h3 data-i18n="companies.custom">Custom features</h3>
+              <p data-i18n="companies.custom.text">Your title block and frames, your material and part libraries, company drawing rules in the checker, export profiles for your machines. Built in the open when it helps everyone, kept private when it is yours.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <h2 data-i18n="companies.contact">Get in touch</h2>
-        <p data-i18n="companies.contact.text">Start a thread in GitHub Discussions and say what you need. For a bug or a missing feature, open an issue. There is no form and no newsletter.</p>
-        <p class="cta"><a class="btn primary" href="{{REPO}}/discussions" data-i18n="companies.contact.btn">Open GitHub Discussions</a> <a class="btn" href="{{REPO}}/issues" data-i18n="companies.contact.issues">Open an issue</a></p>
-      </div>
+      <section class="sec why" aria-labelledby="why-h">
+        <div class="wrap why-grid">
+          <div>
+            <p class="label">02 · <span data-i18n="why.label">For engineering companies</span></p>
+            <h2 id="why-h" data-i18n="why.title">Why MechPilot</h2>
+          </div>
+          <div>
+            <p class="big" data-i18n="why.text">Your drawings outlive any software licence. MechPilot is made for the drawing office that exchanges DXF and STEP with customers every day, signs drawings to ISO and must still open them in ten years: an open, documented file format on your own disks, standards with their sources, no fee per seat, and support from the people who build it when you need it.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec light alt" aria-labelledby="safe-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">03 · <span data-i18n="companies.safe.label">No lock-in</span></p>
+            <h2 id="safe-h" data-i18n="companies.why">Why it is safe to build on</h2>
+          </div>
+          <ul class="checks">
+            <li data-i18n="companies.why.licence">Apache-2.0: you may use, change and redistribute MechPilot, also inside your company, without fees.</li>
+            <li data-i18n="companies.why.files">Your drawings are plain, documented JSON files on your own disks, with DXF and PDF export; nothing depends on our servers.</li>
+            <li data-i18n="companies.why.open">Development happens in public: the roadmap, every decision and every change are in the repository.</li>
+            <!-- if ai -->
+            <li data-i18n="companies.why.ai">The optional AI assistant works with your company’s own Claude, OpenAI or Gemini account. There is no MechPilot server in between, and the app is fully usable without it.</li>
+            <!-- else -->
+            <li><span data-i18n="companies.why.ai.soon">The AI assistant, coming next, will work with your company’s own Claude, OpenAI or Gemini account. There is no MechPilot server in between, and the app is fully usable without it.</span> {{AI_TAG}}</li>
+            <!-- end -->
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec contact" aria-labelledby="contact-h">
+        <div class="wrap">
+          <div class="contact-box">
+            <h2 id="contact-h" data-i18n="companies.contact">Get in touch</h2>
+            <p class="big" data-i18n="companies.contact.text">Start a thread in GitHub Discussions and say what you need. For a bug or a missing feature, open an issue. There is no form and no newsletter.</p>
+            <p class="cta"><a class="btn primary lg" href="{{REPO}}/discussions" data-i18n="companies.contact.btn2">Open GitHub Discussions</a> <a class="btn lg" href="{{REPO}}/issues" data-i18n="companies.contact.issues">Open an issue</a></p>
+          </div>
+        </div>
+      </section>

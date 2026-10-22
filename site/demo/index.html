@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo: design by writing, point, change, print · MechPilot</title>
+    <meta name="description" content="The demo script of the MechPilot AI assistant: a part from one sentence, step by step to a 3D part, a change on a face you point at, and the A3 drawing as a PDF." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/demo/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/demo/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/demo/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/demo/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Demo: design by writing, point, change, print · MechPilot" />
+    <meta property="og:description" content="The demo script of the MechPilot AI assistant: a part from one sentence, step by step to a 3D part, a change on a face you point at, and the A3 drawing as a PDF." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/demo/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=48b1b5a0ca" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="top">
+      <div class="wrap top-in">
+        <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+        <nav class="main-nav" aria-label="Main">
+          <a href="/demo/" aria-current="page">Demo</a>
+          <a href="/docs/">Docs</a>
+          <a href="/standards/">Standards</a>
+          <a href="/guides/">Guides</a>
+          <a href="/companies/">For companies</a>
+          <a href="/changelog/">Changelog</a>
+          <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+          <a class="lang" href="/it/demo/" hreflang="it" lang="it">Italiano</a>
+        </nav>
+        <a class="btn primary sm top-dl" href="/#download">Download</a>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero hero-sub">
+        <div class="wrap">
+          <p class="eyebrow">Demo</p>
+          <h1>Design by writing. Point. Change. Print.</h1>
+          <p class="lead">A ten-minute walkthrough of MechPilot with the assistant: a part from one sentence, step by step to a 3D part, a change on a face you point at, and the dimensioned A3 drawing as a PDF. Nothing the assistant proposes is applied until you click Accept, and every accepted proposal is one undo step.</p>
+          
+          <figure class="demo-video">
+            <video controls preload="metadata" poster="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900">
+              <source src="/video/demo.webm?v=4254bd676e" type="video/webm" />
+              <source src="/video/demo.mp4?v=117cac5570" type="video/mp4" />
+              <p>Your browser does not play this video. <a href="/video/demo.mp4?v=117cac5570">Download the recording</a></p>
+            </video>
+            <figcaption>A screen recording of the walkthrough below, made in the real app.</figcaption>
+          </figure>
+          <h2 class="toc-h">Chapters</h2>
+          
+          <ol class="step-toc">
+            <li><a href="#step-1"><span>01</span> A part from one sentence (2D)</a></li>
+            <li><a href="#step-2"><span>02</span> Step by step to a 3D part</a></li>
+            <li><a href="#step-3"><span>03</span> Point at something and ask for a change</a></li>
+            <li><a href="#step-4"><span>04</span> The drawing and the PDF</a></li>
+            <li><a href="#step-5"><span>05</span> If something goes wrong</a></li>
+          </ol>
+        </div>
+      </section>
+      <section class="prep-sec" aria-labelledby="prep-h">
+        <div class="wrap">
+          <div class="prep">
+            <h2 id="prep-h">Before the demo</h2>
+            <ul><li>Start the app (<code>npm run dev</code> or the installed app), dark theme, white canvas if the projector is bright (View menu).</li><li>Assistant tab: provider Claude, model Claude Opus 5.5, key stored (green &quot;Key stored&quot;).</li><li>Close any open file: File &gt; New.</li></ul>
+          </div>
+        </div>
+      </section>
+      <section class="step" id="step-1" aria-labelledby="step-1-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">01</p>
+          <h2 id="step-1-h"><span class="label">Step 1</span> A part from one sentence (2D)</h2>
+          <p>Type in the Assistant tab:</p>
+          <p class="bubble"><span class="who">You type</span>A mounting plate 160 × 100 mm, R12 corners, four clearance holes for M8 on a 130 × 70 pattern, and a Ø40 H7 bore in the centre.</p>
+          <p>What to show: the proposal card lists what it will add, the claims say where each number comes from (Ø9 for M8 from <code>library/holes/iso-273</code> medium series; H7 from ISO 286), and the drawing shows the ghost preview. Click <strong>Accept</strong>. Press <code>U</code> once to show it is one undo step, then <code>REDO</code>.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-1.png?v=80e3a09bf3"><img src="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900" alt="The proposal for the mounting plate in the Assistant tab: what it adds, the source of every number, and the preview on the drawing." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step alt" id="step-2" aria-labelledby="step-2-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">02</p>
+          <h2 id="step-2-h"><span class="label">Step 2</span> Step by step to a 3D part</h2>
+          <p class="bubble"><span class="who">You type</span>Make it a 3D part: extrude the outline 12 mm, cut the holes through.</p>
+          <p>Accept. The 3D tab opens with the body; the Features tab shows the tree. Then:</p>
+          <p class="bubble"><span class="who">You type</span>Add a 25 mm tall boss Ø60 around the bore on top, and a 2 mm fillet on the boss edges.</p>
+          <p>Accept, rotate the view. Then an impossible request, to show honesty:</p>
+          <p class="bubble"><span class="who">You type</span>Fillet every edge with 20 mm.</p>
+          <p>The proposal is built in the background and fails in plain words (&quot;the fillet of 20 mm does not fit the 12 mm plate…&quot;); nothing is applied.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-2.png?v=255ce4ad28"><img src="/img/demo-2.png?v=255ce4ad28" width="1440" height="900" alt="The plate as a 3D part with the boss and its fillet, and the feature tree in the Features tab." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step" id="step-3" aria-labelledby="step-3-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">03</p>
+          <h2 id="step-3-h"><span class="label">Step 3</span> Point at something and ask for a change</h2>
+          <ul><li>In the 3D viewer, Alt+click the top face of the boss. A chip &quot;Face … normal +Z&quot; appears in the chat input.</li><li>Type:</li></ul>
+          <p class="bubble"><span class="who">You type</span>Chamfer this face's outer edge 1 × 45°, and make the boss 30 mm tall instead.</p>
+          <p>Accept. Then in the 2D Model tab select the four hole circles (window selection), click <strong>Use selection</strong>, and type:</p>
+          <p class="bubble"><span class="who">You type</span>Change these to M10 clearance holes and move the pattern to 136 × 76.</p>
+          <p>Accept; the holes and the hole feature follow.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-3.png?v=3738f62bbc"><img src="/img/demo-3.png?v=3738f62bbc" width="1440" height="900" alt="The top face of the boss picked with Alt+click as a reference in the chat, and the proposal for the chamfer." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step alt" id="step-4" aria-labelledby="step-4-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">04</p>
+          <h2 id="step-4-h"><span class="label">Step 4</span> The drawing and the PDF</h2>
+          <p class="bubble"><span class="who">You type</span>Dimension the plate to ISO 129-1 (outline, hole pattern, bore with its H7 tolerance), put it on an A3 sheet at 1:1 with the title block filled in, and export the PDF.</p>
+          <p>Accept. The sheet tab opens, the PDF save dialog appears; save and open the PDF.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-4.png?v=0404e36fe8"><img src="/img/demo-4.png?v=0404e36fe8" width="1440" height="900" alt="The plate dimensioned to ISO 129-1 on an A3 sheet at 1:1 with the title block filled in." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step" id="step-5" aria-labelledby="step-5-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">05</p>
+          <h2 id="step-5-h"><span class="label">Step 5</span> If something goes wrong</h2>
+          <ul><li>No answer, or a key error: the Assistant tab says why in plain words; check the key and the model name.</li><li>A proposal you do not like: <strong>Reject</strong>, or accept and press <code>U</code>.</li><li>The assistant never edits silently: look for the card, nothing changes without Accept.</li></ul>
+          </div>
+          <figure class="shot"><a href="/img/demo-5.png?v=0404e36fe8"><img src="/img/demo-5.png?v=0404e36fe8" width="1440" height="900" alt="A request that cannot be built, answered in plain words: nothing is applied." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="sec try-sec" aria-labelledby="try-h">
+        <div class="wrap">
+          <div class="try">
+            <h2 id="try-h">Try it yourself</h2>
+            <p>Get MechPilot, open the Assistant tab, add your own Claude, OpenAI or Gemini API key, and type the first prompt:</p>
+            <p class="bubble"><span class="who">You type</span>A mounting plate 160 × 100 mm, R12 corners, four clearance holes for M8 on a 130 × 70 pattern, and a Ø40 H7 bore in the centre.</p>
+            <p class="cta"><a class="btn primary lg" href="/#download">Download</a> <a class="btn lg" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes">Build from source</a> <a class="btn lg" href="/docs/getting-started/">Getting started</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a class="logo" href="/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+            <p>Mechanical CAD for production drawings, with 3D parts built in. Free and open source. Runs on your computer. Your files stay yours.</p>
+          </div>
+          <nav class="foot-nav" aria-label="Footer">
+            <div>
+              <p class="foot-h">Product</p>
+              <ul><li><a href="/demo/">Demo</a></li><li><a href="/#download">Download</a></li><li><a href="/#compare">How it compares</a></li><li><a href="/companies/">For companies</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Learn</p>
+              <ul><li><a href="/docs/">Docs</a></li><li><a href="/standards/">Standards</a></li><li><a href="/guides/">Guides</a></li><li><a href="/changelog/">Changelog</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Project</p>
+              <ul><li><a href="https://github.com/mojeee/mechpilot">GitHub</a></li><li><a href="https://github.com/mojeee/mechpilot/discussions">Discussions</a></li><li><a href="https://github.com/mojeee/mechpilot/releases">Releases</a></li></ul>
+            </div>
+          </nav>
+        </div>
+        <div class="foot-base">
+          <p>Copyright Mojtaba Amini. Apache-2.0. Version 0.6.0.</p>
+          <p>This site sets no cookies, runs no scripts and loads nothing from third parties.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

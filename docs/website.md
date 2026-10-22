@@ -3,17 +3,22 @@
 https://mechpilot.agentflowbind.com is a static site generated from this repository into `site/`
 and served as it is by Cloudflare Pages. English pages are at `/`, Italian pages at `/it/`. There
 is no JavaScript on any page, no cookie, no web font, no tracking and no request to a third party.
+The look: dark like the app for the hero and the story sections, light "paper" sections for tables
+and reading (docs, standards, guides), one stylesheet with colour tokens in `scripts/site/style.css`
+(every text colour pair passes WCAG AA; motion only when the visitor has not asked for less).
 
 ## What is in it
 
 | Pages | Built from |
 | --- | --- |
 | Landing page, "For companies" | `scripts/site/index.template.html`, `scripts/site/companies.template.html` |
+| Demo (`/demo/`, `/it/demo/`) | `docs/demo.md` (English) and `scripts/site/demo.it.md` (Italian, same steps and prompts), `site/img/demo-N.png`, `site/video/demo.webm` and `demo.mp4` |
 | Docs (`/docs/…`) | `docs/getting-started.md`, `file-format.md`, `dxf.md`, `pdf.md`, `sketches.md`, `standards.md` |
 | Changelog (`/changelog/`) | `CHANGELOG.md` |
 | Standards tables (`/standards/…`, `/it/norme/…`) | `library/**/*.json`, one page per table (ISO 286 grades and eleven fits, ISO 5457, 128-2, 3098, 1101, 21920-1, 5455, 129-1, 7200, ISO 273 holes, tap drills, material densities) |
 | Guides (`/guides/…`, `/it/guide/…`) | `scripts/site/guides/<id>.en.md` and `<id>.it.md` |
-| Screenshots (`site/img/*.png`) | taken from the real app by `e2e/screenshots.e2e.ts` |
+| Screenshots (`site/img/*.png`) | taken from the real app by `e2e/screenshots.e2e.ts`; the demo ones (`demo-1.png` … one per step) by hand |
+| Demo recording (`site/video/demo.webm`, `demo.mp4`) | a screen recording, committed as it is (not built, not copied) |
 | 404, `robots.txt`, `sitemap.xml`, `_headers`, `_redirects` | `scripts/build-site.mjs` |
 
 Rules the build enforces:
@@ -30,12 +35,26 @@ Rules the build enforces:
 - **Status from the roadmap.** "Planned (M4)" in the comparison and formats tables, the milestone
   line on the landing page and the "first release is not out yet" note are derived from the ticked
   boxes in `docs/roadmap.md`, so they change when a milestone is done and the site is rebuilt.
+- **The AI gate.** The assistant is described as shipped only when every box under the roadmap
+  heading `## M7-AI Assistant …` is ticked (the build fails if that heading disappears). Until
+  then the hero, the "AI inside" section, the facts, the comparison row, the companies page and the
+  demo page word it as coming and show a "Coming in the next release" tag. Template branches are
+  written as `<!-- if ai --> … <!-- else --> … <!-- end -->` (`if video` is true once the demo
+  recording exists); both branches are translated on every build, so ticking the roadmap only needs
+  a rebuild.
+- **The demo page.** Each `## N. Title` section of `docs/demo.md` (N ≥ 1) is a step with its
+  quoted prompts as chat bubbles and a screenshot slot `site/img/demo-N.png`; `## 0.` is the
+  preparation box; other sections are left out. The Italian file must have the same steps and the
+  same number of prompts in each, or the build fails; its `source:` line records the hash of the
+  English text it translates, and the build warns when `docs/demo.md` has changed since. On top
+  of the page is the screen recording (`<video>` with the WebM and MP4 sources, poster
+  `demo-1.png`) or, while neither file exists, a "recording in progress" note.
 - **Deterministic.** No dates, stable order; two runs give identical bytes. Everything in `site/`
-  except `site/img/*.png` is deleted and written again on every build.
+  except `site/img/*.png` and `site/video/` is deleted and written again on every build.
 - **Checked.** After writing, the build runs `scripts/check-site.mjs`: every internal link,
   image and anchor resolves to a file in `site/`; every page has `lang`, one `<title>`, one `<h1>`,
   a description and a canonical link (or `noindex`); hreflang pairs point at each other; the
-  sitemap lists only pages that exist; no page has a `<script>`, an inline event handler, an email
+  demo video's poster and sources exist; the sitemap lists only pages that exist; no page has a `<script>`, an inline event handler, an email
   address, or anything loaded from another origin. It can also run on its own:
   `node scripts/check-site.mjs`.
 
@@ -61,6 +80,13 @@ npm run build
 npx playwright test -c e2e/playwright.config.ts screenshots
 npm run build:site
 ```
+
+The demo screenshots `site/img/demo-1.png` … `demo-5.png` (one per step of `docs/demo.md`,
+1440 × 900 PNG, under 400 KB each if possible) are taken by hand in the real app with the
+assistant, and the recording goes in `site/video/demo.webm` (VP9) and `site/video/demo.mp4`
+(H.264), 1440 × 900, under 20 MB each (the build fails over 25 MiB, the Cloudflare Pages limit).
+Commit them and rebuild: the build hashes them for the cache-busting `?v=` and the `_headers`
+cache rule covers `/video/*`; the Content Security Policy allows `media-src 'self'`.
 
 The spec is skipped in CI (it writes into `site/`). If the working tree's sample is newer than the
 app in `out/`, point it at another file with `MP_SHOTS_SAMPLE=/path/to/file.mechpilot.json`. A

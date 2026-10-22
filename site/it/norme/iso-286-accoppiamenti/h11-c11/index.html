@@ -22,23 +22,28 @@
     <meta property="og:image:height" content="900" />
     <meta property="og:image:alt" content="La finestra di MechPilot con l’esempio della staffa di fissaggio: una piastra quotata con fori, tolleranze e riquadri di tolleranza geometrica." />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="/style.css?v=0f907a0edf" />
+    <link rel="stylesheet" href="/style.css?v=48b1b5a0ca" />
   </head>
   <body>
     <a class="skip" href="#main">Vai al contenuto</a>
     <header class="top">
-      <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
-      <nav aria-label="Principale">
-        <a href="/it/documentazione/">Documentazione</a>
-        <a href="/it/norme/" aria-current="page">Norme</a>
-        <a href="/it/guide/">Guide</a>
-        <a href="/it/aziende/">Per le aziende</a>
-        <a href="/it/novita/">Novità</a>
-        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
-        <a class="lang" href="/standards/iso-286-fits/h11-c11/" hreflang="en" lang="en">English</a>
-      </nav>
+      <div class="wrap top-in">
+        <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+        <nav class="main-nav" aria-label="Principale">
+          <a href="/it/demo/">Demo</a>
+          <a href="/it/documentazione/">Documentazione</a>
+          <a href="/it/norme/" aria-current="page">Norme</a>
+          <a href="/it/guide/">Guide</a>
+          <a href="/it/aziende/">Per le aziende</a>
+          <a href="/it/novita/">Novità</a>
+          <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+          <a class="lang" href="/standards/iso-286-fits/h11-c11/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="btn primary sm top-dl" href="/it/#download">Download</a>
+      </div>
     </header>
-    <main id="main">
+    <main id="main" class="page light">
+      <div class="wrap">
       <nav class="crumbs" aria-label="Percorso"><ol><li><a href="/it/">Home</a></li><li><a href="/it/norme/">Norme</a></li><li><a href="/it/norme/iso-286-accoppiamenti/">Accoppiamenti ISO 286: scostamenti limite e giochi</a></li><li aria-current="page">Accoppiamento H11/c11: scostamenti limite e giochi (ISO 286)</li></ol></nav>
       <article class="std">
         <h1>Accoppiamento H11/c11: scostamenti limite e giochi (ISO 286)</h1>
@@ -90,13 +95,35 @@
         <p class="small">I valori che non è stato possibile verificare sulla norma sono omessi ed elencati in docs/to-verify.md. Controllate la norma stessa prima di affidarvi a un valore in produzione, e segnalate ogni errore su GitHub. <a href="https://github.com/mojeee/mechpilot/blob/main/docs/to-verify.md">to-verify.md</a> · <a href="https://github.com/mojeee/mechpilot/issues">Issue</a></p>
       </section>
       </article>
+      </div>
     </main>
-    <footer>
-      <nav aria-label="Piè di pagina">
-        <a href="/it/documentazione/">Documentazione</a> · <a href="/it/norme/">Norme</a> · <a href="/it/guide/">Guide</a> · <a href="/it/aziende/">Per le aziende</a> · <a href="/it/novita/">Novità</a> · <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions">Discussioni</a>
-      </nav>
-      <p>Copyright Mojtaba Amini. Apache-2.0. Versione 0.5.0.</p>
-      <p class="small">Questo sito non imposta cookie, non esegue script e non carica nulla da terze parti.</p>
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+            <p>CAD meccanico per disegni di produzione, con le parti 3D integrate. Gratuito e open source. Gira sul tuo computer. I file restano tuoi.</p>
+          </div>
+          <nav class="foot-nav" aria-label="Piè di pagina">
+            <div>
+              <p class="foot-h">Prodotto</p>
+              <ul><li><a href="/it/demo/">Demo</a></li><li><a href="/it/#download">Download</a></li><li><a href="/it/#compare">Il confronto</a></li><li><a href="/it/aziende/">Per le aziende</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Approfondire</p>
+              <ul><li><a href="/it/documentazione/">Documentazione</a></li><li><a href="/it/norme/">Norme</a></li><li><a href="/it/guide/">Guide</a></li><li><a href="/it/novita/">Novità</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Progetto</p>
+              <ul><li><a href="https://github.com/mojeee/mechpilot">GitHub</a></li><li><a href="https://github.com/mojeee/mechpilot/discussions">Discussioni</a></li><li><a href="https://github.com/mojeee/mechpilot/releases">Release</a></li></ul>
+            </div>
+          </nav>
+        </div>
+        <div class="foot-base">
+          <p>Copyright Mojtaba Amini. Apache-2.0. Versione 0.6.0.</p>
+          <p>Questo sito non imposta cookie, non esegue script e non carica nulla da terze parti.</p>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

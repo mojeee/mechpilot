@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo: progettare scrivendo, indicare, modificare, stampare · MechPilot</title>
+    <meta name="description" content="Il copione della demo dell’assistente AI di MechPilot: una parte da una frase, passo dopo passo fino alla parte 3D, una modifica su una faccia indicata e il disegno A3 in PDF." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/it/demo/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/demo/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/demo/" />
+    <link rel="alternate" hreflang="x-default" href="https://mechpilot.agentflowbind.com/demo/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content="Demo: progettare scrivendo, indicare, modificare, stampare · MechPilot" />
+    <meta property="og:description" content="Il copione della demo dell’assistente AI di MechPilot: una parte da una frase, passo dopo passo fino alla parte 3D, una modifica su una faccia indicata e il disegno A3 in PDF." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/it/demo/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/img/hero-dark.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="La finestra di MechPilot con l’esempio della staffa di fissaggio: una piastra quotata con fori, tolleranze e riquadri di tolleranza geometrica." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/style.css?v=48b1b5a0ca" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Vai al contenuto</a>
+    <header class="top">
+      <div class="wrap top-in">
+        <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+        <nav class="main-nav" aria-label="Principale">
+          <a href="/it/demo/" aria-current="page">Demo</a>
+          <a href="/it/documentazione/">Documentazione</a>
+          <a href="/it/norme/">Norme</a>
+          <a href="/it/guide/">Guide</a>
+          <a href="/it/aziende/">Per le aziende</a>
+          <a href="/it/novita/">Novità</a>
+          <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+          <a class="lang" href="/demo/" hreflang="en" lang="en">English</a>
+        </nav>
+        <a class="btn primary sm top-dl" href="/it/#download">Download</a>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero hero-sub">
+        <div class="wrap">
+          <p class="eyebrow">Demo</p>
+          <h1>Progetta scrivendo. Indica. Modifica. Stampa.</h1>
+          <p class="lead">Un percorso di dieci minuti in MechPilot con l’assistente: una parte da una frase, passo dopo passo fino alla parte 3D, una modifica su una faccia che indichi e il disegno A3 quotato in PDF. Niente di ciò che l’assistente propone viene applicato finché non fai clic su Accetta, e ogni proposta accettata è un solo passo di annullamento.</p>
+          
+          <figure class="demo-video">
+            <video controls preload="metadata" poster="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900">
+              <source src="/video/demo.webm?v=4254bd676e" type="video/webm" />
+              <source src="/video/demo.mp4?v=117cac5570" type="video/mp4" />
+              <p>Il tuo browser non riproduce questo video. <a href="/video/demo.mp4?v=117cac5570">Scarica la registrazione</a></p>
+            </video>
+            <figcaption>La registrazione dello schermo del percorso qui sotto, fatta nel programma vero.</figcaption>
+          </figure>
+          <h2 class="toc-h">Capitoli</h2>
+          
+          <ol class="step-toc">
+            <li><a href="#step-1"><span>01</span> Una parte da una frase (2D)</a></li>
+            <li><a href="#step-2"><span>02</span> Passo dopo passo fino alla parte 3D</a></li>
+            <li><a href="#step-3"><span>03</span> Indica qualcosa e chiedi una modifica</a></li>
+            <li><a href="#step-4"><span>04</span> Il disegno e il PDF</a></li>
+            <li><a href="#step-5"><span>05</span> Se qualcosa va storto</a></li>
+          </ol>
+        </div>
+      </section>
+      <section class="prep-sec" aria-labelledby="prep-h">
+        <div class="wrap">
+          <div class="prep">
+            <h2 id="prep-h">Prima della demo</h2>
+            <ul><li>Avvia il programma (<code>npm run dev</code> o il programma installato), tema scuro, area di disegno bianca se il proiettore è molto luminoso (menu Visualizza).</li><li>Scheda Assistente: fornitore Claude, modello Claude Opus 5.5, chiave salvata (“Chiave salvata” in verde).</li><li>Chiudi ogni file aperto: File &gt; Nuovo.</li></ul>
+          </div>
+        </div>
+      </section>
+      <section class="step" id="step-1" aria-labelledby="step-1-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">01</p>
+          <h2 id="step-1-h"><span class="label">Passo 1</span> Una parte da una frase (2D)</h2>
+          <p>Scrivi nella scheda Assistente:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Una piastra di fissaggio 160 × 100 mm, raggi R12 agli angoli, quattro fori di passaggio per M8 su un interasse di 130 × 70 e un foro Ø40 H7 al centro.</p>
+          <p>Che cosa mostrare: la scheda della proposta elenca che cosa aggiungerà, le affermazioni dicono da dove viene ogni numero (Ø9 per M8 da <code>library/holes/iso-273</code>, serie media; H7 dalla ISO 286) e il disegno mostra l’anteprima in trasparenza. Fai clic su <strong>Accetta</strong>. Premi <code>U</code> una volta per mostrare che è un solo passo di annullamento, poi <code>REDO</code>.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-1.png?v=80e3a09bf3"><img src="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900" alt="La proposta per la piastra di fissaggio nella scheda Assistente: che cosa aggiunge, la fonte di ogni numero e l’anteprima sul disegno." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step alt" id="step-2" aria-labelledby="step-2-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">02</p>
+          <h2 id="step-2-h"><span class="label">Passo 2</span> Passo dopo passo fino alla parte 3D</h2>
+          <p class="bubble"><span class="who">Scrivi</span>Rendila una parte 3D: estrudi il contorno di 12 mm e fai i fori passanti.</p>
+          <p>Accetta. Si apre la scheda 3D con il corpo; la scheda Funzioni mostra l’albero. Poi:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Aggiungi sopra un mozzo Ø60 alto 25 mm attorno al foro, e un raccordo di 2 mm sugli spigoli del mozzo.</p>
+          <p>Accetta e ruota la vista. Poi una richiesta impossibile, per mostrare l’onestà:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Raccorda tutti gli spigoli con 20 mm.</p>
+          <p>La proposta viene costruita in background e fallisce con parole semplici (“il raccordo di 20 mm non sta nella piastra di 12 mm…”); non viene applicato nulla.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-2.png?v=255ce4ad28"><img src="/img/demo-2.png?v=255ce4ad28" width="1440" height="900" alt="La piastra come parte 3D con il mozzo e il suo raccordo, e l’albero delle funzioni nella scheda Funzioni." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step" id="step-3" aria-labelledby="step-3-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">03</p>
+          <h2 id="step-3-h"><span class="label">Passo 3</span> Indica qualcosa e chiedi una modifica</h2>
+          <ul><li>Nel visualizzatore 3D, Alt+clic sulla faccia superiore del mozzo. Nel campo della chat compare un riferimento “Faccia … normale +Z”.</li><li>Scrivi:</li></ul>
+          <p class="bubble"><span class="who">Scrivi</span>Smussa lo spigolo esterno di questa faccia 1 × 45° e porta il mozzo a 30 mm di altezza.</p>
+          <p>Accetta. Poi nella scheda Modello 2D seleziona i quattro cerchi dei fori (selezione a finestra), fai clic su <strong>Usa selezione</strong> e scrivi:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Trasformali in fori di passaggio per M10 e sposta l’interasse a 136 × 76.</p>
+          <p>Accetta; i fori e la funzione foro seguono.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-3.png?v=3738f62bbc"><img src="/img/demo-3.png?v=3738f62bbc" width="1440" height="900" alt="La faccia superiore del mozzo scelta con Alt+clic come riferimento nella chat, e la proposta per lo smusso." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step alt" id="step-4" aria-labelledby="step-4-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">04</p>
+          <h2 id="step-4-h"><span class="label">Passo 4</span> Il disegno e il PDF</h2>
+          <p class="bubble"><span class="who">Scrivi</span>Quota la piastra secondo ISO 129-1 (contorno, interasse dei fori, foro con la tolleranza H7), mettila su un foglio A3 in scala 1:1 con il cartiglio compilato ed esporta il PDF.</p>
+          <p>Accetta. Si apre la scheda del foglio e compare la finestra per salvare il PDF; salva e apri il PDF.</p>
+          </div>
+          <figure class="shot"><a href="/img/demo-4.png?v=0404e36fe8"><img src="/img/demo-4.png?v=0404e36fe8" width="1440" height="900" alt="La piastra quotata secondo ISO 129-1 su un foglio A3 in scala 1:1 con il cartiglio compilato." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="step" id="step-5" aria-labelledby="step-5-h">
+        <div class="wrap step-grid">
+          <div class="step-text">
+          <p class="step-num" aria-hidden="true">05</p>
+          <h2 id="step-5-h"><span class="label">Passo 5</span> Se qualcosa va storto</h2>
+          <ul><li>Nessuna risposta, o un errore della chiave: la scheda Assistente dice il perché in parole semplici; controlla la chiave e il nome del modello.</li><li>Una proposta che non ti piace: <strong>Rifiuta</strong>, oppure accetta e premi <code>U</code>.</li><li>L’assistente non modifica mai di nascosto: cerca la scheda della proposta; niente cambia senza un clic su Accetta.</li></ul>
+          </div>
+          <figure class="shot"><a href="/img/demo-5.png?v=0404e36fe8"><img src="/img/demo-5.png?v=0404e36fe8" width="1440" height="900" alt="Una richiesta impossibile da costruire, con la risposta in parole semplici: non viene applicato nulla." loading="lazy" decoding="async" /></a></figure>
+        </div>
+      </section>
+      <section class="sec try-sec" aria-labelledby="try-h">
+        <div class="wrap">
+          <div class="try">
+            <h2 id="try-h">Provalo tu</h2>
+            <p>Scarica MechPilot, apri la scheda Assistente, inserisci la tua chiave API di Claude, OpenAI o Gemini e scrivi la prima richiesta:</p>
+            <p class="bubble"><span class="who">Scrivi</span>Una piastra di fissaggio 160 × 100 mm, raggi R12 agli angoli, quattro fori di passaggio per M8 su un interasse di 130 × 70 e un foro Ø40 H7 al centro.</p>
+            <p class="cta"><a class="btn primary lg" href="/it/#download">Download</a> <a class="btn lg" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes">Compila dai sorgenti</a> <a class="btn lg" href="/docs/getting-started/" hreflang="en">Primi passi</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+            <p>CAD meccanico per disegni di produzione, con le parti 3D integrate. Gratuito e open source. Gira sul tuo computer. I file restano tuoi.</p>
+          </div>
+          <nav class="foot-nav" aria-label="Piè di pagina">
+            <div>
+              <p class="foot-h">Prodotto</p>
+              <ul><li><a href="/it/demo/">Demo</a></li><li><a href="/it/#download">Download</a></li><li><a href="/it/#compare">Il confronto</a></li><li><a href="/it/aziende/">Per le aziende</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Approfondire</p>
+              <ul><li><a href="/it/documentazione/">Documentazione</a></li><li><a href="/it/norme/">Norme</a></li><li><a href="/it/guide/">Guide</a></li><li><a href="/it/novita/">Novità</a></li></ul>
+            </div>
+            <div>
+              <p class="foot-h">Progetto</p>
+              <ul><li><a href="https://github.com/mojeee/mechpilot">GitHub</a></li><li><a href="https://github.com/mojeee/mechpilot/discussions">Discussioni</a></li><li><a href="https://github.com/mojeee/mechpilot/releases">Release</a></li></ul>
+            </div>
+          </nav>
+        </div>
+        <div class="foot-base">
+          <p>Copyright Mojtaba Amini. Apache-2.0. Versione 0.6.0.</p>
+          <p>Questo sito non imposta cookie, non esegue script e non carica nulla da terze parti.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

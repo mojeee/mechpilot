@@ -1,79 +1,177 @@
 <!-- title: MechPilot: open-source 2D/3D mechanical CAD for production drawings -->
 <!-- description: Free, open-source desktop CAD for production drawings to ISO standards, with 3D parts built in. Runs on your computer, your files stay yours. DXF, STEP and PDF. -->
 <section class="hero">
-        <div class="hero-text">
-          <p class="eyebrow" data-i18n="hero.eyebrow">Open-source mechanical CAD for macOS, Windows and Linux</p>
-          <h1 data-i18n="hero.title">Production drawings to ISO standards, with 3D parts built in.</h1>
-          <p class="lead" data-i18n="hero.lead">MechPilot is a desktop CAD app for mechanical design companies: draw, dimension and annotate to ISO 128, 129-1 and 7200, constrain your sketches, and export DXF and vector PDF. 3D parts with drawings linked to the model are being built next.</p>
-          <p class="promise" data-i18n="hero.promise">Free and open source. Runs on your computer. Your files stay yours.</p>
-          <div class="cta">
-            <a class="btn primary" href="#download" data-i18n="hero.download">Download</a>
-            <a class="btn" href="{{REPO}}#contribute-in-30-minutes" data-i18n="hero.build">Build from source</a>
+        <div class="wrap">
+          <div class="hero-text">
+            <!-- if ai -->
+            <p class="eyebrow" data-i18n="hero.eyebrow.ai">Open-source mechanical CAD, with AI inside</p>
+            <!-- else -->
+            <p class="eyebrow" data-i18n="hero.eyebrow">Open-source mechanical CAD for macOS, Windows and Linux</p>
+            <!-- end -->
+            <h1><span class="l" data-i18n="hero.l1">Draw to standard.</span> <span class="l" data-i18n="hero.l2">Build in 3D.</span> <span class="l ai"><span data-i18n="hero.l3">Ask in plain words.</span>{{AI_TAG}}</span></h1>
+            <!-- if ai -->
+            <p class="lead" data-i18n="hero.lead.ai">MechPilot is free desktop CAD for production drawings to ISO standards, parametric sketches and 3D parts. Describe a part in one sentence, or point at a face and ask for a change: the assistant answers with a preview you accept or reject.</p>
+            <!-- else -->
+            <p class="lead" data-i18n="hero.lead">MechPilot is free desktop CAD for production drawings to ISO standards, parametric sketches and 3D parts. Coming next: describe a part in one sentence, or point at a face and ask for a change, and the assistant answers with a preview you accept or reject.</p>
+            <!-- end -->
+            <p class="promise" data-i18n="hero.promise">Free and open source. Runs on your computer. Your files stay yours.</p>
+            <div class="cta">
+              <a class="btn primary lg" href="#download" data-i18n="hero.download">Download</a>
+              <a class="btn lg" href="{{P_DEMO}}"><!-- if video --><span data-i18n="hero.watch">Watch the demo</span><!-- else --><span data-i18n="hero.demo">See the demo</span><!-- end --> <span aria-hidden="true">→</span></a>
+            </div>
+            <p class="note">{{STATUS}}</p>
           </div>
-          <p class="note">{{STATUS}}</p>
-        </div>
-        <figure class="hero-shot">{{HERO_IMG}}</figure>
-      </section>
-
-      <section class="pillars">
-        <div>
-          <h2><span data-i18n="p1.title">2D first</span> {{TAG_2D}}</h2>
-          <p data-i18n="p1.text">Lines, arcs, dimensions, tolerances and ISO 286 fits, surface texture, GD&amp;T frames, sheets A4 to A0 with frame and title block. Vector PDF and DXF out.</p>
-        </div>
-        <div>
-          <h2><span data-i18n="p2.title">3D where it helps</span> {{TAG_3D}}</h2>
-          <p data-i18n="p2.text">Extrude, revolve, holes, fillets, patterns on a parametric feature tree. Change a value and the part rebuilds; the drawing views follow. STEP in and out.</p>
-        </div>
-        <div>
-          <h2><span data-i18n="p3.title">Checks on every change</span> {{TAG_CHECKS}}</h2>
-          <p data-i18n="p3.text">Under- and over-constrained sketches explained in plain words today; missing dimensions, fits that do not exist and empty title-block fields next, each on the drawing with a one-click fix.</p>
+          <figure class="hero-shot">
+            {{HERO_IMG}}
+            <figcaption class="dimline"><span data-i18n="hero.cap">The mounting bracket sample, as it ships with MechPilot</span></figcaption>
+          </figure>
         </div>
       </section>
 
-      <section class="gallery" id="screenshots">
-        <h2 data-i18n="shots.title">The real app</h2>
-        <p class="sub" data-i18n="shots.text">Screenshots of MechPilot with the sample drawing that ships with it, taken from the current build.</p>
-        {{GALLERY}}
-      </section>
-
-      <section class="band">
-        <h2 data-i18n="promise.title">Free and open source. Runs on your computer. Your files stay yours.</h2>
-        <ul class="facts">
-          <li data-i18n="facts.local">Local-first: no account, no cloud, no telemetry. The optional AI assistant will use your own API key.</li>
-          <li data-i18n="facts.files">An open, documented, versioned file format (plain JSON) that diffs well in Git. Autosave and crash recovery.</li>
-          <li data-i18n="facts.precision">Millimetres in double precision; nothing is rounded on save, load or export.</li>
-          <li data-i18n="facts.standards">Every drawing rule and table value cites its standard and clause. ISO by default, ASME as an option.</li>
-          <li data-i18n="facts.licence">Apache-2.0. No GPL dependencies, checked in CI.</li>
-        </ul>
-      </section>
-
-      <section id="formats">
-        <h2 data-i18n="compat.title">Files that open everywhere</h2>
-        <p class="sub" data-i18n="compat.text">DXF for drawings, STEP for parts, vector PDF at true scale for the shop floor, and a native format anyone can read.</p>
-        {{FORMATS}}
-      </section>
-
-      <section id="download">
-        <h2 data-i18n="download.title">Download</h2>
-        {{DOWNLOADS}}
-      </section>
-
-      <section id="compare">
-        <h2 data-i18n="compare.title">How it compares</h2>
-        <p class="sub" data-i18n="compare.text">An honest comparison with the tools engineers know. MechPilot is young: where a feature is not built yet, the table says so.</p>
-        {{COMPARE}}
-      </section>
-
-      <section class="split">
-        <div>
-          <h2 data-i18n="learn.title">Standards, with their sources</h2>
-          <p data-i18n="learn.text">The tables MechPilot draws with, one page each, with the standard, the clause and how every value was checked: ISO 286 fits, sheet sizes, line types, lettering, GD&amp;T symbols, surface texture, scales and title blocks.</p>
-          <p class="cta"><a class="btn" href="{{P_STANDARDS}}" data-i18n="learn.tables">Standards tables</a> <a class="btn" href="{{P_FITS}}" data-i18n="learn.fits">ISO 286 fits</a></p>
-          <p class="small"><span data-i18n="learn.guides">Guides:</span> <a href="{{P_FITS_GUIDE}}" data-i18n="learn.g1">ISO fits explained</a> · <a href="{{P_PROJ_GUIDE}}" data-i18n="learn.g2">First angle and third angle projection</a></p>
+      <section class="sec ai-sec" id="ai" aria-labelledby="ai-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">01 · <span data-i18n="ai.label">The assistant</span></p>
+            <h2 id="ai-h"><span data-i18n="ai.title">AI inside. You decide.</span>{{AI_TAG}}</h2>
+            <!-- if ai -->
+            <p class="sub" data-i18n="ai.sub.ai">The assistant reads your drawing and your parts and answers with a proposal: a highlighted preview, the list of what it changes, and where every number comes from. You stay the engineer who signs the drawing.</p>
+            <!-- else -->
+            <p class="sub" data-i18n="ai.sub">Being built now, in the open (roadmap milestone M7). How it will work: the assistant reads your drawing and your parts and answers with a proposal, a highlighted preview with the list of what it changes and where every number comes from. You stay the engineer who signs the drawing.</p>
+            <!-- end -->
+          </div>
+          <div class="ai-grid">
+            <ol class="points">
+              <li><h3 data-i18n="ai.p1.t">Describe it</h3><p data-i18n="ai.p1">Write the part in one sentence: “a 160 × 100 plate, R12 corners, four M8 clearance holes, a Ø40 H7 bore”. It comes back as a preview, and step by step it becomes a 3D part.</p></li>
+              <li><h3 data-i18n="ai.p2.t">Point at it</h3><p data-i18n="ai.p2">Alt+click a face in the 3D view, or select lines on the drawing, and ask: “chamfer this edge 1 × 45°”, “make these M10 clearance holes”.</p></li>
+              <li><h3 data-i18n="ai.p3.t">Accept or reject</h3><p data-i18n="ai.p3">Nothing changes until you click Accept. Every accepted proposal is one undo step. A request that cannot be built is answered in plain words, and nothing is applied.</p></li>
+              <li><h3 data-i18n="ai.p4.t">A source for every claim</h3><p data-i18n="ai.p4">Each number says where it comes from: measured on your model, a standard and its clause, a library entry, or plainly “suggestion”.</p></li>
+              <li><h3 data-i18n="ai.p5.t">Your key, your provider</h3><p data-i18n="ai.p5">Bring your own Claude, OpenAI or Gemini API key. There is no MechPilot server in between, and the app stays fully usable without AI.</p></li>
+              <li><h3 data-i18n="ai.p6.t">Only what you send</h3><p data-i18n="ai.p6">Nothing leaves your computer except what the assistant sends to the model you chose. Your drawings stay on your disks.</p></li>
+            </ol>
+            {{AI_MOCK}}
+          </div>
+          <p class="cta"><a class="btn" href="{{P_DEMO}}"><span data-i18n="ai.demo">Read the demo script, step by step</span> <span aria-hidden="true">→</span></a></p>
         </div>
-        <div>
-          <h2 data-i18n="biz.title">For companies</h2>
-          <p data-i18n="biz.text">Support, training on your own parts, and custom features such as your title block, libraries and drawing rules, from the people who build MechPilot.</p>
-          <p class="cta"><a class="btn" href="{{P_COMPANIES}}" data-i18n="biz.btn">MechPilot for companies</a></p>
+      </section>
+
+      <section class="sec light" id="features" aria-labelledby="features-h">
+        <div class="wrap">
+          <input type="radio" name="shot-theme" id="shot-dark" class="vh" checked />
+          <input type="radio" name="shot-theme" id="shot-light" class="vh" />
+          <div class="sec-head">
+            <p class="label">02 · <span data-i18n="feat.label">In the app today</span></p>
+            <h2 id="features-h" data-i18n="feat.title">Built for production drawings.</h2>
+            <p class="sub" data-i18n="feat.sub">What MechPilot does today, shown with the sample projects that ship with it. The screenshots are taken from the real app by a script, never retouched.</p>
+          </div>
+          {{SWITCH}}
+          <div class="pillars">
+            <article class="pillar">
+              <div class="pillar-text">
+                <p class="label"><span data-i18n="p1.kicker">2D drafting</span> {{TAG_2D}}</p>
+                <h3 data-i18n="p1.title">Drawings to ISO, ready for the shop floor</h3>
+                <p data-i18n="p1.text">Lines, arcs, splines, snaps and polar tracking. Dimensions to ISO 129-1 with tolerances and ISO 286 fits, surface texture, GD&amp;T frames, notes and balloons. Sheets A4 to A0 with frame, zones and an ISO 7200 title block, exported as vector PDF at true scale, and DXF both ways.</p>
+                {{STD_CHIPS}}
+              </div>
+              {{SHOT_SHEET}}
+            </article>
+            <article class="pillar">
+              <div class="pillar-text">
+                <p class="label"><span data-i18n="p2.kicker">Parametric sketches</span> {{TAG_SKETCH}}</p>
+                <h3 data-i18n="p2.title">Constraints that explain themselves</h3>
+                <p data-i18n="p2.text">FreeCAD’s solver, planegcs, runs in a worker: twelve constraints and driving dimensions, degrees of freedom shown in colour, and a conflict explained in plain words with a way out.</p>
+                {{GLYPHS}}
+              </div>
+              {{SHOT_SKETCH}}
+            </article>
+            <article class="pillar">
+              <div class="pillar-text">
+                <p class="label"><span data-i18n="p3.kicker">3D parts</span> {{TAG_3D}}</p>
+                <h3 data-i18n="p3.title">From the sketch to a solid, on a feature tree</h3>
+                <p data-i18n="p3.text">Sketch on a plane, then extrude, revolve, cut, hole, fillet, chamfer, shell, mirror and pattern. Change any value and the part rebuilds in a worker, never freezing the window. Materials with density and source, mass and centre of gravity, section view and measuring, STEP in and out, STL and 3MF out.</p>
+                {{TREE}}
+                <p class="small next"><span data-i18n="p3.next">Drawing views made from the 3D part and linked to it:</span> {{TAG_M5}}</p>
+              </div>
+              {{SHOT_PART}}
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec why" id="why" aria-labelledby="why-h">
+        <div class="wrap why-grid">
+          <div>
+            <p class="label">03 · <span data-i18n="why.label">For engineering companies</span></p>
+            <h2 id="why-h" data-i18n="why.title">Why MechPilot</h2>
+          </div>
+          <div>
+            <p class="big" data-i18n="why.text">Your drawings outlive any software licence. MechPilot is made for the drawing office that exchanges DXF and STEP with customers every day, signs drawings to ISO and must still open them in ten years: an open, documented file format on your own disks, standards with their sources, no fee per seat, and support from the people who build it when you need it.</p>
+            <ul class="stats">
+              <li><strong data-i18n="why.s1">€0</strong><span data-i18n="why.s1.t">per seat, for any use: Apache-2.0</span></li>
+              <li><strong data-i18n="why.s2">100,000</strong><span data-i18n="why.s2.t">entities panned and zoomed at 60 fps, checked by a performance test</span></li>
+              <li><strong data-i18n="why.s3">0</strong><span data-i18n="why.s3.t">accounts, servers or telemetry between you and your drawings</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec light" id="formats" aria-labelledby="formats-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">04 · <span data-i18n="compat.label">Your files</span></p>
+            <h2 id="formats-h" data-i18n="files.title">Your files stay yours.</h2>
+            <p class="sub" data-i18n="compat.text">DXF for drawings, STEP for parts, vector PDF at true scale for the shop floor, and a native format anyone can read.</p>
+          </div>
+          <ul class="facts-grid">
+            <li><h3 data-i18n="facts.local.t">Local-first</h3><p><span data-i18n="facts.local">No account, no cloud, no telemetry.</span> <!-- if ai --><span data-i18n="facts.local.ai">The optional AI assistant uses your own API key.</span><!-- else --><span data-i18n="facts.local.soon">The optional AI assistant will use your own API key.</span><!-- end --></p></li>
+            <li><h3 data-i18n="facts.files.t">Open format</h3><p data-i18n="facts.files">An open, documented, versioned file format (plain JSON) that diffs well in Git. Autosave and crash recovery.</p></li>
+            <li><h3 data-i18n="facts.precision.t">Exact</h3><p data-i18n="facts.precision">Millimetres in double precision; nothing is rounded on save, load or export.</p></li>
+            <li><h3 data-i18n="facts.standards.t">Sourced</h3><p data-i18n="facts.standards">Every drawing rule and table value cites its standard and clause. ISO by default, ASME as an option.</p></li>
+            <li><h3 data-i18n="facts.licence.t">Open source</h3><p data-i18n="facts.licence">Apache-2.0. No GPL dependencies, checked in CI.</p></li>
+          </ul>
+          {{FORMATS}}
+        </div>
+      </section>
+
+      <section class="sec light alt" id="compare" aria-labelledby="compare-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">05 · <span data-i18n="compare.label">Honest comparison</span></p>
+            <h2 id="compare-h" data-i18n="compare.title">How it compares</h2>
+            <p class="sub" data-i18n="compare.text">An honest comparison with the tools engineers know. MechPilot is young: where a feature is not built yet, the table says so.</p>
+          </div>
+          {{COMPARE}}
+        </div>
+      </section>
+
+      <section class="sec dl-sec" id="download" aria-labelledby="download-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">06 · <span data-i18n="download.label">Get it</span></p>
+            <h2 id="download-h" data-i18n="download.title">Download</h2>
+            <p class="sub" data-i18n="download.sub">Free for any use, on macOS, Windows and Linux. No account, no licence key.</p>
+          </div>
+          {{DOWNLOADS}}
+        </div>
+      </section>
+
+      <section class="sec light" id="more" aria-labelledby="more-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="label">07 · <span data-i18n="more.label">Go further</span></p>
+            <h2 id="more-h" data-i18n="more.title">Standards and support</h2>
+          </div>
+          <div class="duo">
+            <div class="card">
+              <h3 data-i18n="learn.title">Standards, with their sources</h3>
+              <p data-i18n="learn.text">The tables MechPilot draws with, one page each, with the standard, the clause and how every value was checked: ISO 286 fits, sheet sizes, line types, lettering, GD&amp;T symbols, surface texture, scales and title blocks.</p>
+              <p class="cta"><a class="btn" href="{{P_STANDARDS}}" data-i18n="learn.tables">Standards tables</a> <a class="btn" href="{{P_FITS}}" data-i18n="learn.fits">ISO 286 fits</a></p>
+              <p class="small"><span data-i18n="learn.guides">Guides:</span> <a href="{{P_FITS_GUIDE}}" data-i18n="learn.g1">ISO fits explained</a> · <a href="{{P_PROJ_GUIDE}}" data-i18n="learn.g2">First angle and third angle projection</a></p>
+            </div>
+            <div class="card accent">
+              <h3 data-i18n="biz.title">For companies</h3>
+              <p data-i18n="biz.text">Support, training on your own parts, and custom features such as your title block, libraries and drawing rules, from the people who build MechPilot.</p>
+              <p class="cta"><a class="btn primary" href="{{P_COMPANIES}}" data-i18n="biz.btn">MechPilot for companies</a></p>
+            </div>
+          </div>
         </div>
       </section>

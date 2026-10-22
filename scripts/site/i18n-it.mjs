@@ -6,36 +6,98 @@
 // the Italian pages show them in English, marked lang="en".
 
 export const IT = {
-  // Landing page
+  // Landing page: hero
   'hero.eyebrow': 'CAD meccanico open source per macOS, Windows e Linux',
-  'hero.title': 'Disegni di produzione secondo le norme ISO, con le parti 3D integrate.',
+  'hero.eyebrow.ai': 'CAD meccanico open source, con l’AI dentro',
+  'hero.l1': 'Disegna secondo norma.',
+  'hero.l2': 'Costruisci in 3D.',
+  'hero.l3': 'Chiedi a parole tue.',
   'hero.lead':
-    'MechPilot è un programma CAD desktop per le aziende di progettazione meccanica: disegna, quota e annota secondo ISO 128, 129-1 e 7200, vincola i tuoi schizzi ed esporta DXF e PDF vettoriale. Le parti 3D, con i disegni collegati al modello, sono il prossimo passo.',
+    'MechPilot è un CAD desktop gratuito per disegni di produzione secondo le norme ISO, schizzi parametrici e parti 3D. In arrivo: descrivi una parte in una frase, oppure indica una faccia e chiedi una modifica, e l’assistente risponde con un’anteprima che accetti o rifiuti.',
+  'hero.lead.ai':
+    'MechPilot è un CAD desktop gratuito per disegni di produzione secondo le norme ISO, schizzi parametrici e parti 3D. Descrivi una parte in una frase, oppure indica una faccia e chiedi una modifica: l’assistente risponde con un’anteprima che accetti o rifiuti.',
   'hero.promise': 'Gratuito e open source. Gira sul tuo computer. I file restano tuoi.',
   'hero.download': 'Download',
-  'hero.build': 'Compila dai sorgenti',
-  'p1.title': 'Prima il 2D',
+  'hero.demo': 'Scopri la demo',
+  'hero.watch': 'Guarda la demo',
+  'hero.cap': 'L’esempio della staffa di fissaggio, così come arriva con MechPilot',
+
+  // Landing: the assistant
+  'ai.label': 'L’assistente',
+  'ai.title': 'L’AI dentro. Decidi tu.',
+  'ai.sub.ai':
+    'L’assistente legge il tuo disegno e le tue parti e risponde con una proposta: un’anteprima evidenziata, l’elenco di ciò che cambia e la provenienza di ogni numero. L’ingegnere che firma il disegno resti tu.',
+  'ai.sub':
+    'In costruzione proprio ora, in pubblico (traguardo M7 della roadmap). Come funzionerà: l’assistente legge il tuo disegno e le tue parti e risponde con una proposta, un’anteprima evidenziata con l’elenco di ciò che cambia e la provenienza di ogni numero. L’ingegnere che firma il disegno resti tu.',
+  'ai.p1.t': 'Descrivila',
+  'ai.p1':
+    'Scrivi la parte in una frase: “una piastra 160 × 100, raggi R12, quattro fori di passaggio per M8, un foro Ø40 H7”. Torna come anteprima e, passo dopo passo, diventa una parte 3D.',
+  'ai.p2.t': 'Indicala',
+  'ai.p2': 'Alt+clic su una faccia nella vista 3D, oppure seleziona delle linee sul disegno, e chiedi: “smussa questo spigolo 1 × 45°”, “trasformali in fori di passaggio per M10”.',
+  'ai.p3.t': 'Accetta o rifiuta',
+  'ai.p3':
+    'Niente cambia finché non fai clic su Accetta. Ogni proposta accettata è un solo passo di annullamento. A una richiesta impossibile da costruire risponde con parole semplici, e non applica nulla.',
+  'ai.p4.t': 'Una fonte per ogni affermazione',
+  'ai.p4': 'Ogni numero dice da dove viene: misurato sul tuo modello, una norma con il suo punto, una voce della libreria, oppure semplicemente “suggerimento”.',
+  'ai.p5.t': 'La tua chiave, il tuo fornitore',
+  'ai.p5': 'Usa la tua chiave API di Claude, OpenAI o Gemini. Non c’è nessun server di MechPilot in mezzo, e il programma resta del tutto utilizzabile senza AI.',
+  'ai.p6.t': 'Solo ciò che invii',
+  'ai.p6': 'Niente lascia il tuo computer, tranne ciò che l’assistente invia al modello che hai scelto. I tuoi disegni restano sui tuoi dischi.',
+  'ai.demo': 'Leggi il copione della demo, passo per passo',
+
+  // Landing: features
+  'feat.label': 'Nel programma oggi',
+  'feat.title': 'Fatto per i disegni di produzione.',
+  'feat.sub':
+    'Ciò che MechPilot fa oggi, mostrato con i progetti di esempio forniti con il programma. Le schermate sono prese dal programma vero da uno script, mai ritoccate.',
+  'p1.kicker': 'Disegno 2D',
+  'p1.title': 'Disegni secondo ISO, pronti per l’officina',
   'p1.text':
-    'Linee, archi, quote, tolleranze e accoppiamenti ISO 286, rugosità, riquadri GD&amp;T, fogli da A4 ad A0 con squadratura e cartiglio. PDF vettoriale e DXF in uscita.',
-  'p2.title': 'Il 3D dove serve',
+    'Linee, archi, spline, snap e puntamento polare. Quote secondo ISO 129-1 con tolleranze e accoppiamenti ISO 286, rugosità, riquadri GD&amp;T, note e richiami. Fogli da A4 ad A0 con squadratura, zone e cartiglio ISO 7200, esportati in PDF vettoriale in scala reale, e DXF in entrambe le direzioni.',
+  'p2.kicker': 'Schizzi parametrici',
+  'p2.title': 'Vincoli che si spiegano da soli',
   'p2.text':
-    'Estrusione, rivoluzione, fori, raccordi, ripetizioni su un albero di feature parametrico. Cambi un valore e la parte si ricostruisce; le viste del disegno seguono. STEP in ingresso e in uscita.',
-  'p3.title': 'Controlli a ogni modifica',
+    'Il risolutore di FreeCAD, planegcs, gira in un worker: dodici vincoli e quote guida, i gradi di libertà mostrati a colori, e un conflitto spiegato in parole semplici con una via d’uscita.',
+  'p3.kicker': 'Parti 3D',
+  'p3.title': 'Dallo schizzo al solido, su un albero di funzioni',
   'p3.text':
-    'Schizzi sottovincolati o sovravincolati spiegati in parole semplici già oggi; poi quote mancanti, accoppiamenti inesistenti e campi del cartiglio vuoti, ognuno sul disegno con una correzione in un clic.',
-  'shots.title': 'Il programma vero',
-  'shots.text': 'Schermate di MechPilot con il disegno di esempio fornito con il programma, prese dalla versione attuale.',
-  'promise.title': 'Gratuito e open source. Gira sul tuo computer. I file restano tuoi.',
-  'facts.local': 'Tutto in locale: nessun account, nessun cloud, nessuna telemetria. L’assistente AI opzionale userà la tua chiave API.',
-  'facts.files': 'Un formato di file aperto, documentato e versionato (JSON semplice) che si confronta bene in Git. Salvataggio automatico e recupero dopo un crash.',
-  'facts.precision': 'Millimetri in doppia precisione; niente viene arrotondato al salvataggio, all’apertura o all’esportazione.',
-  'facts.standards': 'Ogni regola di disegno e ogni valore di tabella cita la norma e il punto. ISO di default, ASME come opzione.',
-  'facts.licence': 'Apache-2.0. Nessuna dipendenza GPL, verificato in CI.',
-  'compat.title': 'File che si aprono ovunque',
+    'Schizzo su un piano, poi estrusione, rivoluzione, taglio, foro, raccordo, smusso, guscio, specchio e ripetizione. Cambi un valore qualsiasi e la parte si ricostruisce in un worker, senza mai bloccare la finestra. Materiali con densità e fonte, massa e baricentro, sezione e misure, STEP in ingresso e in uscita, STL e 3MF in uscita.',
+  'p3.next': 'Viste del disegno ricavate dalla parte 3D e collegate a essa:',
+
+  // Landing: why, files, comparison, download, more
+  'why.label': 'Per le aziende di ingegneria',
+  'why.title': 'Perché MechPilot',
+  'why.text':
+    'I vostri disegni durano più di qualsiasi licenza software. MechPilot è fatto per l’ufficio tecnico che scambia ogni giorno DXF e STEP con i clienti, firma disegni secondo ISO e deve poterli riaprire tra dieci anni: un formato di file aperto e documentato sui vostri dischi, norme con le loro fonti, nessun costo per postazione, e il supporto di chi lo sviluppa quando vi serve.',
+  'why.s1': '0 €',
+  'why.s1.t': 'per postazione, per qualsiasi uso: Apache-2.0',
+  'why.s2': '100.000',
+  'why.s2.t': 'entità spostate e ingrandite a 60 fps, verificato da un test delle prestazioni',
+  'why.s3': '0',
+  'why.s3.t': 'account, server o telemetria tra voi e i vostri disegni',
+  'compat.label': 'I tuoi file',
+  'files.title': 'I file restano tuoi.',
   'compat.text': 'DXF per i disegni, STEP per le parti, PDF vettoriale in scala reale per l’officina, e un formato nativo che chiunque può leggere.',
-  'download.title': 'Download',
+  'facts.local.t': 'Tutto in locale',
+  'facts.local': 'Nessun account, nessun cloud, nessuna telemetria.',
+  'facts.local.ai': 'L’assistente AI opzionale usa la tua chiave API.',
+  'facts.local.soon': 'L’assistente AI opzionale userà la tua chiave API.',
+  'facts.files.t': 'Formato aperto',
+  'facts.files': 'Un formato di file aperto, documentato e versionato (JSON semplice) che si confronta bene in Git. Salvataggio automatico e recupero dopo un crash.',
+  'facts.precision.t': 'Esatto',
+  'facts.precision': 'Millimetri in doppia precisione; niente viene arrotondato al salvataggio, all’apertura o all’esportazione.',
+  'facts.standards.t': 'Con le fonti',
+  'facts.standards': 'Ogni regola di disegno e ogni valore di tabella cita la norma e il punto. ISO di default, ASME come opzione.',
+  'facts.licence.t': 'Open source',
+  'facts.licence': 'Apache-2.0. Nessuna dipendenza GPL, verificato in CI.',
+  'compare.label': 'Confronto onesto',
   'compare.title': 'Il confronto',
   'compare.text': 'Un confronto onesto con i programmi che gli ingegneri conoscono. MechPilot è giovane: dove una funzione non è ancora pronta, la tabella lo dice.',
+  'download.label': 'Scaricalo',
+  'download.title': 'Download',
+  'download.sub': 'Gratuito per qualsiasi uso, su macOS, Windows e Linux. Nessun account, nessuna chiave di licenza.',
+  'more.label': 'Per approfondire',
+  'more.title': 'Norme e supporto',
   'learn.title': 'Le norme, con le loro fonti',
   'learn.text':
     'Le tabelle con cui MechPilot disegna, una pagina ciascuna, con la norma, il punto e come è stato verificato ogni valore: accoppiamenti ISO 286, formati dei fogli, tipi di linea, scrittura, simboli GD&amp;T, stato della superficie, scale e cartiglio.',
@@ -49,9 +111,13 @@ export const IT = {
   'biz.btn': 'MechPilot per le aziende',
 
   // For companies
+  'companies.eyebrow': 'Per le aziende di ingegneria',
   'companies.title': 'MechPilot per le aziende',
   'companies.lead':
     'MechPilot è gratuito e open source, e tale resta. Le aziende che vogliono più del tracker pubblico possono avere supporto, formazione e funzioni su misura da chi lo sviluppa.',
+  'companies.see': 'Che cosa offriamo',
+  'companies.offer.label': 'Che cosa offriamo',
+  'companies.offer.title': 'Supporto, formazione, funzioni su misura.',
   'companies.support': 'Supporto',
   'companies.support.text':
     'Risposte prioritarie sui problemi di scambio DXF e STEP con clienti e fornitori, domande sulle norme di disegno, installazione sulle vostre postazioni e migrazione dei disegni esistenti.',
@@ -61,14 +127,20 @@ export const IT = {
   'companies.custom': 'Funzioni su misura',
   'companies.custom.text':
     'Il vostro cartiglio e le vostre squadrature, le vostre librerie di materiali e parti, le regole di disegno aziendali nel controllore, profili di esportazione per le vostre macchine. Sviluppate in pubblico quando servono a tutti, riservate quando sono vostre.',
+  'companies.safe.label': 'Nessun vincolo',
   'companies.why': 'Perché ci si può costruire sopra',
   'companies.why.licence': 'Apache-2.0: potete usare, modificare e ridistribuire MechPilot, anche all’interno della vostra azienda, senza costi di licenza.',
   'companies.why.files': 'I vostri disegni sono file JSON semplici e documentati sui vostri dischi, con esportazione DXF e PDF; niente dipende dai nostri server.',
   'companies.why.open': 'Lo sviluppo avviene in pubblico: la roadmap, ogni decisione e ogni modifica sono nel repository.',
+  'companies.why.ai':
+    'L’assistente AI opzionale funziona con l’account Claude, OpenAI o Gemini della vostra azienda. Non c’è nessun server di MechPilot in mezzo, e il programma è del tutto utilizzabile senza.',
+  'companies.why.ai.soon':
+    'L’assistente AI, in arrivo, funzionerà con l’account Claude, OpenAI o Gemini della vostra azienda. Non c’è nessun server di MechPilot in mezzo, e il programma è del tutto utilizzabile senza.',
   'companies.contact': 'Contatti',
   'companies.contact.text':
     'Aprite una discussione su GitHub Discussions e dite di cosa avete bisogno. Per un errore o una funzione mancante, aprite una issue. Nessun modulo, nessuna newsletter.',
   'companies.contact.btn': 'Apri GitHub Discussions',
+  'companies.contact.btn2': 'Apri GitHub Discussions',
   'companies.contact.issues': 'Apri una issue',
 };
 
@@ -80,22 +152,106 @@ export const IT_TEXT = {
   'MechPilot for companies: support, training, custom features': 'MechPilot per le aziende: supporto, formazione, funzioni su misura',
   'Support, training and custom features for engineering companies using MechPilot, the open-source 2D/3D mechanical design app. Contact through GitHub Discussions.':
     'Supporto, formazione e funzioni su misura per le aziende che usano MechPilot, il programma open source di progettazione meccanica 2D/3D. Contatti tramite GitHub Discussions.',
+  Demo: 'Demo',
   Docs: 'Documentazione',
   Standards: 'Norme',
   Guides: 'Guide',
   'For companies': 'Per le aziende',
   Changelog: 'Novità',
+  Download: 'Download',
   'Skip to content': 'Vai al contenuto',
   Main: 'Principale',
   Footer: 'Piè di pagina',
   Breadcrumb: 'Percorso',
   Home: 'Home',
   Discussions: 'Discussioni',
+  Product: 'Prodotto',
+  Learn: 'Approfondire',
+  Project: 'Progetto',
+  Releases: 'Release',
+  'How it compares': 'Il confronto',
+  'Mechanical CAD for production drawings, with 3D parts built in. Free and open source. Runs on your computer. Your files stay yours.':
+    'CAD meccanico per disegni di produzione, con le parti 3D integrate. Gratuito e open source. Gira sul tuo computer. I file restano tuoi.',
   'Copyright Mojtaba Amini. Apache-2.0.': 'Copyright Mojtaba Amini. Apache-2.0.',
   'Version {v}.': 'Versione {v}.',
   'This site sets no cookies, runs no scripts and loads nothing from third parties.': 'Questo sito non imposta cookie, non esegue script e non carica nulla da terze parti.',
   'The MechPilot window with the mounting bracket sample: a dimensioned plate with holes, tolerances and geometrical tolerance frames.':
     'La finestra di MechPilot con l’esempio della staffa di fissaggio: una piastra quotata con fori, tolleranze e riquadri di tolleranza geometrica.',
+
+  // The AI gate, the assistant illustration, the sketch and 3D illustrations
+  'Coming in the next release': 'In arrivo nella prossima versione',
+  'Ø{d} clearance holes for M8, medium series': 'Fori di passaggio Ø{d} per M8, serie media',
+  'library: {p}': 'libreria: {p}',
+  'Ø40 H7 bore tolerance': 'Tolleranza del foro Ø40 H7',
+  'Hole centres 15 mm from every edge': 'Centri dei fori a 15 mm da ogni bordo',
+  measured: 'misurato',
+  'Break sharp edges 0.5 × 45°': 'Smussare gli spigoli vivi 0,5 × 45°',
+  suggestion: 'suggerimento',
+  Features: 'Funzioni',
+  Checks: 'Controlli',
+  Assistant: 'Assistente',
+  'You type': 'Scrivi',
+  Proposal: 'Proposta',
+  'Outline, 4 holes, bore: preview on the drawing': 'Contorno, 4 fori, foro centrale: anteprima sul disegno',
+  Accept: 'Accetta',
+  Reject: 'Rifiuta',
+  'One undo step': 'Un solo passo di annullamento',
+  'An illustration drawn for this page, not a screenshot: the first prompt of the demo and the kind of proposal the assistant answers with.':
+    'Un’illustrazione disegnata per questa pagina, non una schermata: la prima richiesta della demo e il tipo di proposta con cui risponde l’assistente.',
+  'Some of the sketch constraints': 'Alcuni dei vincoli degli schizzi',
+  Coincident: 'Coincidente',
+  Horizontal: 'Orizzontale',
+  Vertical: 'Verticale',
+  Parallel: 'Parallelo',
+  Perpendicular: 'Perpendicolare',
+  Tangent: 'Tangente',
+  Equal: 'Uguale',
+  Symmetric: 'Simmetrico',
+  Fixed: 'Fisso',
+  Distance: 'Distanza',
+  'Stepped shaft': 'Albero a gradini',
+  'Feature tree of the stepped shaft sample': 'Albero delle funzioni dell’esempio dell’albero a gradini',
+  Sketch: 'Schizzo',
+  Revolve: 'Rivoluzione',
+  Chamfer: 'Smusso',
+  'Half profile': 'Semiprofilo',
+  'Chamfer left end': 'Smusso estremità sinistra',
+  'Chamfer right end': 'Smusso estremità destra',
+
+  // The demo page
+  'Demo: design by writing, point, change, print · MechPilot': 'Demo: progettare scrivendo, indicare, modificare, stampare · MechPilot',
+  'The demo script of the MechPilot AI assistant: a part from one sentence, step by step to a 3D part, a change on a face you point at, and the A3 drawing as a PDF.':
+    'Il copione della demo dell’assistente AI di MechPilot: una parte da una frase, passo dopo passo fino alla parte 3D, una modifica su una faccia indicata e il disegno A3 in PDF.',
+  'Design by writing. Point. Change. Print.': 'Progetta scrivendo. Indica. Modifica. Stampa.',
+  'A ten-minute walkthrough of MechPilot with the assistant: a part from one sentence, step by step to a 3D part, a change on a face you point at, and the dimensioned A3 drawing as a PDF. Nothing the assistant proposes is applied until you click Accept, and every accepted proposal is one undo step.':
+    'Un percorso di dieci minuti in MechPilot con l’assistente: una parte da una frase, passo dopo passo fino alla parte 3D, una modifica su una faccia che indichi e il disegno A3 quotato in PDF. Niente di ciò che l’assistente propone viene applicato finché non fai clic su Accetta, e ogni proposta accettata è un solo passo di annullamento.',
+  'The assistant is being built now (roadmap milestone {m}) and ships in the next release. This page is its demo script.':
+    'L’assistente è in costruzione proprio ora (traguardo {m} della roadmap) e arriva nella prossima versione. Questa pagina è il copione della sua demo.',
+  'Recording in progress: the screen recording of this walkthrough appears here as soon as it is ready. The steps below are its chapters.':
+    'Registrazione in corso: la registrazione dello schermo di questo percorso compare qui appena è pronta. I passi qui sotto ne sono i capitoli.',
+  'Your browser does not play this video.': 'Il tuo browser non riproduce questo video.',
+  'Download the recording': 'Scarica la registrazione',
+  'A screen recording of the walkthrough below, made in the real app.': 'La registrazione dello schermo del percorso qui sotto, fatta nel programma vero.',
+  Chapters: 'Capitoli',
+  'Some screenshots are not taken yet: the grey frames stand in for them.': 'Alcune schermate non sono ancora state prese: i riquadri grigi ne fanno le veci.',
+  'Step {n}': 'Passo {n}',
+  'Screenshot of step {n} of the demo.': 'Schermata del passo {n} della demo.',
+  'Placeholder: the screenshot of step {n} is not taken yet.': 'Segnaposto: la schermata del passo {n} non è ancora stata presa.',
+  'The proposal for the mounting plate in the Assistant tab: what it adds, the source of every number, and the preview on the drawing.':
+    'La proposta per la piastra di fissaggio nella scheda Assistente: che cosa aggiunge, la fonte di ogni numero e l’anteprima sul disegno.',
+  'The plate as a 3D part with the boss and its fillet, and the feature tree in the Features tab.':
+    'La piastra come parte 3D con il mozzo e il suo raccordo, e l’albero delle funzioni nella scheda Funzioni.',
+  'The top face of the boss picked with Alt+click as a reference in the chat, and the proposal for the chamfer.':
+    'La faccia superiore del mozzo scelta con Alt+clic come riferimento nella chat, e la proposta per lo smusso.',
+  'The plate dimensioned to ISO 129-1 on an A3 sheet at 1:1 with the title block filled in.': 'La piastra quotata secondo ISO 129-1 su un foglio A3 in scala 1:1 con il cartiglio compilato.',
+  'A request that cannot be built, answered in plain words: nothing is applied.': 'Una richiesta impossibile da costruire, con la risposta in parole semplici: non viene applicato nulla.',
+  'Try it yourself': 'Provalo tu',
+  'Get MechPilot, open the Assistant tab, add your own Claude, OpenAI or Gemini API key, and type the first prompt:':
+    'Scarica MechPilot, apri la scheda Assistente, inserisci la tua chiave API di Claude, OpenAI o Gemini e scrivi la prima richiesta:',
+  'The assistant ships with milestone {m}. Until then you can build MechPilot from source and try what it does today: 2D drafting to ISO, parametric sketches and 3D parts. The first prompt, for when it ships:':
+    'L’assistente arriva con il traguardo {m}. Fino ad allora puoi compilare MechPilot dai sorgenti e provare ciò che fa oggi: disegno 2D secondo ISO, schizzi parametrici e parti 3D. La prima richiesta, per quando arriverà:',
+  'Build from source': 'Compila dai sorgenti',
+  'Getting started': 'Primi passi',
 
   // Landing: status, gallery, formats, downloads, comparison
   'Version {v}, in development: milestones {done} of {all} are done.': 'Versione {v}, in sviluppo: i traguardi {done} di {all} sono completati.',
@@ -155,6 +311,7 @@ export const IT_TEXT = {
   'STEP in and out': 'STEP in ingresso e in uscita',
   'ISO dimensioning': 'Quotatura ISO',
   'Runs offline, no account': 'Funziona offline, senza account',
+  'AI assistant with your own API key, previews you accept or reject': 'Assistente AI con la tua chiave API, anteprime da accettare o rifiutare',
   'Apache-2.0, free': 'Apache-2.0, gratuito',
   'Proprietary, subscription': 'Proprietario, in abbonamento',
   'Proprietary, paid': 'Proprietario, a pagamento',
