@@ -1,0 +1,16 @@
+name: Feature request
+description: Something the app should do.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you need to do
+      description: The drawing or part you are making and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: standard
+    attributes:
+      label: Standard or reference, if any
+      description: ISO or ASME clause, a catalogue, or how another CAD tool does it.

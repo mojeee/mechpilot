@@ -1,0 +1,9 @@
+node_modules/
+out/
+dist/
+.env.local
+.env*.local
+*.log
+.DS_Store
+.claude/
+THIRD_PARTY_LICENSES.md

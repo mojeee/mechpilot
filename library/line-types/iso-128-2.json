@@ -1,0 +1,75 @@
+{
+  "id": "iso-128-2",
+  "name": "ISO 128-2 line types",
+  "source": "ISO 128-2:2020 Technical product documentation (TPD) - General principles of representation - Part 2: Basic conventions for lines",
+  "unit": "mm",
+  "widthsSource": "ISO 128-2:2020, 5 (line widths): series 0.13, 0.18, 0.25, 0.35, 0.5, 0.7, 1, 1.4, 2 mm; wide : narrow = 2 : 1",
+  "widths": [0.13, 0.18, 0.25, 0.35, 0.5, 0.7, 1, 1.4, 2],
+  "narrowToWide": 0.5,
+  "patternNote": "pattern (dash/gap lengths in multiples of the line width d) is omitted until the element lengths are verified: see docs/to-verify.md. A type without a pattern renders as continuous.",
+  "types": [
+    {
+      "id": "01.1",
+      "name": "Continuous narrow",
+      "width": "narrow",
+      "use": "Dimension lines, extension lines, leader lines, hatching, outlines of revolved sections, short centre lines, projection lines",
+      "source": "ISO 128-2:2020, Table 1, line type 01.1"
+    },
+    {
+      "id": "01.1-freehand",
+      "name": "Continuous narrow freehand",
+      "width": "narrow",
+      "use": "Limits of partial or interrupted views and sections, when the limit is not an axis",
+      "source": "ISO 128-2:2020, Table 1, line type 01.1 (freehand)"
+    },
+    {
+      "id": "01.1-zigzag",
+      "name": "Continuous narrow with zigzags",
+      "width": "narrow",
+      "use": "Limits of partial or interrupted views and sections, drawn by machine",
+      "source": "ISO 128-2:2020, Table 1, line type 01.1 (zigzag)"
+    },
+    {
+      "id": "01.2",
+      "name": "Continuous wide",
+      "width": "wide",
+      "use": "Visible edges and outlines, crests of screw threads, limit of length of full thread",
+      "source": "ISO 128-2:2020, Table 1, line type 01.2"
+    },
+    {
+      "id": "02.1",
+      "name": "Dashed narrow",
+      "width": "narrow",
+      "use": "Hidden edges and hidden outlines",
+      "source": "ISO 128-2:2020, Table 1, line type 02.1"
+    },
+    {
+      "id": "02.2",
+      "name": "Dashed wide",
+      "width": "wide",
+      "use": "Indication of permissible areas of surface treatment",
+      "source": "ISO 128-2:2020, Table 1, line type 02.2"
+    },
+    {
+      "id": "04.1",
+      "name": "Long-dashed dotted narrow",
+      "width": "narrow",
+      "use": "Centre lines, lines of symmetry, pitch circles of gears and of holes",
+      "source": "ISO 128-2:2020, Table 1, line type 04.1"
+    },
+    {
+      "id": "04.2",
+      "name": "Long-dashed dotted wide",
+      "width": "wide",
+      "use": "Indication of cutting planes, indication of limited required areas of surface treatment",
+      "source": "ISO 128-2:2020, Table 1, line type 04.2"
+    },
+    {
+      "id": "05.1",
+      "name": "Long-dashed double-dotted narrow",
+      "width": "narrow",
+      "use": "Outlines of adjacent parts, extreme positions of movable parts, centroidal lines, initial outlines prior to forming, parts in front of a cutting plane",
+      "source": "ISO 128-2:2020, Table 1, line type 05.1"
+    }
+  ]
+}

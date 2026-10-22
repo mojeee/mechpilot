@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MechPilot: open-source 2D/3D mechanical design</title>
+    <meta name="description" data-i18n-content="meta.description" content="Disegni di produzione secondo le norme ISO, con le parti 3D integrate. Gratuito e open source, gira sul tuo computer, i file restano tuoi. DXF, STEP e PDF." />
+    <link rel="canonical" href="https://mechpilot.agentflowbind.com/it/" />
+    <link rel="alternate" hreflang="en" href="https://mechpilot.agentflowbind.com/" />
+    <link rel="alternate" hreflang="it" href="https://mechpilot.agentflowbind.com/it/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:title" content="MechPilot: open-source 2D/3D mechanical design" />
+    <meta property="og:description" data-i18n-content="meta.description" content="Disegni di produzione secondo le norme ISO, con le parti 3D integrate. Gratuito e open source, gira sul tuo computer, i file restano tuoi. DXF, STEP e PDF." />
+    <meta property="og:url" content="https://mechpilot.agentflowbind.com/it/" />
+    <meta property="og:image" content="https://mechpilot.agentflowbind.com/logo.svg" />
+    <link rel="stylesheet" href="/style.css?v=7c64697f23" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="logo" href="/it/"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav>
+        <a href="/it/aziende/" data-i18n="nav.companies">Per le aziende</a>
+        <a href="https://github.com/mojeee/mechpilot/blob/main/docs/getting-started.md" data-i18n="nav.docs">Documentazione</a>
+        <a href="https://github.com/mojeee/mechpilot/blob/main/CHANGELOG.md" data-i18n="nav.changelog">Novità</a>
+        <a href="https://github.com/mojeee/mechpilot">GitHub</a>
+        <a href="https://mechpilot.agentflowbind.com/" hreflang="en">English</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1 data-i18n="hero.title">Disegni di produzione secondo le norme ISO, con le parti 3D integrate.</h1>
+        <p class="lead" data-i18n="hero.lead">MechPilot è un programma CAD desktop per le aziende di progettazione meccanica: disegna, quota e annota secondo ISO 128, 129-1 e 7200, trasforma uno schizzo in una parte e mantieni il disegno collegato al modello. Gratuito e open source. Gira sul tuo computer. I file restano tuoi.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes" data-i18n="hero.build">Compila dai sorgenti</a>
+          <a class="btn" href="https://github.com/mojeee/mechpilot/releases" data-i18n="hero.downloads">Download (con la prima release)</a>
+        </div>
+        <p class="note" data-i18n="hero.status">In sviluppo, un traguardo alla volta, alla luce del sole. Versione 0.1.0.</p>
+      </section>
+
+      <section class="pillars">
+        <div>
+          <h2 data-i18n="p1.title">Prima il 2D</h2>
+          <p data-i18n="p1.text">Linee, archi, quote, tolleranze e accoppiamenti ISO 286, rugosità, riquadri GD&amp;T, fogli da A4 ad A0 con squadratura e cartiglio. PDF vettoriale e DXF in uscita.</p>
+        </div>
+        <div>
+          <h2 data-i18n="p2.title">Il 3D dove serve</h2>
+          <p data-i18n="p2.text">Estrusione, rivoluzione, fori, raccordi, ripetizioni su un albero di feature parametrico. Cambi un valore e la parte si ricostruisce; le viste del disegno seguono. STEP in ingresso e in uscita.</p>
+        </div>
+        <div>
+          <h2 data-i18n="p3.title">Controlli a ogni modifica</h2>
+          <p data-i18n="p3.text">Schizzi sottovincolati, quote mancanti, accoppiamenti inesistenti, campi del cartiglio vuoti: ogni segnalazione sul disegno, con una correzione in un clic.</p>
+        </div>
+      </section>
+
+      <section class="facts">
+        <h2 data-i18n="facts.title">Su cosa puoi contare</h2>
+        <ul>
+          <li data-i18n="facts.local">Tutto in locale: nessun account, nessun cloud, nessuna telemetria. L’assistente AI opzionale usa la tua chiave API.</li>
+          <li data-i18n="facts.files">Un formato di file aperto, documentato e versionato (JSON semplice) che si confronta bene in Git. Salvataggio automatico e recupero dopo un crash.</li>
+          <li data-i18n="facts.precision">Millimetri in doppia precisione; niente viene arrotondato al salvataggio, all’apertura o all’esportazione.</li>
+          <li data-i18n="facts.standards">Ogni regola di disegno e ogni valore di tabella cita la norma e il punto. ISO di default, ASME come opzione.</li>
+          <li data-i18n="facts.licence">Apache-2.0. Nessuna dipendenza GPL, verificato in CI.</li>
+        </ul>
+      </section>
+
+      <section class="compat">
+        <h2 data-i18n="compat.title">File che si aprono ovunque</h2>
+        <p data-i18n="compat.text">DXF (sottoinsieme R12 e 2000+) per i disegni, STEP per le parti, PDF vettoriale in scala reale per l’officina. Il DWG non viene scritto (l’unica libreria libera è GPL); il DXF copre lo scambio.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p><span data-i18n="footer.copy">Copyright Mojtaba Amini. Apache-2.0.</span> <a href="https://github.com/mojeee/mechpilot">GitHub</a> · <a href="https://github.com/mojeee/mechpilot/discussions" data-i18n="footer.discuss">Discussioni</a> · <a href="/it/aziende/" data-i18n="nav.companies">Per le aziende</a></p>
+      <p class="small" data-i18n="footer.privacy">Questo sito non imposta cookie e non carica nulla da terze parti.</p>
+    </footer>
+  </body>
+</html>

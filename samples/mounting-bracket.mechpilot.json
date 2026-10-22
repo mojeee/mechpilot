@@ -1,0 +1,361 @@
+{
+  "format": "mechpilot",
+  "version": 1,
+  "unit": "mm",
+  "name": "Mounting bracket",
+  "description": "A 120 x 80 mm plate with R10 corners, four 9 mm holes for M8 screws (ISO 273 medium series) and a 30 mm bore. Fits, tolerances and the title block arrive with M2.",
+  "standard": "iso",
+  "projection": "first",
+  "layerOrder": [
+    "0",
+    "hidden",
+    "centre",
+    "dimensions"
+  ],
+  "activeLayer": "0",
+  "layers": {
+    "0": {
+      "id": "0",
+      "color": "auto",
+      "lineType": "01.2",
+      "lineWidth": 0.5,
+      "locked": false,
+      "name": "0",
+      "visible": true
+    },
+    "hidden": {
+      "id": "hidden",
+      "color": "#f0a63a",
+      "lineType": "02.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "Hidden",
+      "visible": true
+    },
+    "centre": {
+      "id": "centre",
+      "color": "#4da3ff",
+      "lineType": "04.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "Centre",
+      "visible": true
+    },
+    "dimensions": {
+      "id": "dimensions",
+      "color": "#52c98b",
+      "lineType": "01.1",
+      "lineWidth": 0.25,
+      "locked": false,
+      "name": "Dimensions",
+      "visible": true
+    }
+  },
+  "entityOrder": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e16",
+    "e17",
+    "e18",
+    "e19",
+    "e20",
+    "e21",
+    "e22",
+    "e23"
+  ],
+  "entities": {
+    "e1": {
+      "id": "e1",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 10,
+        "y": 0
+      },
+      "b": {
+        "x": 110,
+        "y": 0
+      }
+    },
+    "e2": {
+      "id": "e2",
+      "type": "arc",
+      "layer": "0",
+      "center": {
+        "x": 110,
+        "y": 10
+      },
+      "end": 0,
+      "radius": 10,
+      "start": 4.71238898038469
+    },
+    "e3": {
+      "id": "e3",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 120,
+        "y": 10
+      },
+      "b": {
+        "x": 120,
+        "y": 70
+      }
+    },
+    "e4": {
+      "id": "e4",
+      "type": "arc",
+      "layer": "0",
+      "center": {
+        "x": 110,
+        "y": 70
+      },
+      "end": 1.5707963267948966,
+      "radius": 10,
+      "start": 0
+    },
+    "e5": {
+      "id": "e5",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 110,
+        "y": 80
+      },
+      "b": {
+        "x": 10,
+        "y": 80
+      }
+    },
+    "e6": {
+      "id": "e6",
+      "type": "arc",
+      "layer": "0",
+      "center": {
+        "x": 10,
+        "y": 70
+      },
+      "end": 3.141592653589793,
+      "radius": 10,
+      "start": 1.5707963267948966
+    },
+    "e7": {
+      "id": "e7",
+      "type": "line",
+      "layer": "0",
+      "a": {
+        "x": 0,
+        "y": 70
+      },
+      "b": {
+        "x": 0,
+        "y": 10
+      }
+    },
+    "e8": {
+      "id": "e8",
+      "type": "arc",
+      "layer": "0",
+      "center": {
+        "x": 10,
+        "y": 10
+      },
+      "end": 4.71238898038469,
+      "radius": 10,
+      "start": 3.141592653589793
+    },
+    "e9": {
+      "id": "e9",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 20,
+        "y": 20
+      },
+      "radius": 4.5
+    },
+    "e10": {
+      "id": "e10",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 100,
+        "y": 20
+      },
+      "radius": 4.5
+    },
+    "e11": {
+      "id": "e11",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 20,
+        "y": 60
+      },
+      "radius": 4.5
+    },
+    "e12": {
+      "id": "e12",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 100,
+        "y": 60
+      },
+      "radius": 4.5
+    },
+    "e13": {
+      "id": "e13",
+      "type": "circle",
+      "layer": "0",
+      "center": {
+        "x": 60,
+        "y": 40
+      },
+      "radius": 15
+    },
+    "e14": {
+      "id": "e14",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": -5,
+        "y": 40
+      },
+      "b": {
+        "x": 125,
+        "y": 40
+      }
+    },
+    "e15": {
+      "id": "e15",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 60,
+        "y": -5
+      },
+      "b": {
+        "x": 60,
+        "y": 85
+      }
+    },
+    "e16": {
+      "id": "e16",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 13,
+        "y": 20
+      },
+      "b": {
+        "x": 27,
+        "y": 20
+      }
+    },
+    "e17": {
+      "id": "e17",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 20,
+        "y": 13
+      },
+      "b": {
+        "x": 20,
+        "y": 27
+      }
+    },
+    "e18": {
+      "id": "e18",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 93,
+        "y": 20
+      },
+      "b": {
+        "x": 107,
+        "y": 20
+      }
+    },
+    "e19": {
+      "id": "e19",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 100,
+        "y": 13
+      },
+      "b": {
+        "x": 100,
+        "y": 27
+      }
+    },
+    "e20": {
+      "id": "e20",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 13,
+        "y": 60
+      },
+      "b": {
+        "x": 27,
+        "y": 60
+      }
+    },
+    "e21": {
+      "id": "e21",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 20,
+        "y": 53
+      },
+      "b": {
+        "x": 20,
+        "y": 67
+      }
+    },
+    "e22": {
+      "id": "e22",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 93,
+        "y": 60
+      },
+      "b": {
+        "x": 107,
+        "y": 60
+      }
+    },
+    "e23": {
+      "id": "e23",
+      "type": "line",
+      "layer": "centre",
+      "a": {
+        "x": 100,
+        "y": 53
+      },
+      "b": {
+        "x": 100,
+        "y": 67
+      }
+    }
+  }
+}

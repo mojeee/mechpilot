@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="{{LANG}}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MechPilot: open-source 2D/3D mechanical design</title>
+    <meta name="description" data-i18n-content="meta.description" content="Production drawings to ISO standards, with 3D parts built in. Free and open source, runs on your computer, your files stay yours. DXF, STEP and PDF." />
+    <link rel="canonical" href="{{URL}}" />
+    <link rel="alternate" hreflang="en" href="{{SITE}}/" />
+    <link rel="alternate" hreflang="it" href="{{SITE}}/it/" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MechPilot" />
+    <meta property="og:title" content="MechPilot: open-source 2D/3D mechanical design" />
+    <meta property="og:description" data-i18n-content="meta.description" content="Production drawings to ISO standards, with 3D parts built in. Free and open source, runs on your computer, your files stay yours. DXF, STEP and PDF." />
+    <meta property="og:url" content="{{URL}}" />
+    <meta property="og:image" content="{{SITE}}/logo.svg" />
+    <link rel="stylesheet" href="{{CSS}}" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="logo" href="{{HOME}}"><img src="/logo.svg" alt="" width="28" height="28" /> MechPilot</a>
+      <nav>
+        <a href="{{COMPANIES}}" data-i18n="nav.companies">For companies</a>
+        <a href="{{REPO}}/blob/main/docs/getting-started.md" data-i18n="nav.docs">Docs</a>
+        <a href="{{REPO}}/blob/main/CHANGELOG.md" data-i18n="nav.changelog">Changelog</a>
+        <a href="{{REPO}}">GitHub</a>
+        <a href="{{ALT_URL}}" hreflang="{{ALT_LANG}}">{{ALT_LABEL}}</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1 data-i18n="hero.title">Production drawings to ISO standards, with 3D parts built in.</h1>
+        <p class="lead" data-i18n="hero.lead">MechPilot is a desktop CAD app for mechanical design companies: draw, dimension and annotate to ISO 128, 129-1 and 7200, turn a sketch into a part, and keep the drawing linked to the model. Free and open source. Runs on your computer. Your files stay yours.</p>
+        <div class="cta">
+          <a class="btn primary" href="{{REPO}}#contribute-in-30-minutes" data-i18n="hero.build">Build from source</a>
+          <a class="btn" href="{{REPO}}/releases" data-i18n="hero.downloads">Downloads (coming with the first release)</a>
+        </div>
+        <p class="note" data-i18n="hero.status">In development, milestone by milestone, in the open. Version {{VERSION}}.</p>
+      </section>
+
+      <section class="pillars">
+        <div>
+          <h2 data-i18n="p1.title">2D first</h2>
+          <p data-i18n="p1.text">Lines, arcs, dimensions, tolerances and ISO 286 fits, surface texture, GD&amp;T frames, sheets A4 to A0 with frame and title block. Vector PDF and DXF out.</p>
+        </div>
+        <div>
+          <h2 data-i18n="p2.title">3D where it helps</h2>
+          <p data-i18n="p2.text">Extrude, revolve, holes, fillets, patterns on a parametric feature tree. Change a value and the part rebuilds; the drawing views follow. STEP in and out.</p>
+        </div>
+        <div>
+          <h2 data-i18n="p3.title">Checks on every change</h2>
+          <p data-i18n="p3.text">Under-constrained sketches, missing dimensions, fits that do not exist, empty title-block fields: each finding on the drawing, with a one-click fix.</p>
+        </div>
+      </section>
+
+      <section class="facts">
+        <h2 data-i18n="facts.title">What you can count on</h2>
+        <ul>
+          <li data-i18n="facts.local">Local-first: no account, no cloud, no telemetry. The optional AI assistant uses your own API key.</li>
+          <li data-i18n="facts.files">An open, documented, versioned file format (plain JSON) that diffs well in Git. Autosave and crash recovery.</li>
+          <li data-i18n="facts.precision">Millimetres in double precision; nothing is rounded on save, load or export.</li>
+          <li data-i18n="facts.standards">Every drawing rule and table value cites its standard and clause. ISO by default, ASME as an option.</li>
+          <li data-i18n="facts.licence">Apache-2.0. No GPL dependencies, checked in CI.</li>
+        </ul>
+      </section>
+
+      <section class="compat">
+        <h2 data-i18n="compat.title">Files that open everywhere</h2>
+        <p data-i18n="compat.text">DXF (R12 and 2000+ subset) for drawings, STEP for parts, vector PDF at true scale for the shop floor. DWG is not written (the only free library is GPL); DXF covers the exchange.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p><span data-i18n="footer.copy">Copyright Mojtaba Amini. Apache-2.0.</span> <a href="{{REPO}}">GitHub</a> · <a href="{{REPO}}/discussions" data-i18n="footer.discuss">Discussions</a> · <a href="{{COMPANIES}}" data-i18n="nav.companies">For companies</a></p>
+      <p class="small" data-i18n="footer.privacy">This site sets no cookies and loads nothing from third parties.</p>
+    </footer>
+  </body>
+</html>

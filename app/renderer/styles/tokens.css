@@ -1,0 +1,62 @@
+/* Design tokens from CLAUDE.md. Every colour in the UI comes from here. Dark UI by default, a light
+   UI with data-theme="light"; the canvas has its own theme (data-canvas="dark" | "white"). */
+:root {
+  --bg: #15191e;
+  --chrome: #11151a;
+  --panel: #1b2027;
+  --raised: #272e38;
+  --line: #2b333e;
+  --text: #e8ecf0;
+  --muted: #a3afbb;
+  --dim: #76828f;
+  --accent: #4da3ff;
+  --accent-bg: #1a2f47;
+  --ok: #52c98b;
+  --warn: #f0a63a;
+  --err: #ff5a4f;
+  --sel: #ffb020;
+  --snap: #3fe0c8;
+  --construction: #8a7bff;
+
+  --canvas-dark: #0f1216;
+  --canvas-white: #ffffff;
+  --canvas-bg: var(--canvas-dark);
+  --canvas-fg: #e8ecf0;
+  --grid-minor: rgba(255, 255, 255, 0.05);
+  --grid-major: rgba(255, 255, 255, 0.11);
+  --grid-axis: rgba(255, 255, 255, 0.28);
+
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  --topbar-h: 44px;
+  --palette-w: 56px;
+  --right-w: 320px;
+  --cmd-h: 28px;
+  --status-h: 28px;
+  --radius: 6px;
+  --radius-sm: 4px;
+}
+
+:root[data-theme='light'] {
+  --bg: #f3f5f7;
+  --chrome: #e9edf1;
+  --panel: #ffffff;
+  --raised: #e3e8ee;
+  --line: #d3dae2;
+  --text: #15191e;
+  --muted: #4a5663;
+  --dim: #7b8794;
+  --accent: #1f6fd0;
+  --accent-bg: #dbe9fb;
+  --sel: #d98a00;
+}
+
+:root[data-canvas='white'] {
+  --canvas-bg: var(--canvas-white);
+  --canvas-fg: #15191e;
+  --grid-minor: rgba(0, 0, 0, 0.06);
+  --grid-major: rgba(0, 0, 0, 0.14);
+  --grid-axis: rgba(0, 0, 0, 0.35);
+  --snap: #0d9c86;
+}

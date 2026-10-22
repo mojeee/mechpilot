@@ -1,0 +1,141 @@
+:root {
+  --bg: #0f1216;
+  --panel: #171c22;
+  --line: #2b333e;
+  --text: #e8ecf0;
+  --muted: #a3afbb;
+  --accent: #4da3ff;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 var(--font);
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 18px;
+}
+.top nav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.top nav a {
+  color: var(--muted);
+}
+main {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px;
+}
+main.narrow {
+  max-width: 760px;
+}
+.hero {
+  padding: 48px 0 32px;
+}
+h1 {
+  font-size: clamp(28px, 4.5vw, 44px);
+  line-height: 1.15;
+  margin: 0 0 16px;
+  letter-spacing: -0.3px;
+}
+h2 {
+  font-size: 20px;
+  margin: 32px 0 8px;
+}
+.lead {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 760px;
+}
+.cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0 8px;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--panel);
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06111f;
+  font-weight: 600;
+}
+.btn:hover {
+  text-decoration: none;
+  filter: brightness(1.1);
+}
+.note,
+.small {
+  color: var(--muted);
+  font-size: 14px;
+}
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.pillars div {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px;
+}
+.pillars h2 {
+  margin: 0 0 8px;
+}
+.pillars p {
+  margin: 0;
+  color: var(--muted);
+}
+.facts ul {
+  padding-left: 20px;
+  color: var(--muted);
+}
+.facts li {
+  margin: 6px 0;
+}
+.compat p {
+  color: var(--muted);
+}
+footer {
+  border-top: 1px solid var(--line);
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}

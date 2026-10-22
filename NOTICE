@@ -1,0 +1,12 @@
+MechPilot
+Copyright 2026 Mojtaba Amini
+
+This product includes software developed by Mojtaba Amini and the MechPilot contributors
+(https://github.com/mojeee/mechpilot).
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+Third-party components and their licences are listed in THIRD_PARTY_LICENSES.md, generated at build
+time by scripts/check-licenses.mjs. LGPL components (the planegcs constraint solver and OpenCascade
+through opencascade.js, once added) are used as separate, replaceable modules under app/workers/,
+each with its own licence notice.

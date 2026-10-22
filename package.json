@@ -1,0 +1,136 @@
+{
+  "name": "mechpilot",
+  "productName": "MechPilot",
+  "version": "0.1.0",
+  "description": "Open-source 2D/3D mechanical design: production drawings to ISO standards, with 3D parts built in. Local, no account, your files stay yours.",
+  "private": true,
+  "license": "Apache-2.0",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "prebuild": "node scripts/check-licenses.mjs --write",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p tsconfig.workers.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "node scripts/e2e.mjs",
+    "check:licenses": "node scripts/check-licenses.mjs",
+    "check:library": "node scripts/check-library.mjs",
+    "build:site": "node scripts/build-site.mjs",
+    "dist:mac": "npm run build && electron-builder --mac --publish never",
+    "dist:win": "npm run build && electron-builder --win --publish never",
+    "dist:linux": "npm run build && electron-builder --linux --publish never"
+  },
+  "build": {
+    "appId": "com.agentflowbind.mechpilot",
+    "productName": "MechPilot",
+    "copyright": "Copyright © 2026 Mojtaba Amini",
+    "files": [
+      "out/**/*",
+      "LICENSE",
+      "NOTICE",
+      "THIRD_PARTY_LICENSES.md"
+    ],
+    "extraResources": [
+      {
+        "from": "samples",
+        "to": "samples",
+        "filter": [
+          "**/*.json"
+        ]
+      },
+      {
+        "from": "library",
+        "to": "library",
+        "filter": [
+          "**/*.json"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "MechPilot-mac-${arch}.${ext}",
+      "identity": null
+    },
+    "dmg": {
+      "title": "MechPilot ${version}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "MechPilot-win-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "MechPilot"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Graphics",
+      "artifactName": "MechPilot-linux-${arch}.${ext}"
+    },
+    "publish": null,
+    "npmRebuild": false,
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "electron": "^45.0.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5",
+    "zustand": "^5.0.16"
+  },
+  "author": {
+    "name": "Mojtaba Amini",
+    "url": "https://github.com/mojeee"
+  },
+  "homepage": "https://mechpilot.agentflowbind.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mojeee/mechpilot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mojeee/mechpilot/issues"
+  },
+  "allowScripts": {
+    "electron-winstaller@5.4.0": true
+  }
+}
