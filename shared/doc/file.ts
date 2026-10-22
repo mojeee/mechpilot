@@ -55,13 +55,17 @@ export function serialize(doc: Document): string {
 }
 
 type Migration = (raw: Record<string, unknown>) => Record<string, unknown>;
-/** migrations[n] upgrades a version-n file to version n+1. Empty until the format changes. */
-const migrations: Record<number, Migration> = {};
+/** migrations[n] upgrades a version-n file to version n+1. */
+const migrations: Record<number, Migration> = {
+  // 1 → 2 (M1): new entity types only; a version-1 file is a valid version-2 file.
+  1: (raw) => ({ ...raw, version: 2 }),
+};
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const isStr = (v: unknown): v is string => typeof v === 'string';
 const isVec = (v: unknown): v is { x: number; y: number } => isObj(v) && isNum(v.x) && isNum(v.y);
+const isVecList = (v: unknown): v is { x: number; y: number }[] => Array.isArray(v) && v.every(isVec);
 
 function validateLayer(v: unknown, id: string): Layer | string {
   if (!isObj(v)) return `layer ${id} is not an object`;
@@ -88,6 +92,34 @@ function validateEntity(v: unknown, id: string, layers: Record<string, Layer>): 
     case 'arc':
       if (!isVec(v.center) || !isNum(v.radius) || v.radius <= 0 || !isNum(v.start) || !isNum(v.end)) return `entity ${id}: arc needs center, radius > 0, start, end`;
       return { ...base, type: 'arc', center: { x: v.center.x, y: v.center.y }, radius: v.radius, start: v.start, end: v.end };
+    case 'polyline': {
+      if (!isVecList(v.points) || v.points.length < 2) return `entity ${id}: polyline needs at least two points`;
+      const e: Entity = { ...base, type: 'polyline', points: v.points.map((p) => ({ x: p.x, y: p.y })), closed: v.closed === true };
+      if (v.bulges !== undefined) {
+        if (!Array.isArray(v.bulges) || !v.bulges.every(isNum)) return `entity ${id}: bulges must be numbers`;
+        if (v.bulges.some((b) => b !== 0)) e.bulges = v.bulges.slice();
+      }
+      return e;
+    }
+    case 'ellipse':
+      if (!isVec(v.center) || !isVec(v.major) || !isNum(v.ratio) || v.ratio <= 0 || v.ratio > 1 || !isNum(v.start) || !isNum(v.end)) return `entity ${id}: ellipse needs center, major, 0 < ratio <= 1, start, end`;
+      if (v.major.x === 0 && v.major.y === 0) return `entity ${id}: ellipse major axis has zero length`;
+      return { ...base, type: 'ellipse', center: { x: v.center.x, y: v.center.y }, major: { x: v.major.x, y: v.major.y }, ratio: v.ratio, start: v.start, end: v.end };
+    case 'spline': {
+      if (!isNum(v.degree) || v.degree < 1 || !Number.isInteger(v.degree)) return `entity ${id}: spline degree must be a positive integer`;
+      if (!isVecList(v.controlPoints) || v.controlPoints.length < v.degree + 1) return `entity ${id}: spline needs at least degree + 1 control points`;
+      if (!Array.isArray(v.knots) || !v.knots.every(isNum) || v.knots.length !== v.controlPoints.length + v.degree + 1) return `entity ${id}: spline needs controlPoints + degree + 1 knots`;
+      for (let i = 1; i < v.knots.length; i++) if (v.knots[i] < v.knots[i - 1]) return `entity ${id}: spline knots must not decrease`;
+      const e: Entity = { ...base, type: 'spline', degree: v.degree, controlPoints: v.controlPoints.map((p) => ({ x: p.x, y: p.y })), knots: v.knots.slice(), closed: v.closed === true };
+      if (v.fitPoints !== undefined) {
+        if (!isVecList(v.fitPoints)) return `entity ${id}: fitPoints must be points`;
+        e.fitPoints = v.fitPoints.map((p) => ({ x: p.x, y: p.y }));
+      }
+      return e;
+    }
+    case 'text':
+      if (!isVec(v.position) || !isStr(v.text) || !isNum(v.height) || v.height <= 0 || !isNum(v.rotation)) return `entity ${id}: text needs position, text, height > 0, rotation`;
+      return { ...base, type: 'text', position: { x: v.position.x, y: v.position.y }, text: v.text, height: v.height, rotation: v.rotation };
     default:
       return `entity ${id}: unknown type "${String(v.type)}"`;
   }

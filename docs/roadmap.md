@@ -23,13 +23,13 @@ entry in `docs/progress.md`.
 
 ## M1 2D drafting
 
-- [ ] Entities: line, polyline, rectangle, circle, arc, ellipse, spline, text
-- [ ] Object snaps: end, mid, centre, intersection, perpendicular, tangent, nearest; polar tracking
-- [ ] Edits: select, move, copy, rotate, scale, mirror, offset, trim, extend, fillet, chamfer, array
-- [ ] Layers, ISO 128 line types and widths, grid
-- [ ] Save and open (`.mechpilot.json`), autosave and crash recovery
-- [ ] DXF import and export (R12 and 2000+ subset, documented in `docs/dxf.md`) with round-trip tests
-- [ ] Spatial index for picking and snapping; 60 fps pan/zoom budget test with 100,000 entities
+- [x] Entities: line, polyline, rectangle, circle, arc, ellipse, spline, text
+- [x] Object snaps: end, mid, centre, intersection, perpendicular, tangent, nearest; polar tracking
+- [x] Edits: select, move, copy, rotate, scale, mirror, offset, trim, extend, fillet, chamfer, array
+- [x] Layers, ISO 128 line types and widths, grid
+- [x] Save and open (`.mechpilot.json`), autosave and crash recovery
+- [x] DXF import and export (R12 and 2000+ subset, documented in `docs/dxf.md`) with round-trip tests
+- [x] Spatial index for picking and snapping; 60 fps pan/zoom budget test with 100,000 entities
 
 ## M2 Dimensions and sheets
 

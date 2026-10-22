@@ -5,6 +5,7 @@
 
 import app from './it/app';
 import main from './it/main';
+import dxf from './it/dxf';
 
 export type Lang = 'en' | 'it';
 export const LANGS: { id: Lang; label: string }[] = [
@@ -12,7 +13,7 @@ export const LANGS: { id: Lang; label: string }[] = [
   { id: 'it', label: 'Italiano' },
 ];
 
-export const IT: Record<string, string> = { ...app, ...main };
+export const IT: Record<string, string> = { ...app, ...main, ...dxf };
 
 let current: Lang = 'en';
 const listeners = new Set<(l: Lang) => void>();

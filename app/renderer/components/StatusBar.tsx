@@ -12,6 +12,14 @@ export function StatusBar() {
   const snapGrid = useStore((s) => s.snapGrid);
   const toggleGrid = useStore((s) => s.toggleGrid);
   const toggleSnap = useStore((s) => s.toggleSnapGrid);
+  const osnap = useStore((s) => s.snaps.end);
+  const polar = useStore((s) => s.snaps.polar);
+  const setSnaps = useStore((s) => s.setSnaps);
+  const toggleOsnap = () => {
+    const on = !osnap;
+    setSnaps({ end: on, mid: on, center: on, quadrant: on, intersection: on, perpendicular: on, tangent: on });
+  };
+  const togglePolar = () => setSnaps({ polar: !polar });
   const gridStep = useStore((s) => s.gridStep());
   const count = useStore((s) => s.editor.doc.entityOrder.length);
   const selected = useStore((s) => s.selection.length);
@@ -32,6 +40,12 @@ export function StatusBar() {
       </button>
       <button className={`toggle ${snapGrid ? 'on' : ''}`} onClick={toggleSnap} title={t('Snap the cursor to the grid')}>
         {t('Snap')}
+      </button>
+      <button className={`toggle ${osnap ? 'on' : ''}`} onClick={toggleOsnap} title={t('Object snaps: end, mid, centre, quadrant, intersection, perpendicular, tangent (OSNAP)')}>
+        {t('Osnap')}
+      </button>
+      <button className={`toggle ${polar ? 'on' : ''}`} onClick={togglePolar} title={t('Polar tracking every 15°')}>
+        {t('Polar')}
       </button>
       <span className="grow" />
       <span className="dim">{selected ? t('{n} of {total} selected', { n: selected, total: count }) : t('{n} entities', { n: count })}</span>

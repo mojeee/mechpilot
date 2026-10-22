@@ -1,6 +1,7 @@
 // Creating documents and reading them: bounds, lookups, hit tests. Nothing here mutates.
 
 import { boxOf, boxUnion, dist, distToSegment, fromAngle, add, angleInArc, angleOf, sub, type Box, type Vec2 } from '../geometry/vec2';
+import { flattenEntity } from '../geometry/flatten';
 import { FORMAT_NAME, FORMAT_VERSION, type Document, type Entity, type Id, type Layer } from './types';
 
 /** The default layers of a new drawing. Line types and widths from library/line-types/iso-128-2.json. */
@@ -52,6 +53,11 @@ export function entityBox(e: Entity): Box {
       }
       return boxOf(pts) as Box;
     }
+    default: {
+      // Curves without a cheap closed form: the box of the flattened points (0.05 mm is plenty for bounds).
+      const pts = flattenEntity(e, 0.05).flat();
+      return (boxOf(pts) ?? { min: { x: 0, y: 0 }, max: { x: 0, y: 0 } }) as Box;
+    }
   }
 }
 
@@ -64,7 +70,20 @@ export function documentBox(doc: Document, onlyVisible = true): Box | null {
   return box;
 }
 
-/** Distance from a point to the entity's curve, in mm. */
+/** Distance from a point to a polyline (open) or polygon outline. */
+export function distToPolyline(p: Vec2, pts: Vec2[], closed = false): number {
+  if (pts.length === 0) return Infinity;
+  if (pts.length === 1) return dist(p, pts[0]);
+  let best = Infinity;
+  const n = closed ? pts.length : pts.length - 1;
+  for (let i = 0; i < n; i++) {
+    const d = distToSegment(p, pts[i], pts[(i + 1) % pts.length]);
+    if (d < best) best = d;
+  }
+  return best;
+}
+
+/** Distance from a point to the entity's curve, in mm (for text: to its box outline, 0 inside). */
 export function distToEntity(p: Vec2, e: Entity): number {
   switch (e.type) {
     case 'line':
@@ -78,13 +97,36 @@ export function distToEntity(p: Vec2, e: Entity): number {
       const t = add(e.center, fromAngle(e.end, e.radius));
       return Math.min(dist(p, s), dist(p, t));
     }
+    case 'text': {
+      const box = flattenEntity(e)[0];
+      return pointInPolygon(p, box) ? 0 : distToPolyline(p, box, true);
+    }
+    default: {
+      const polys = flattenEntity(e, 0.02);
+      let best = Infinity;
+      for (const poly of polys) best = Math.min(best, distToPolyline(p, poly, false));
+      return best;
+    }
   }
 }
 
+export function pointInPolygon(p: Vec2, poly: Vec2[]): boolean {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const a = poly[i];
+    const b = poly[j];
+    if (a.y > p.y !== b.y > p.y && p.x < ((b.x - a.x) * (p.y - a.y)) / (b.y - a.y) + a.x) inside = !inside;
+  }
+  return inside;
+}
+
 /** The topmost entity within `tolerance` mm of `p`, on a visible, unlocked layer. */
-export function pick(doc: Document, p: Vec2, tolerance: number): Id | null {
+export function pick(doc: Document, p: Vec2, tolerance: number, candidates?: Iterable<Id>): Id | null {
   let best: { id: Id; d: number } | null = null;
-  for (const e of entitiesInOrder(doc)) {
+  const ids = candidates ? [...candidates] : doc.entityOrder;
+  for (const id of ids) {
+    const e = doc.entities[id];
+    if (!e) continue;
     const layer = doc.layers[e.layer];
     if (!layer || !layer.visible || layer.locked) continue;
     const d = distToEntity(p, e);

@@ -1,41 +1,50 @@
-// Tool palette on the left: one button per tool with its command-line shortcut.
+// Tool palette on the left: draw tools, then edit tools, each with its command-line alias.
 
 import { t } from '@shared/i18n';
-import { READY_TOOLS, toolName, useStore, type ToolId } from '../state/store';
+import { toolName, useStore, type ToolId } from '../state/store';
 
-const TOOLS: { id: ToolId; key: string; icon: string }[] = [
+const DRAW: { id: ToolId; key: string; icon: string }[] = [
   { id: 'select', key: 'Esc', icon: '↖' },
   { id: 'line', key: 'L', icon: '╱' },
   { id: 'polyline', key: 'PL', icon: '⌇' },
   { id: 'rect', key: 'REC', icon: '▭' },
   { id: 'circle', key: 'C', icon: '○' },
   { id: 'arc', key: 'A', icon: '◠' },
-  { id: 'dimension', key: 'D', icon: '↔' },
+  { id: 'ellipse', key: 'EL', icon: '⬭' },
+  { id: 'spline', key: 'SPL', icon: '∿' },
   { id: 'text', key: 'T', icon: 'A' },
+];
+const EDIT: { id: ToolId; key: string; icon: string }[] = [
+  { id: 'move', key: 'M', icon: '✥' },
+  { id: 'copy', key: 'CO', icon: '⧉' },
+  { id: 'rotate', key: 'RO', icon: '↻' },
+  { id: 'scale', key: 'SC', icon: '⤢' },
+  { id: 'mirror', key: 'MI', icon: '⇔' },
+  { id: 'offset', key: 'O', icon: '≡' },
+  { id: 'trim', key: 'TR', icon: '✂' },
+  { id: 'extend', key: 'EX', icon: '⟶' },
+  { id: 'fillet', key: 'F', icon: '◞' },
+  { id: 'chamfer', key: 'CHA', icon: '◣' },
+  { id: 'array', key: 'AR', icon: '⁞⁞' },
 ];
 
 export function ToolPalette() {
   const tool = useStore((s) => s.tool);
   const setTool = useStore((s) => s.setTool);
   const cancel = useStore((s) => s.cancelTool);
+  const button = (tl: { id: ToolId; key: string; icon: string }) => (
+    <button key={tl.id} className={`tool ${tool === tl.id ? 'on' : ''}`} title={`${toolName(tl.id)} (${tl.key})`} onClick={() => (tl.id === 'select' ? cancel() : setTool(tl.id))}>
+      <span className="icon" aria-hidden="true">
+        {tl.icon}
+      </span>
+      <span className="key">{tl.key}</span>
+    </button>
+  );
   return (
     <aside className="tool-palette" aria-label={t('Tools')}>
-      {TOOLS.map((tl) => {
-        const ready = READY_TOOLS.has(tl.id);
-        return (
-          <button
-            key={tl.id}
-            className={`tool ${tool === tl.id ? 'on' : ''} ${ready ? '' : 'soon'}`}
-            title={`${toolName(tl.id)} (${tl.key})${ready ? '' : ` · ${t('later milestone')}`}`}
-            onClick={() => (tl.id === 'select' ? cancel() : setTool(tl.id))}
-          >
-            <span className="icon" aria-hidden="true">
-              {tl.icon}
-            </span>
-            <span className="key">{tl.key}</span>
-          </button>
-        );
-      })}
+      {DRAW.map(button)}
+      <div className="palette-sep" />
+      {EDIT.map(button)}
     </aside>
   );
 }

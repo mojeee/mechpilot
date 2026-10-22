@@ -4,9 +4,9 @@
 
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
-import type { OpenedFile, Result, SampleInfo, Settings } from '@shared/api';
+import type { AutosaveInfo, OpenedFile, Result, SampleInfo, Settings } from '@shared/api';
 import { FILE_EXTENSION } from '@shared/doc/file';
 import { setLanguage, t } from '@shared/i18n';
 import type { SettingsStore } from './settings';
@@ -15,6 +15,8 @@ const SAMPLE_SUFFIX = FILE_EXTENSION;
 
 export interface IpcDeps {
   settings: SettingsStore;
+  /** The app's data folder (autosave lives here). */
+  dataDir: string;
   /** Folder with the sample projects (samples/ in development, resources/samples when packaged). */
   samplesDir: string;
   /** Set by tests (MP_SAVE_DIR): save without a dialog into this folder. */
@@ -89,6 +91,86 @@ export function registerIpc(deps: IpcDeps): void {
     } catch (ex) {
       return err('read-failed', t('Could not read {name}: {reason}', { name: basename(target), reason: reason(ex) }), t('Check that the file exists and you can read it.'));
     }
+  });
+
+  ipcMain.handle('files:openDxf', async (e): Promise<Result<OpenedFile | null>> => {
+    const win = BrowserWindow.fromWebContents(e.sender) ?? undefined;
+    const r = await dialog.showOpenDialog(win as BrowserWindow, {
+      title: t('Import DXF'),
+      filters: [{ name: 'DXF', extensions: ['dxf'] }],
+      properties: ['openFile'],
+    });
+    if (r.canceled || r.filePaths.length === 0) return { ok: true, value: null };
+    const target = r.filePaths[0];
+    try {
+      return { ok: true, value: { path: target, text: await readFile(target, 'utf8') } };
+    } catch (ex) {
+      return err('read-failed', t('Could not read {name}: {reason}', { name: basename(target), reason: reason(ex) }), t('Check that the file exists and you can read it.'));
+    }
+  });
+
+  ipcMain.handle('files:saveDxf', async (e, text: unknown, suggestedName: unknown): Promise<Result<{ path: string } | null>> => {
+    if (typeof text !== 'string') return err('bad-request', t('Nothing to save.'));
+    const name = (typeof suggestedName === 'string' && suggestedName ? suggestedName : 'drawing').replace(/[\\/:*?"<>|]/g, '_');
+    let target: string;
+    if (deps.saveDirOverride) target = join(deps.saveDirOverride, name + '.dxf');
+    else {
+      const win = BrowserWindow.fromWebContents(e.sender) ?? undefined;
+      const r = await dialog.showSaveDialog(win as BrowserWindow, { title: t('Export DXF'), defaultPath: name + '.dxf', filters: [{ name: 'DXF', extensions: ['dxf'] }] });
+      if (r.canceled || !r.filePath) return { ok: true, value: null };
+      target = r.filePath;
+    }
+    try {
+      await writeFile(target, text, 'utf8');
+      return { ok: true, value: { path: target } };
+    } catch (ex) {
+      return err('write-failed', t('Could not save {name}: {reason}', { name: basename(target), reason: reason(ex) }), t('Check that the folder exists and is not read-only.'));
+    }
+  });
+
+  // Crash recovery: one autosave file in the app data folder plus a small meta file. It is removed
+  // on a successful save and when the user dismisses the recovery offer.
+  const autosavePath = join(deps.dataDir, 'autosave.mechpilot.json');
+  const autosaveMeta = join(deps.dataDir, 'autosave.meta.json');
+  ipcMain.handle('files:autosave', async (_e, text: unknown, originalPath: unknown) => {
+    if (typeof text !== 'string') return;
+    try {
+      await mkdir(deps.dataDir, { recursive: true });
+      await writeFile(autosavePath, text, 'utf8');
+      const name = (/"name":\s*"((?:[^"\\]|\\.)*)"/.exec(text)?.[1] ?? 'drawing').replace(/\\"/g, '"');
+      await writeFile(autosaveMeta, JSON.stringify({ originalPath: typeof originalPath === 'string' ? originalPath : null, name, savedAt: new Date().toISOString() }), 'utf8');
+    } catch {
+      // Autosave is best effort; the next tick tries again.
+    }
+  });
+  ipcMain.handle('files:autosaveInfo', async (): Promise<AutosaveInfo | null> => {
+    if (!existsSync(autosavePath) || !existsSync(autosaveMeta)) return null;
+    try {
+      const meta = JSON.parse(await readFile(autosaveMeta, 'utf8')) as { name?: unknown; savedAt?: unknown };
+      return { path: autosavePath, name: typeof meta.name === 'string' ? meta.name : 'drawing', savedAt: typeof meta.savedAt === 'string' ? meta.savedAt : '' };
+    } catch {
+      return null;
+    }
+  });
+  ipcMain.handle('files:readAutosave', async (): Promise<Result<{ text: string; originalPath: string | null } | null>> => {
+    if (!existsSync(autosavePath)) return { ok: true, value: null };
+    try {
+      const text = await readFile(autosavePath, 'utf8');
+      let originalPath: string | null = null;
+      try {
+        const meta = JSON.parse(await readFile(autosaveMeta, 'utf8')) as { originalPath?: unknown };
+        originalPath = typeof meta.originalPath === 'string' ? meta.originalPath : null;
+      } catch {
+        originalPath = null;
+      }
+      return { ok: true, value: { text, originalPath } };
+    } catch (ex) {
+      return err('read-failed', t('Could not read {name}: {reason}', { name: 'autosave', reason: reason(ex) }));
+    }
+  });
+  ipcMain.handle('files:clearAutosave', async () => {
+    await rm(autosavePath, { force: true });
+    await rm(autosaveMeta, { force: true });
   });
 
   ipcMain.handle('files:save', async (e, path: unknown, text: unknown, suggestedName: unknown): Promise<Result<{ path: string } | null>> => {

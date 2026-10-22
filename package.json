@@ -1,7 +1,7 @@
 {
   "name": "mechpilot",
   "productName": "MechPilot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Open-source 2D/3D mechanical design: production drawings to ISO standards, with 3D parts built in. Local, no account, your files stay yours.",
   "private": true,
   "license": "Apache-2.0",

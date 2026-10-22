@@ -230,6 +230,32 @@ select:focus {
 .tool.soon {
   opacity: 0.5;
 }
+.tool-palette {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.palette-sep {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 10px;
+  flex-shrink: 0;
+}
+
+/* ---------- recovery banner ---------- */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  background: var(--accent-bg);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06111f;
+}
 
 /* ---------- canvas ---------- */
 .canvas-wrap {

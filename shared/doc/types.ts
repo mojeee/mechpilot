@@ -5,8 +5,9 @@ import type { Vec2 } from '../geometry/vec2';
 
 export type Id = string;
 
-/** Bumped on every change of shape; shared/doc/file.ts migrates older files. */
-export const FORMAT_VERSION = 1;
+/** Bumped on every change of shape; shared/doc/file.ts migrates older files.
+ *  1: M0 (line, circle, arc). 2: M1 adds polyline, ellipse, spline, text. */
+export const FORMAT_VERSION = 2;
 export const FORMAT_NAME = 'mechpilot';
 
 export type Standard = 'iso' | 'asme';
@@ -48,7 +49,55 @@ export interface ArcEntity extends EntityBase {
   start: number;
   end: number;
 }
-export type Entity = LineEntity | CircleEntity | ArcEntity;
+/**
+ * Polyline: straight segments between points, optionally closed. `bulges[i]` (when present) makes
+ * segment i (points[i] to points[i+1], or to points[0] for the closing segment) an arc, as in DXF:
+ * bulge = tan(θ/4) where θ is the included angle, positive counter-clockwise, 0 = straight.
+ * A rectangle is a closed polyline of four points.
+ */
+export interface PolylineEntity extends EntityBase {
+  type: 'polyline';
+  points: Vec2[];
+  closed: boolean;
+  bulges?: number[];
+}
+/**
+ * Ellipse as in DXF: `major` is the vector from the centre to the end of the major axis, `ratio`
+ * = minor/major (0 < ratio <= 1), `start`/`end` are parameters in radians (0 and 2π for a full
+ * ellipse), counter-clockwise. A point is center + major·cos(t) + minor·sin(t), with minor the
+ * major vector rotated +90° and scaled by ratio.
+ */
+export interface EllipseEntity extends EntityBase {
+  type: 'ellipse';
+  center: Vec2;
+  major: Vec2;
+  ratio: number;
+  start: number;
+  end: number;
+}
+/**
+ * Non-rational B-spline (no weights), as in DXF SPLINE: `degree` (3 by default), control points
+ * and a clamped knot vector of length controlPoints.length + degree + 1. `fitPoints` are the points
+ * the user picked, kept so the curve can be re-interpolated when edited.
+ */
+export interface SplineEntity extends EntityBase {
+  type: 'spline';
+  degree: number;
+  controlPoints: Vec2[];
+  knots: number[];
+  fitPoints?: Vec2[];
+  closed: boolean;
+}
+/** Single-line text: `position` is the baseline-left point, `height` the cap height in mm,
+ *  `rotation` in radians counter-clockwise. */
+export interface TextEntity extends EntityBase {
+  type: 'text';
+  position: Vec2;
+  text: string;
+  height: number;
+  rotation: number;
+}
+export type Entity = LineEntity | CircleEntity | ArcEntity | PolylineEntity | EllipseEntity | SplineEntity | TextEntity;
 export type EntityType = Entity['type'];
 
 export interface Document {

@@ -50,7 +50,7 @@ Ids are short strings, unique within the file. Keys inside a layer or an entity 
 | `lineWidth` | mm, from the ISO 128-2 series (0.13, 0.18, 0.25, 0.35, 0.5, 0.7, 1, 1.4, 2) |
 | `visible`, `locked` | booleans; a locked layer cannot be edited |
 
-## Entities (format 1)
+## Entities (format 2)
 
 Angles are radians, counter-clockwise, y up.
 
@@ -59,10 +59,14 @@ Angles are radians, counter-clockwise, y up.
 | `line` | `a`, `b`: points |
 | `circle` | `center`: point; `radius` > 0 |
 | `arc` | `center`, `radius`, `start`, `end`: from `start` to `end` counter-clockwise |
+| `polyline` | `points` (2 or more), `closed`; optional `bulges[i]` for segment i as in DXF: tan(θ/4), positive counter-clockwise, 0 straight. A rectangle is a closed polyline of four points. |
+| `ellipse` | `center`; `major`: vector from the centre to the major-axis end; `ratio` minor/major in (0, 1]; `start`, `end` parameters (0 and 2π = full) |
+| `spline` | non-rational B-spline as in DXF: `degree`, `controlPoints`, clamped `knots` (controlPoints + degree + 1 values, non-decreasing), `closed`; optional `fitPoints` the user picked |
+| `text` | `position` (baseline left), `text`, `height` in mm, `rotation` |
 
-More entity types arrive with M1 (polyline, rectangle as a closed polyline, ellipse, spline, text),
-dimensions and annotations with M2, sketches and constraints with M3, parts with M4. Each addition
-bumps `version` and ships a migration.
+Format 1 (M0) had line, circle and arc only; a format-1 file is upgraded to format 2 unchanged.
+Dimensions and annotations arrive with M2, sketches and constraints with M3, parts with M4. Each
+addition bumps `version` and ships a migration.
 
 ## Migrations
 

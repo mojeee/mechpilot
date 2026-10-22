@@ -87,6 +87,9 @@ export function TopBar() {
     { label: t('Open sample'), children: s.samples.map((smp) => ({ label: smp.name, run: () => void s.openSample(smp.id) })) },
     { label: t('Save'), shortcut: `${mod}S`, run: () => void s.saveFile() },
     { label: t('Save as…'), shortcut: `${mod}⇧S`, run: () => void s.saveFile(true) },
+    { label: t('Import DXF…'), run: () => void s.importDxf() },
+    { label: t('Export DXF (2000)…'), run: () => void s.exportDxf('2000') },
+    { label: t('Export DXF (R12)…'), run: () => void s.exportDxf('R12') },
   ];
   const edit: Item[] = [
     { label: s.canUndo() ? t('Undo {what}', { what: s.editor.history.undo[s.editor.history.undo.length - 1].label }) : t('Undo'), shortcut: `${mod}Z`, disabled: !s.canUndo(), run: () => s.undo() },

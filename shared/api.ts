@@ -54,5 +54,22 @@ export interface MechPilotApi {
     open(path?: string): Promise<Result<OpenedFile | null>>;
     /** Save `text` to `path`, or ask where when `path` is null. null when the user cancelled. */
     save(path: string | null, text: string, suggestedName: string): Promise<Result<{ path: string } | null>>;
+    /** Open dialog filtered to DXF. null when cancelled. */
+    openDxf(): Promise<Result<OpenedFile | null>>;
+    /** Save-as dialog for a DXF text. null when cancelled. */
+    saveDxf(text: string, suggestedName: string): Promise<Result<{ path: string } | null>>;
+    /** Crash recovery: write the dirty document to the app data folder (product rule 3). */
+    autosave(text: string, originalPath: string | null): Promise<void>;
+    /** Is there an autosave from an earlier run? */
+    autosaveInfo(): Promise<AutosaveInfo | null>;
+    readAutosave(): Promise<Result<{ text: string; originalPath: string | null } | null>>;
+    clearAutosave(): Promise<void>;
   };
+}
+
+export interface AutosaveInfo {
+  path: string;
+  name: string;
+  /** ISO date of the autosave. */
+  savedAt: string;
 }

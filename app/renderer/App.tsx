@@ -2,7 +2,7 @@
 // centre, properties/layers on the right, command line and status bar at the bottom.
 
 import { useEffect, useState } from 'react';
-import { onLanguage } from '@shared/i18n';
+import { onLanguage, t } from '@shared/i18n';
 import { useStore } from './state/store';
 import { TopBar } from './components/TopBar';
 import { ToolPalette } from './components/ToolPalette';
@@ -21,9 +21,23 @@ export function App() {
     return onLanguage(() => bump((n) => n + 1));
   }, [init]);
   useShortcuts();
+  const recovery = useStore((s) => s.recovery);
+  const recover = useStore((s) => s.recover);
+  const dismiss = useStore((s) => s.dismissRecovery);
   return (
     <div className="app">
       <TopBar />
+      {recovery && (
+        <div className="banner" role="alert">
+          <span>{t('MechPilot did not close properly last time. An autosave of "{name}" is available.', { name: recovery.name })}</span>
+          <button className="btn small primary" onClick={() => void recover()}>
+            {t('Recover it')}
+          </button>
+          <button className="btn small" onClick={() => void dismiss()}>
+            {t('Discard')}
+          </button>
+        </div>
+      )}
       <div className="middle">
         <ToolPalette />
         <Canvas2D />

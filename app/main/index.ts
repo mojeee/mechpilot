@@ -61,7 +61,7 @@ function createWindow(): void {
 }
 
 void app.whenReady().then(() => {
-  registerIpc({ settings, samplesDir, saveDirOverride: process.env.MP_SAVE_DIR });
+  registerIpc({ settings, dataDir, samplesDir, saveDirOverride: process.env.MP_SAVE_DIR });
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

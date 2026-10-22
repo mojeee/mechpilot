@@ -1,6 +1,8 @@
 // Italian translations of the main process (dialogs and file errors). Key = the English text.
 const it: Record<string, string> = {
   'Open drawing': 'Apri disegno',
+  'Import DXF': 'Importa DXF',
+  'Export DXF': 'Esporta DXF',
   'Save drawing': 'Salva disegno',
   'MechPilot drawing': 'Disegno MechPilot',
   'Unknown sample.': 'Esempio sconosciuto.',
