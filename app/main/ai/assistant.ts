@@ -87,6 +87,7 @@ export async function runAssistant(req: AssistantRequest, opts: RunOptions): Pro
     return { content: JSON.stringify({ ok: true, proposalId: r.proposal.id, renamedIds: r.renamed, generatedIds: r.created, touches: r.proposal.touches, note }), isError: false, summary: t('Proposed: {title}', { title: r.proposal.title }) };
   };
 
+  let retriedCut = false;
   try {
     for (let round = 0; ; round++) {
       if (ctrl.signal.aborted) throw new ProviderError(timedOut ? 'timeout' : 'cancelled', opts.providerId, timedOut ? 'Turn time limit reached' : 'Cancelled');
@@ -107,7 +108,16 @@ export async function runAssistant(req: AssistantRequest, opts: RunOptions): Pro
       }
       if (res.stop === 'refusal' && res.toolCalls.length === 0 && texts.length === 0 && proposals.length === 0) throw new ProviderError('refused', opts.providerId, 'Refused');
       if (res.toolCalls.length === 0) {
-        if (res.stop === 'max_tokens') texts.push(t('(The answer was cut short because it was too long.)'));
+        if (res.stop === 'max_tokens') {
+          // One retry: a huge single proposal (a whole view as lines) does not fit; ask for smaller pieces.
+          if (!retriedCut && round < maxRounds) {
+            retriedCut = true;
+            texts.length = 0;
+            messages.push({ role: 'user', content: ['Your answer was cut off because it was too long. Do the same work in smaller pieces: propose the first coherent part now (at most about 120 commands, polylines instead of many lines, hatching as a few lines), keep the text short, and continue with the next proposal in the same reply or the next turn.'] });
+            continue;
+          }
+          texts.push(t('(The answer was cut short because it was too long.)'));
+        }
         break;
       }
       if (round >= maxRounds) {

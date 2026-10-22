@@ -50,7 +50,7 @@
           <p class="lead">Un percorso di dieci minuti in MechPilot con l’assistente: una parte da una frase, passo dopo passo fino alla parte 3D, una modifica su una faccia che indichi e il disegno A3 quotato in PDF. Niente di ciò che l’assistente propone viene applicato finché non fai clic su Accetta, e ogni proposta accettata è un solo passo di annullamento.</p>
           
           <figure class="demo-video">
-            <video controls preload="metadata" poster="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900">
+            <video controls preload="metadata" poster="/img/demo-1.png?v=70564b2535" width="1440" height="900">
               <source src="/video/demo.webm?v=4254bd676e" type="video/webm" />
               <source src="/video/demo.mp4?v=117cac5570" type="video/mp4" />
               <p>Il tuo browser non riproduce questo video. <a href="/video/demo.mp4?v=117cac5570">Scarica la registrazione</a></p>
@@ -60,7 +60,7 @@
           <h2 class="toc-h">Capitoli</h2>
           
           <ol class="step-toc">
-            <li><a href="#step-1"><span>01</span> Una parte da una frase (2D)</a></li>
+            <li><a href="#step-1"><span>01</span> Un supporto per cuscinetto da una frase (2D)</a></li>
             <li><a href="#step-2"><span>02</span> Passo dopo passo fino alla parte 3D</a></li>
             <li><a href="#step-3"><span>03</span> Indica qualcosa e chiedi una modifica</a></li>
             <li><a href="#step-4"><span>04</span> Il disegno e il PDF</a></li>
@@ -80,12 +80,12 @@
         <div class="wrap step-grid">
           <div class="step-text">
           <p class="step-num" aria-hidden="true">01</p>
-          <h2 id="step-1-h"><span class="label">Passo 1</span> Una parte da una frase (2D)</h2>
+          <h2 id="step-1-h"><span class="label">Passo 1</span> Un supporto per cuscinetto da una frase (2D)</h2>
           <p>Scrivi nella scheda Assistente:</p>
-          <p class="bubble"><span class="who">Scrivi</span>Una piastra di fissaggio 160 × 100 mm, raggi R12 agli angoli, quattro fori di passaggio per M8 su un interasse di 130 × 70 e un foro Ø40 H7 al centro.</p>
-          <p>Che cosa mostrare: la scheda della proposta elenca che cosa aggiungerà, le affermazioni dicono da dove viene ogni numero (Ø9 per M8 da <code>library/holes/iso-273</code>, serie media; H7 dalla ISO 286) e il disegno mostra l’anteprima in trasparenza. Fai clic su <strong>Accetta</strong>. Premi <code>U</code> una volta per mostrare che è un solo passo di annullamento, poi <code>REDO</code>.</p>
+          <p class="bubble"><span class="who">Scrivi</span>Una flangia di supporto per un cuscinetto 6207: una piastra quadrata 140 × 140 mm con raggi R15 agli angoli, quattro fori di passaggio Ø11 per M10 su un interasse di 110 × 110, due fori per spine Ø6 H7 su una diagonale a 60 mm dal centro e un foro centrale Ø72 H7 per l’anello esterno del cuscinetto.</p>
+          <p>Che cosa mostrare: la scheda della proposta elenca che cosa aggiungerà, le affermazioni dicono da dove viene ogni numero (Ø11 per M10 da <code>library/holes/iso-273</code>, serie media; scostamenti H7 dalla ISO 286) e il disegno mostra l’anteprima in trasparenza. Fai clic su <strong>Accetta</strong>. Premi <code>U</code> una volta per mostrare che è un solo passo di annullamento, poi <code>REDO</code>.</p>
           </div>
-          <figure class="shot"><a href="/img/demo-1.png?v=80e3a09bf3"><img src="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900" alt="La proposta per la piastra di fissaggio nella scheda Assistente: che cosa aggiunge, la fonte di ogni numero e l’anteprima sul disegno." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-1.png?v=70564b2535"><img src="/img/demo-1.png?v=70564b2535" width="1440" height="900" alt="La proposta per la piastra di fissaggio nella scheda Assistente: che cosa aggiunge, la fonte di ogni numero e l’anteprima sul disegno." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="step alt" id="step-2" aria-labelledby="step-2-h">
@@ -93,14 +93,16 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">02</p>
           <h2 id="step-2-h"><span class="label">Passo 2</span> Passo dopo passo fino alla parte 3D</h2>
-          <p class="bubble"><span class="who">Scrivi</span>Rendila una parte 3D: estrudi il contorno di 12 mm e fai i fori passanti.</p>
+          <p class="bubble"><span class="who">Scrivi</span>Rendila una parte 3D: estrudi la piastra di 15 mm con tutti i fori passanti.</p>
           <p>Accetta. Si apre la scheda 3D con il corpo; la scheda Funzioni mostra l’albero. Poi:</p>
-          <p class="bubble"><span class="who">Scrivi</span>Aggiungi sopra un mozzo Ø60 alto 25 mm attorno al foro, e un raccordo di 2 mm sugli spigoli del mozzo.</p>
-          <p>Accetta e ruota la vista. Poi una richiesta impossibile, per mostrare l’onestà:</p>
-          <p class="bubble"><span class="who">Scrivi</span>Raccorda tutti gli spigoli con 20 mm.</p>
-          <p>La proposta viene costruita in background e fallisce con parole semplici (“il raccordo di 20 mm non sta nella piastra di 12 mm…”); non viene applicato nulla.</p>
+          <p class="bubble"><span class="who">Scrivi</span>Aggiungi sopra un mozzo Ø100 alto 30 mm attorno al foro; mantieni il foro Ø72 H7 passante attraverso il mozzo e smussa entrambe le estremità del foro con 1 × 45°.</p>
+          <p>Accetta e ruota la vista. Poi il retro e il coperchio:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Sulla faccia posteriore aggiungi una lamatura Ø80 profonda 4 mm per la tenuta dell’albero, e sulla sommità del mozzo una corona circolare di sei fori filettati M5 su un cerchio Ø88, profondi 10 mm.</p>
+          <p>Accetta. Poi una richiesta impossibile, per mostrare l’onestà:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Porta lo spessore della parete del mozzo a 1 mm e raccorda i suoi spigoli con R15.</p>
+          <p>L’assistente risponde con i numeri reali del modello (la parete è di 14 mm, una parete di 1 mm non regge un R15, la sede del cuscinetto ha bisogno della sua lunghezza) e offre delle opzioni; nulla viene applicato.</p>
           </div>
-          <figure class="shot"><a href="/img/demo-2.png?v=255ce4ad28"><img src="/img/demo-2.png?v=255ce4ad28" width="1440" height="900" alt="La piastra come parte 3D con il mozzo e il suo raccordo, e l’albero delle funzioni nella scheda Funzioni." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-2.png?v=35b7d3fc72"><img src="/img/demo-2.png?v=35b7d3fc72" width="1440" height="900" alt="La piastra come parte 3D con il mozzo e il suo raccordo, e l’albero delle funzioni nella scheda Funzioni." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="step" id="step-3" aria-labelledby="step-3-h">
@@ -108,13 +110,13 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">03</p>
           <h2 id="step-3-h"><span class="label">Passo 3</span> Indica qualcosa e chiedi una modifica</h2>
-          <ul><li>Nel visualizzatore 3D, Alt+clic sulla faccia superiore del mozzo. Nel campo della chat compare un riferimento “Faccia … normale +Z”.</li><li>Scrivi:</li></ul>
-          <p class="bubble"><span class="who">Scrivi</span>Smussa lo spigolo esterno di questa faccia 1 × 45° e porta il mozzo a 30 mm di altezza.</p>
-          <p>Accetta. Poi nella scheda Modello 2D seleziona i quattro cerchi dei fori (selezione a finestra), fai clic su <strong>Usa selezione</strong> e scrivi:</p>
-          <p class="bubble"><span class="who">Scrivi</span>Trasformali in fori di passaggio per M10 e sposta l’interasse a 136 × 76.</p>
-          <p>Accetta; i fori e la funzione foro seguono.</p>
+          <ul><li>Nel visualizzatore 3D, Alt+clic sulla faccia superiore del mozzo. Nel campo della chat compare un’etichetta “Faccia … normale +Z”.</li><li>Scrivi:</li></ul>
+          <p class="bubble"><span class="who">Scrivi</span>Smussa lo spigolo esterno di questa faccia con 2 × 45° e porta l’altezza del mozzo a 35 mm.</p>
+          <p>Accetta. Poi nella scheda Modello seleziona i quattro fori M10 (selezione a finestra), fai clic su <strong>Usa selezione</strong> e scrivi:</p>
+          <p class="bubble"><span class="who">Scrivi</span>Cambia questi in fori di passaggio per M12 e allarga l’interasse a 114 × 114.</p>
+          <p>Accetta; i fori, le loro quote e la funzione foro seguono.</p>
           </div>
-          <figure class="shot"><a href="/img/demo-3.png?v=3738f62bbc"><img src="/img/demo-3.png?v=3738f62bbc" width="1440" height="900" alt="La faccia superiore del mozzo scelta con Alt+clic come riferimento nella chat, e la proposta per lo smusso." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-3.png?v=f163c17a90"><img src="/img/demo-3.png?v=f163c17a90" width="1440" height="900" alt="La faccia superiore del mozzo scelta con Alt+clic come riferimento nella chat, e la proposta per lo smusso." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="step alt" id="step-4" aria-labelledby="step-4-h">
@@ -122,8 +124,8 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">04</p>
           <h2 id="step-4-h"><span class="label">Passo 4</span> Il disegno e il PDF</h2>
-          <p class="bubble"><span class="who">Scrivi</span>Quota la piastra secondo ISO 129-1 (contorno, interasse dei fori, foro con la tolleranza H7), mettila su un foglio A3 in scala 1:1 con il cartiglio compilato ed esporta il PDF.</p>
-          <p>Accetta. Si apre la scheda del foglio e compare la finestra per salvare il PDF; salva e apri il PDF.</p>
+          <p class="bubble"><span class="who">Scrivi</span>Quota tutto secondo ISO 129-1 con gli accoppiamenti H7, aggiungi una vista frontale in sezione completa per l’asse del foro, metti tutto su un foglio A2 in scala 1:1 con il cartiglio compilato (titolo “Bearing housing”, materiale EN-GJL-250) ed esporta il PDF.</p>
+          <p>Accetta. Si apre la scheda del foglio, compare la finestra di salvataggio del PDF; salva e apri il PDF.</p>
           </div>
           <figure class="shot"><a href="/img/demo-4.png?v=0404e36fe8"><img src="/img/demo-4.png?v=0404e36fe8" width="1440" height="900" alt="La piastra quotata secondo ISO 129-1 su un foglio A3 in scala 1:1 con il cartiglio compilato." loading="lazy" decoding="async" /></a></figure>
         </div>
@@ -133,9 +135,9 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">05</p>
           <h2 id="step-5-h"><span class="label">Passo 5</span> Se qualcosa va storto</h2>
-          <ul><li>Nessuna risposta, o un errore della chiave: la scheda Assistente dice il perché in parole semplici; controlla la chiave e il nome del modello.</li><li>Una proposta che non ti piace: <strong>Rifiuta</strong>, oppure accetta e premi <code>U</code>.</li><li>L’assistente non modifica mai di nascosto: cerca la scheda della proposta; niente cambia senza un clic su Accetta.</li></ul>
+          <ul><li>La richiesta impossibile del passo 2 è il momento dell’onestà: l’assistente non finge; misura, spiega perché e chiede quale strada prendere.</li><li>Nessuna risposta, o un errore di chiave: la scheda Assistente dice perché in parole semplici; controlla la chiave e il nome del modello.</li><li>Una proposta che non ti piace: <strong>Rifiuta</strong>, oppure accetta e premi <code>U</code>.</li><li>L’assistente non modifica mai in silenzio: cerca la scheda, nulla cambia senza Accetta.</li></ul>
           </div>
-          <figure class="shot"><a href="/img/demo-5.png?v=0404e36fe8"><img src="/img/demo-5.png?v=0404e36fe8" width="1440" height="900" alt="Una richiesta impossibile da costruire, con la risposta in parole semplici: non viene applicato nulla." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-5.png?v=8eb77986c3"><img src="/img/demo-5.png?v=8eb77986c3" width="1440" height="900" alt="Una richiesta impossibile da costruire, con la risposta in parole semplici: non viene applicato nulla." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="sec try-sec" aria-labelledby="try-h">
@@ -143,7 +145,7 @@
           <div class="try">
             <h2 id="try-h">Provalo tu</h2>
             <p>Scarica MechPilot, apri la scheda Assistente, inserisci la tua chiave API di Claude, OpenAI o Gemini e scrivi la prima richiesta:</p>
-            <p class="bubble"><span class="who">Scrivi</span>Una piastra di fissaggio 160 × 100 mm, raggi R12 agli angoli, quattro fori di passaggio per M8 su un interasse di 130 × 70 e un foro Ø40 H7 al centro.</p>
+            <p class="bubble"><span class="who">Scrivi</span>Una flangia di supporto per un cuscinetto 6207: una piastra quadrata 140 × 140 mm con raggi R15 agli angoli, quattro fori di passaggio Ø11 per M10 su un interasse di 110 × 110, due fori per spine Ø6 H7 su una diagonale a 60 mm dal centro e un foro centrale Ø72 H7 per l’anello esterno del cuscinetto.</p>
             <p class="cta"><a class="btn primary lg" href="/it/#download">Download</a> <a class="btn lg" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes">Compila dai sorgenti</a> <a class="btn lg" href="/docs/getting-started/" hreflang="en">Primi passi</a></p>
           </div>
         </div>

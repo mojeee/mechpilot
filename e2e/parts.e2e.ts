@@ -21,7 +21,7 @@ const volume = async (page: import('@playwright/test').Page) => {
 };
 
 test('sketch, extrude, hole, undo, and the samples build', async () => {
-  const { page, close } = await launch();
+  const { page, close } = await launch({ softwareGl: true });
   try {
     await expect(page.locator('.statusbar .worker')).toHaveText(/Worker ready/);
     // A 100 × 60 rectangle as four lines, selected, made into a sketch and extruded 10 mm.

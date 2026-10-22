@@ -33,7 +33,7 @@ async function send(page: Page, text: string): Promise<void> {
 }
 
 test('assistant: proposal, preview, accept as one undo step, references, thicker, failure', async () => {
-  const { page, close } = await launch({ aiFake: true });
+  const { page, close } = await launch({ aiFake: true, softwareGl: true });
   try {
     // Ctrl+Shift+A opens the Assistant tab and focuses its input.
     await page.locator('.canvas').click({ position: { x: 20, y: 20 } });

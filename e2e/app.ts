@@ -16,11 +16,12 @@ export interface App {
 }
 
 /** `aiFake` runs the assistant against the scripted fake provider (MP_AI_FAKE=1, no key, no network). */
-export async function launch(opts: { env?: Record<string, string>; aiFake?: boolean } = {}): Promise<App> {
+/** `softwareGl` asks Chromium for software WebGL (SwiftShader) in CI, where the runner has no GPU; only tests that open the 3D view need it, because it slows the 2D canvas too (the perf budget test runs without it). */
+export async function launch(opts: { env?: Record<string, string>; aiFake?: boolean; softwareGl?: boolean } = {}): Promise<App> {
   const profile = mkdtempSync(join(tmpdir(), 'mp-e2e-'));
   const saveDir = mkdtempSync(join(tmpdir(), 'mp-e2e-save-'));
   const app = await electron.launch({
-    args: ['.', '--no-sandbox', ...(process.env.CI ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] : [])],
+    args: ['.', '--no-sandbox', ...(process.env.CI && opts.softwareGl ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] : [])],
     cwd: root,
     env: { ...process.env, MP_PROFILE: profile, MP_SAVE_DIR: saveDir, ...(opts.aiFake ? { MP_AI_FAKE: '1' } : {}), ...opts.env },
   });

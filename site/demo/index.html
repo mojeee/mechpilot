@@ -50,7 +50,7 @@
           <p class="lead">A ten-minute walkthrough of MechPilot with the assistant: a part from one sentence, step by step to a 3D part, a change on a face you point at, and the dimensioned A3 drawing as a PDF. Nothing the assistant proposes is applied until you click Accept, and every accepted proposal is one undo step.</p>
           
           <figure class="demo-video">
-            <video controls preload="metadata" poster="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900">
+            <video controls preload="metadata" poster="/img/demo-1.png?v=70564b2535" width="1440" height="900">
               <source src="/video/demo.webm?v=4254bd676e" type="video/webm" />
               <source src="/video/demo.mp4?v=117cac5570" type="video/mp4" />
               <p>Your browser does not play this video. <a href="/video/demo.mp4?v=117cac5570">Download the recording</a></p>
@@ -60,7 +60,7 @@
           <h2 class="toc-h">Chapters</h2>
           
           <ol class="step-toc">
-            <li><a href="#step-1"><span>01</span> A part from one sentence (2D)</a></li>
+            <li><a href="#step-1"><span>01</span> A bearing housing from one sentence (2D)</a></li>
             <li><a href="#step-2"><span>02</span> Step by step to a 3D part</a></li>
             <li><a href="#step-3"><span>03</span> Point at something and ask for a change</a></li>
             <li><a href="#step-4"><span>04</span> The drawing and the PDF</a></li>
@@ -80,12 +80,12 @@
         <div class="wrap step-grid">
           <div class="step-text">
           <p class="step-num" aria-hidden="true">01</p>
-          <h2 id="step-1-h"><span class="label">Step 1</span> A part from one sentence (2D)</h2>
+          <h2 id="step-1-h"><span class="label">Step 1</span> A bearing housing from one sentence (2D)</h2>
           <p>Type in the Assistant tab:</p>
-          <p class="bubble"><span class="who">You type</span>A mounting plate 160 × 100 mm, R12 corners, four clearance holes for M8 on a 130 × 70 pattern, and a Ø40 H7 bore in the centre.</p>
-          <p>What to show: the proposal card lists what it will add, the claims say where each number comes from (Ø9 for M8 from <code>library/holes/iso-273</code> medium series; H7 from ISO 286), and the drawing shows the ghost preview. Click <strong>Accept</strong>. Press <code>U</code> once to show it is one undo step, then <code>REDO</code>.</p>
+          <p class="bubble"><span class="who">You type</span>A bearing housing flange for a 6207 bearing: a 140 × 140 mm square plate with R15 corners, four Ø11 clearance holes for M10 on a 110 × 110 pattern, two Ø6 H7 dowel holes on one diagonal at 60 mm from the centre, and a central Ø72 H7 bore for the bearing's outer ring.</p>
+          <p>What to show: the proposal card lists what it will add, the claims say where each number comes from (Ø11 for M10 from <code>library/holes/iso-273</code> medium series; H7 deviations from ISO 286), and the drawing shows the ghost preview. Click <strong>Accept</strong>. Press <code>U</code> once to show it is one undo step, then <code>REDO</code>.</p>
           </div>
-          <figure class="shot"><a href="/img/demo-1.png?v=80e3a09bf3"><img src="/img/demo-1.png?v=80e3a09bf3" width="1440" height="900" alt="The proposal for the mounting plate in the Assistant tab: what it adds, the source of every number, and the preview on the drawing." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-1.png?v=70564b2535"><img src="/img/demo-1.png?v=70564b2535" width="1440" height="900" alt="The proposal for the mounting plate in the Assistant tab: what it adds, the source of every number, and the preview on the drawing." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="step alt" id="step-2" aria-labelledby="step-2-h">
@@ -93,14 +93,16 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">02</p>
           <h2 id="step-2-h"><span class="label">Step 2</span> Step by step to a 3D part</h2>
-          <p class="bubble"><span class="who">You type</span>Make it a 3D part: extrude the outline 12 mm, cut the holes through.</p>
+          <p class="bubble"><span class="who">You type</span>Make it a 3D part: extrude the plate 15 mm with every hole through.</p>
           <p>Accept. The 3D tab opens with the body; the Features tab shows the tree. Then:</p>
-          <p class="bubble"><span class="who">You type</span>Add a 25 mm tall boss Ø60 around the bore on top, and a 2 mm fillet on the boss edges.</p>
-          <p>Accept, rotate the view. Then an impossible request, to show honesty:</p>
-          <p class="bubble"><span class="who">You type</span>Fillet every edge with 20 mm.</p>
-          <p>The proposal is built in the background and fails in plain words (&quot;the fillet of 20 mm does not fit the 12 mm plate…&quot;); nothing is applied.</p>
+          <p class="bubble"><span class="who">You type</span>Add a Ø100 boss, 30 mm tall, on top around the bore; keep the Ø72 H7 bore through it and chamfer both ends of the bore 1 × 45°.</p>
+          <p>Accept, rotate the view. Then the back and the cover:</p>
+          <p class="bubble"><span class="who">You type</span>On the back face add a Ø80 counterbore 4 mm deep for the shaft seal, and on the top of the boss a circular pattern of six M5 tapped holes on a Ø88 circle, 10 mm deep.</p>
+          <p>Accept. Then an impossible request, to show honesty:</p>
+          <p class="bubble"><span class="who">You type</span>Make the boss wall 1 mm thick and fillet its edges with R15.</p>
+          <p>The assistant answers with the real numbers from the model (the wall is 14 mm, a 1 mm wall cannot take an R15, the bearing seat needs its length) and offers options; nothing is applied.</p>
           </div>
-          <figure class="shot"><a href="/img/demo-2.png?v=255ce4ad28"><img src="/img/demo-2.png?v=255ce4ad28" width="1440" height="900" alt="The plate as a 3D part with the boss and its fillet, and the feature tree in the Features tab." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-2.png?v=35b7d3fc72"><img src="/img/demo-2.png?v=35b7d3fc72" width="1440" height="900" alt="The plate as a 3D part with the boss and its fillet, and the feature tree in the Features tab." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="step" id="step-3" aria-labelledby="step-3-h">
@@ -109,12 +111,12 @@
           <p class="step-num" aria-hidden="true">03</p>
           <h2 id="step-3-h"><span class="label">Step 3</span> Point at something and ask for a change</h2>
           <ul><li>In the 3D viewer, Alt+click the top face of the boss. A chip &quot;Face … normal +Z&quot; appears in the chat input.</li><li>Type:</li></ul>
-          <p class="bubble"><span class="who">You type</span>Chamfer this face's outer edge 1 × 45°, and make the boss 30 mm tall instead.</p>
-          <p>Accept. Then in the 2D Model tab select the four hole circles (window selection), click <strong>Use selection</strong>, and type:</p>
-          <p class="bubble"><span class="who">You type</span>Change these to M10 clearance holes and move the pattern to 136 × 76.</p>
-          <p>Accept; the holes and the hole feature follow.</p>
+          <p class="bubble"><span class="who">You type</span>Chamfer the outer edge of this face 2 × 45° and make the boss 35 mm tall instead.</p>
+          <p>Accept. Then in the Model tab select the four M10 holes (window selection), click <strong>Use selection</strong>, and type:</p>
+          <p class="bubble"><span class="who">You type</span>Change these to M12 clearance holes and widen the pattern to 114 × 114.</p>
+          <p>Accept; the holes, their dimensions and the hole feature follow.</p>
           </div>
-          <figure class="shot"><a href="/img/demo-3.png?v=3738f62bbc"><img src="/img/demo-3.png?v=3738f62bbc" width="1440" height="900" alt="The top face of the boss picked with Alt+click as a reference in the chat, and the proposal for the chamfer." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-3.png?v=f163c17a90"><img src="/img/demo-3.png?v=f163c17a90" width="1440" height="900" alt="The top face of the boss picked with Alt+click as a reference in the chat, and the proposal for the chamfer." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="step alt" id="step-4" aria-labelledby="step-4-h">
@@ -122,7 +124,7 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">04</p>
           <h2 id="step-4-h"><span class="label">Step 4</span> The drawing and the PDF</h2>
-          <p class="bubble"><span class="who">You type</span>Dimension the plate to ISO 129-1 (outline, hole pattern, bore with its H7 tolerance), put it on an A3 sheet at 1:1 with the title block filled in, and export the PDF.</p>
+          <p class="bubble"><span class="who">You type</span>Dimension it to ISO 129-1 with the H7 fits, add a front view in full section through the bore axis, put everything on an A2 sheet at 1:1 with the title block filled in (title &quot;Bearing housing&quot;, material EN-GJL-250), and export the PDF.</p>
           <p>Accept. The sheet tab opens, the PDF save dialog appears; save and open the PDF.</p>
           </div>
           <figure class="shot"><a href="/img/demo-4.png?v=0404e36fe8"><img src="/img/demo-4.png?v=0404e36fe8" width="1440" height="900" alt="The plate dimensioned to ISO 129-1 on an A3 sheet at 1:1 with the title block filled in." loading="lazy" decoding="async" /></a></figure>
@@ -133,9 +135,9 @@
           <div class="step-text">
           <p class="step-num" aria-hidden="true">05</p>
           <h2 id="step-5-h"><span class="label">Step 5</span> If something goes wrong</h2>
-          <ul><li>No answer, or a key error: the Assistant tab says why in plain words; check the key and the model name.</li><li>A proposal you do not like: <strong>Reject</strong>, or accept and press <code>U</code>.</li><li>The assistant never edits silently: look for the card, nothing changes without Accept.</li></ul>
+          <ul><li>The impossible request in step 2 is the honesty moment: the assistant does not pretend; it measures, says why, and asks which way to go.</li><li>No answer, or a key error: the Assistant tab says why in plain words; check the key and the model name.</li><li>A proposal you do not like: <strong>Reject</strong>, or accept and press <code>U</code>.</li><li>The assistant never edits silently: look for the card, nothing changes without Accept.</li></ul>
           </div>
-          <figure class="shot"><a href="/img/demo-5.png?v=0404e36fe8"><img src="/img/demo-5.png?v=0404e36fe8" width="1440" height="900" alt="A request that cannot be built, answered in plain words: nothing is applied." loading="lazy" decoding="async" /></a></figure>
+          <figure class="shot"><a href="/img/demo-5.png?v=8eb77986c3"><img src="/img/demo-5.png?v=8eb77986c3" width="1440" height="900" alt="A request that cannot be built, answered in plain words: nothing is applied." loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
       <section class="sec try-sec" aria-labelledby="try-h">
@@ -143,7 +145,7 @@
           <div class="try">
             <h2 id="try-h">Try it yourself</h2>
             <p>Get MechPilot, open the Assistant tab, add your own Claude, OpenAI or Gemini API key, and type the first prompt:</p>
-            <p class="bubble"><span class="who">You type</span>A mounting plate 160 × 100 mm, R12 corners, four clearance holes for M8 on a 130 × 70 pattern, and a Ø40 H7 bore in the centre.</p>
+            <p class="bubble"><span class="who">You type</span>A bearing housing flange for a 6207 bearing: a 140 × 140 mm square plate with R15 corners, four Ø11 clearance holes for M10 on a 110 × 110 pattern, two Ø6 H7 dowel holes on one diagonal at 60 mm from the centre, and a central Ø72 H7 bore for the bearing's outer ring.</p>
             <p class="cta"><a class="btn primary lg" href="/#download">Download</a> <a class="btn lg" href="https://github.com/mojeee/mechpilot#contribute-in-30-minutes">Build from source</a> <a class="btn lg" href="/docs/getting-started/">Getting started</a></p>
           </div>
         </div>

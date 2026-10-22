@@ -43,8 +43,8 @@ function run(a) {
   console.log('ffmpeg ' + a.join(' '));
   execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a], { stdio: 'inherit' });
 }
-run([...trim, '-i', raw, '-vf', vf, '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '34', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2', '-an', join(outDir, 'demo.webm')]);
-run([...trim, '-i', raw, '-vf', vf, '-c:v', 'libx264', '-preset', 'slow', '-crf', '26', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', join(outDir, 'demo.mp4')]);
+run([...trim, '-i', raw, '-vf', vf, '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '34', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '4', '-an', join(outDir, 'demo.webm')]);
+run([...trim, '-i', raw, '-vf', vf, '-c:v', 'libx264', '-preset', 'fast', '-crf', '26', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', join(outDir, 'demo.mp4')]);
 run(['-ss', String(start + 8), '-i', raw, '-vf', vf, '-frames:v', '1', join(root, 'site', 'img', 'demo-poster.png')]);
 for (const f of ['demo.webm', 'demo.mp4']) {
   const mb = statSync(join(outDir, f)).size / 1e6;

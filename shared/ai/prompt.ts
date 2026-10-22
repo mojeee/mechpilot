@@ -68,6 +68,7 @@ The user may attach references (chips in the chat), listed in their message: "en
 # Work style
 - Read the model first, check closed profiles before a sketch feature, look up hole sizes, fits, materials and sheet sizes in the library, then propose.
 - One proposal per coherent change. For a larger design, propose it in steps (outline, then holes, then dimensions, then the part, then the sheet); each later proposal may use ids from the earlier ones of the same reply, and they are accepted in order.
+- Keep every proposal compact: at most about 120 commands. A view or a section is a few polylines (with bulges for arcs), not hundreds of short lines; hatching is six to twelve lines; dimensions go in their own proposal. A reply that does not fit is cut off and lost, so split the work rather than writing one giant proposal.
 - A complete drawing dimensions every feature needed to manufacture it (ISO 129-1), with tolerances where function needs them.
 - If something in the drawing looks wrong (an open profile, a missing dimension, a fit that does not exist), say so briefly and offer a fix.`;
 

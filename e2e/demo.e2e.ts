@@ -158,25 +158,28 @@ test('the demo script against the real model', async () => {
     await expect(page.locator('.right-panel .tab.on')).toHaveText('Assistant');
 
     // 1. A part from one sentence: the proposal card and its ghost preview, then Accept.
-    const t1 = await ask(page, 'A mounting plate 160 × 100 mm, R12 corners, four clearance holes for M8 on a 130 × 70 pattern, and a Ø40 H7 bore in the centre.');
-    const first = t1.proposals?.length ? t1 : await ask(page, 'Use the medium series for the clearance holes, holes and bore centred on the plate, the plate centred on the origin.');
+    const t1 = await ask(page, "A bearing housing flange for a 6207 bearing: a 140 × 140 mm square plate with R15 corners, four Ø11 clearance holes for M10 on a 110 × 110 pattern, two Ø6 H7 dowel holes on one diagonal at 60 mm from the centre, and a central Ø72 H7 bore for the bearing's outer ring.");
+    const first = t1.proposals?.length ? t1 : await ask(page, 'Medium series for the clearance holes, everything centred on the plate, the plate centred on the origin, the dowels on the diagonal from bottom-left to top-right.');
     expect(first.error, 'assistant error').toBeUndefined();
     expect((first.proposals ?? []).length, 'no proposal for the plate').toBeGreaterThan(0);
-    await page.locator('.ai-proposal').first().hover();
-    await page.waitForTimeout(500);
+    // Preview through the store (a mouse hover can land under the command line) and bring the card into view.
+    await page.evaluate(([t, id]) => (window as unknown as { __mp: { assistant: { previewProposal(t: string, id: string | null): void } } }).__mp.assistant.previewProposal(t, id), [first.id, first.proposals![0].id] as const);
+    await page.locator('.ai-proposal').first().evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(800);
     await shot(page, 'demo-1');
     await acceptAll(page, first);
     const entities = (await store(page)).editor.doc.entityOrder.length;
     expect(entities).toBeGreaterThanOrEqual(5);
 
     // 2. Step by step to a 3D part.
-    await askAndAccept(page, 'Make it a 3D part: extrude the outline 12 mm and cut the holes and the bore through.', 'Extrude along +Z from the XY plane; the holes and the bore go through the full thickness.');
-    await askAndAccept(page, 'Add a 25 mm tall boss Ø60 around the bore on top, and a 2 mm fillet on the boss edges.', 'The boss is centred on the bore, on the top face (z = 12), and the bore goes through it too.');
+    await askAndAccept(page, 'Make it a 3D part: extrude the plate 15 mm with every hole through.', 'Extrude along +Z from the XY plane; all holes go through the full thickness.');
+    await askAndAccept(page, 'Add a Ø100 boss, 30 mm tall, on top around the bore; keep the Ø72 H7 bore through it and chamfer both ends of the bore 1 × 45°.', 'The boss is centred on the bore on the top face (z = 15); the bore goes through plate and boss; chamfer the bore edge at the boss top and at the plate bottom.');
+    await askAndAccept(page, 'On the back face add a Ø80 counterbore 4 mm deep for the shaft seal, and on the top of the boss a circular pattern of six M5 tapped holes on a Ø88 circle, 10 mm deep.', 'The counterbore is coaxial with the bore, cut 4 mm into the bottom face; the six M5 holes start at the boss top, first hole on the +X axis.');
     await expect.poll(async () => (await store(page)).activePart, { timeout: 60_000 }).not.toBeNull();
     await expect.poll(async () => (await store(page)).build?.properties?.volume ?? null, { timeout: 120_000 }).not.toBeNull();
     await shot(page, 'demo-2');
     // An impossible request: honesty.
-    const bad = await ask(page, 'Fillet every edge with 20 mm.');
+    const bad = await ask(page, 'Make the boss wall 1 mm thick and fillet its edges with R15.');
     console.log(`  (impossible fillet) proposals: ${(bad.proposals ?? []).length}`);
     for (const p of bad.proposals ?? []) await page.evaluate(([t, id]) => (window as unknown as { __mp: Store }).__mp.assistant.acceptProposal(t, id), [bad.id, p.id] as const);
     await page.waitForTimeout(500);
@@ -226,7 +229,7 @@ test('the demo script against the real model', async () => {
       if (!best) throw new Error('no +Z face');
       s.assistant.addReference({ kind: 'face', partId: s.activePart, faceId: best.id, center: [best.x, best.y, best.z], normal: [0, 0, 1], area: best.area, label: `Face ${best.id}, normal +Z, ${(best.area / 100).toFixed(1)} cm²` });
     });
-    await askAndAccept(page, 'Chamfer the outer edge of this face 1 × 45°, and make the boss 30 mm tall instead.', 'The chamfer is on the outer circular edge of that face; the boss height goes from 25 to 30 mm.');
+    await askAndAccept(page, 'Chamfer the outer edge of this face 2 × 45° and make the boss 35 mm tall instead.', 'The chamfer is on the outer Ø100 circular edge of that face; the boss height goes from 30 to 35 mm; keep the bore chamfers.');
     await shot(page, 'demo-3');
 
     // 4. Change the holes from the 2D selection.
@@ -234,14 +237,14 @@ test('the demo script against the real model', async () => {
     await page.evaluate(() => {
       const s = (window as unknown as { __mp: Store }).__mp;
       const doc = (s.editor.doc as unknown as { entities: Record<string, { type: string; radius?: number }> }).entities;
-      const circles = s.editor.doc.entityOrder.filter((id) => doc[id].type === 'circle' && (doc[id].radius ?? 0) < 10);
+      const circles = s.editor.doc.entityOrder.filter((id) => doc[id].type === 'circle' && Math.abs((doc[id].radius ?? 0) - 5.5) < 0.6);
       s.select(circles);
       s.assistant.useSelection();
     });
-    await askAndAccept(page, 'Change these to M10 clearance holes and move the pattern to 136 × 76.', 'Medium series, pattern centred as before.');
+    await askAndAccept(page, 'Change these to M12 clearance holes and widen the pattern to 114 × 114.', 'Medium series, pattern centred as before.');
 
     // 5. The drawing and the PDF.
-    const t5 = await askAndAccept(page, 'Dimension the plate to ISO 129-1 (outline, hole pattern, bore with its H7 tolerance), put it on an A3 sheet at 1:1 with the title block filled in, and export the PDF.', 'Title: Mounting plate; drawn by MechPilot; material S235JR; scale 1:1; first angle.');
+    const t5 = await askAndAccept(page, 'Dimension it to ISO 129-1 with the H7 fits, add a front view in full section through the bore axis, put everything on an A2 sheet at 1:1 with the title block filled in (title "Bearing housing", material EN-GJL-250), and export the PDF.', 'Section A-A through the bore axis, drawn below the plan view in first angle; title Bearing housing; material EN-GJL-250; scale 1:1; drawn by MechPilot.');
     void t5;
     await expect.poll(async () => (await store(page)).editor.doc.sheetOrder.length, { timeout: 30_000 }).toBeGreaterThan(0);
     await page.locator('.sheet-tabs .stab', { hasText: 'Sheet' }).first().click();
